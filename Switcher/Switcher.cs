@@ -18,6 +18,7 @@ namespace dotSwitcher.Switcher
         private MouseHook mouseHook;
         private ISettings settings;
         private bool readyToSwitch;
+        private bool convertionIsGoing;
         public SwitcherCore(ISettings settings)
         {
             this.settings = settings;
@@ -26,6 +27,7 @@ namespace dotSwitcher.Switcher
             mouseHook = new MouseHook();
             mouseHook.MouseEvent += ProcessMousePress;
             readyToSwitch = false;
+            convertionIsGoing = false;
         }
 
 
@@ -153,6 +155,13 @@ namespace dotSwitcher.Switcher
             {
                 if (GetPreviousVkCode() == Keys.Space && settings.SmartSelection == false) { BeginNewSelection(); }
                 AddToCurrentSelection(evtData);
+                if (!convertionIsGoing)
+                {
+                    convertionIsGoing = true;
+                    ConvertLast();
+                    evtData.Handled = true;
+                    convertionIsGoing = false;
+                }                
                 return;
             }
 
