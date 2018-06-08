@@ -135,6 +135,21 @@ namespace dotSwitcher.Data
                 this["SmartSelection"] = (bool?)value;
             }
         }
+
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.Binary)]
+        [DefaultSettingValue("")]
+        public bool? AutoSwitching
+        {
+            get
+            {
+                return (bool?)this["AutoSwitching"];
+            }
+            set
+            {
+                this["AutoSwitching"] = (bool?)value;
+            }
+        }
     }
     
 }

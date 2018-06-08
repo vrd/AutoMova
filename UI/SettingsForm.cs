@@ -69,6 +69,7 @@ namespace dotSwitcher.UI
             checkBoxAutorun.Checked = settings.AutoStart == true;
             checkBoxTrayIcon.Checked = settings.ShowTrayIcon == true;
             checkBoxSmartSelection.Checked = settings.SmartSelection == true;
+            checkBoxAutoSwitching.Checked = settings.AutoSwitching == true;
             DisplaySwitchDelay(settings.SwitchDelay);
             icon.SetRunning(engine.IsStarted());
         }
@@ -358,6 +359,11 @@ namespace dotSwitcher.UI
         private void smartSelection_CheckedChanged(object sender, EventArgs e)
         {
             settings.SmartSelection = checkBoxSmartSelection.Checked;
+        }
+
+        private void autoSwitching_CheckedChanged(object sender, EventArgs e)
+        {
+            settings.AutoSwitching = checkBoxAutoSwitching.Checked;
         }
     }
 }
