@@ -63,7 +63,7 @@ namespace dotSwitcher.Switcher
                 if (evtData.Type == KeyboardEventType.KeyDown)
                     OnKeyPress(evtData);
                 else
-                    onKeyRelease(evtData);
+                    OnKeyRelease(evtData);
             }
             catch (Exception ex)
             {
@@ -108,7 +108,7 @@ namespace dotSwitcher.Switcher
               vkCode == Keys.Scroll;
         }
 
-        private void onKeyRelease(KeyboardEventArgs evtData)
+        private void OnKeyRelease(KeyboardEventArgs evtData)
         {
             if (evtData.Equals(settings.SwitchLayoutHotkey) && readyToSwitch)
             {
