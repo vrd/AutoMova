@@ -18,7 +18,7 @@ namespace dotSwitcher.Switcher
         private MouseHook mouseHook;
         private ISettings settings;
         private bool readyToSwitch;
-        private bool convertionIsGoing;
+        private bool autoSwitchingIsGoing;
         public SwitcherCore(ISettings settings)
         {
             this.settings = settings;
@@ -27,7 +27,7 @@ namespace dotSwitcher.Switcher
             mouseHook = new MouseHook();
             mouseHook.MouseEvent += ProcessMousePress;
             readyToSwitch = false;
-            convertionIsGoing = false;
+            autoSwitchingIsGoing = false;
         }
 
 
@@ -94,11 +94,11 @@ namespace dotSwitcher.Switcher
             return ctrl || alt || win;
         }
 
-        private bool HaveTrackingKeys(KeyboardEventArgs evtData)
+        private bool KeepTrackingKeys(KeyboardEventArgs evtData)
         {
             var vkCode = evtData.KeyCode;
 
-            return evtData.KeyCode == Keys.ControlKey ||
+            return vkCode == Keys.ControlKey ||
               vkCode == Keys.LControlKey ||
               vkCode == Keys.RControlKey ||
                 // yes, don't interrupt the tracking on PrtSc!
@@ -144,25 +144,39 @@ namespace dotSwitcher.Switcher
                 ConvertSelection();
             }
 
-            if (this.HaveTrackingKeys(evtData))
+            if (this.KeepTrackingKeys(evtData))
                 return;
-
+            
             var notModified = !this.HaveModifiers(evtData);
 
-            if (vkCode == Keys.Space && notModified) { AddToCurrentSelection(evtData); return; }
             if (vkCode == Keys.Back && notModified) { RemoveLast(); return; }
+
+            if (vkCode == Keys.Space && notModified)
+            {
+                if (settings.SmartSelection == false)
+                {
+                    BeginNewSelection();
+                    return;
+                }
+                else
+                {
+                    AddToCurrentSelection(evtData);
+                    return;
+                }
+            }
+
             if (IsPrintable(evtData))
             {
-                if (GetPreviousVkCode() == Keys.Space && settings.SmartSelection == false) { BeginNewSelection(); }
                 AddToCurrentSelection(evtData);
-                if (!convertionIsGoing)
-                {
-                    convertionIsGoing = true;
+
+                if (!autoSwitchingIsGoing)
+                {                    
+                    autoSwitchingIsGoing = true;
                     ConvertLast();
                     evtData.Handled = true;
-                    convertionIsGoing = false;
-                }                
-                return;
+                    autoSwitchingIsGoing = false;
+                }
+                return;                                
             }
 
             // default: 
@@ -232,7 +246,9 @@ namespace dotSwitcher.Switcher
         {
             LowLevelAdapter.ReleasePressedFnKeys();
             var selection = currentSelection.ToList();
-            var backspaces = Enumerable.Repeat<Keys>(Keys.Back, selection.Count);
+            BeginNewSelection();
+            var backspaceCount = autoSwitchingIsGoing ? (selection.Count-1) : selection.Count;
+            var backspaces = Enumerable.Repeat<Keys>(Keys.Back, backspaceCount);
 
             foreach (var vkCode in backspaces) { LowLevelAdapter.SendKeyPress(vkCode, false); }
             // Fix for skype
