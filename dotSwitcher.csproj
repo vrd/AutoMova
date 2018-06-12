@@ -56,6 +56,7 @@
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Switcher\Dictionary.cs" />
     <Compile Include="Switcher\KeyboardHook.cs" />
     <Compile Include="Switcher\MouseHook.cs" />
     <Compile Include="Switcher\Switcher.cs" />
@@ -97,6 +98,12 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Lang\en\dictionary" />
+    <None Include="Lang\en\proto" />
+    <None Include="Lang\en\proto3" />
+    <None Include="Lang\ru\dictionary" />
+    <None Include="Lang\ru\proto" />
+    <None Include="Lang\ru\proto3" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
