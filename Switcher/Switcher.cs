@@ -19,6 +19,7 @@ namespace dotSwitcher.Switcher
         private ISettings settings;
         private bool readyToSwitch;
         private bool autoSwitchingIsGoing;
+        private LanguageDetector languageDetector;
         public SwitcherCore(ISettings settings)
         {
             this.settings = settings;
@@ -28,6 +29,7 @@ namespace dotSwitcher.Switcher
             mouseHook.MouseEvent += ProcessMousePress;
             readyToSwitch = false;
             autoSwitchingIsGoing = false;
+            languageDetector = new LanguageDetector();
         }
 
 
@@ -169,7 +171,10 @@ namespace dotSwitcher.Switcher
             {
                 AddToCurrentSelection(evtData);
 
-                if (!autoSwitchingIsGoing)
+                var detectedLanguage = languageDetector.Decision("test", "en");
+                var currentLanguage = "en";
+
+                if (settings.AutoSwitching == true && detectedLanguage != currentLanguage && !autoSwitchingIsGoing)
                 {                    
                     autoSwitchingIsGoing = true;
                     ConvertLast();
