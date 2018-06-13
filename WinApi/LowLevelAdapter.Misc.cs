@@ -42,8 +42,8 @@ namespace dotSwitcher.WinApi
         static extern int SendMessage(IntPtr hWnd, uint Msg, out int wParam, out int lParam);
         [DllImport("user32.dll")]
         static extern int SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        //[DllImport("user32.dll", SetLastError = true)]
+        //private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
         [DllImport("kernel32.dll")]
         private static extern uint GetCurrentThreadId();
         [DllImport("user32.dll")]
@@ -57,6 +57,12 @@ namespace dotSwitcher.WinApi
         public static extern uint RegisterWindowMessage(string message);
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         static extern short VkKeyScanEx(char ch, IntPtr dwhkl);
+        [DllImport("user32.dll")]
+        static extern bool GetKeyboardState(byte[] lpKeyState);
+        [DllImport("user32.dll")]
+        static extern uint MapVirtualKey(uint uCode, uint uMapType);
+        [DllImport("user32.dll")]
+        static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
         #endregion
 
         public static uint WM_SHOW_SETTINGS = RegisterWindowMessage("WM_SHOW_SETTINGS");

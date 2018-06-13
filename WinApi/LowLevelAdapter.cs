@@ -212,6 +212,27 @@ namespace dotSwitcher.WinApi
             }
             return (System.Windows.Forms.Keys)(((keyNumber & 0xFF00) << 8) | (keyNumber & 0xFF));
         }
+
+        public static string KeyCodeToUnicode(Keys keyCode)
+        {
+            byte[] keyboardState = new byte[255];
+            bool keyboardStateStatus = GetKeyboardState(keyboardState);
+
+            if (!keyboardStateStatus)
+            {
+                return "";
+            }
+
+            uint virtualKeyCode = (uint)keyCode;
+            uint scanCode = MapVirtualKey(virtualKeyCode, 0);
+            IntPtr inputLocaleIdentifier = LowLevelAdapter.GetCurrentLayout();
+
+            StringBuilder result = new StringBuilder();
+            ToUnicodeEx(virtualKeyCode, scanCode, keyboardState, result, (int)5, (uint)0, inputLocaleIdentifier);
+
+            return result.ToString();
+        }
+
         public static void BackupClipboard()
         {
             //lDataObject = Clipboard.GetDataObject();
