@@ -98,12 +98,12 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Lang\en\dictionary" />
-    <None Include="Lang\en\proto" />
-    <None Include="Lang\en\proto3" />
-    <None Include="Lang\ru\dictionary" />
-    <None Include="Lang\ru\proto" />
-    <None Include="Lang\ru\proto3" />
+    <None Include="Langs\en\dictionary" />
+    <None Include="Langs\en\proto" />
+    <None Include="Langs\en\proto3" />
+    <None Include="Langs\ru\dictionary" />
+    <None Include="Langs\ru\proto" />
+    <None Include="Langs\ru\proto3" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
