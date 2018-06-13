@@ -7,5 +7,6 @@
         KeyboardEventArgs ConvertSelectionHotkey { get; set; }
         int SwitchDelay { get; set; }
         bool? SmartSelection { get; set; }
+        bool? AutoSwitching { get; set; }
     }
 }
