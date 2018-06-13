@@ -170,6 +170,7 @@ namespace dotSwitcher.Switcher
             if (IsPrintable(evtData))
             {
                 AddToCurrentSelection(evtData);
+                Debug.WriteLine(LowLevelAdapter.KeyCodeToUnicode(vkCode));
 
                 var detectedLanguage = languageDetector.Decision("test", "en");
                 var currentLanguage = "en";
