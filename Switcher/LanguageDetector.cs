@@ -17,9 +17,9 @@ namespace dotSwitcher.Switcher
             russianDict = new Dictionary("ru");
         }
 
-        public string Decision(string word, string lang)
+        public string Decision(string word, string currentLang)
         {   
-           return lang;
+           return currentLang;
         }
     }
 }
