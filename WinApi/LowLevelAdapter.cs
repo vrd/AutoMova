@@ -58,6 +58,13 @@ namespace dotSwitcher.WinApi
             return GetKeyboardLayout(wndThreadId);
         }
 
+        public static IntPtr[] GetLayoutList()
+        {
+            uint nElements = GetKeyboardLayoutList(0, null);
+            IntPtr[] ids = new IntPtr[nElements];
+            GetKeyboardLayoutList(ids.Length, ids);
+            return ids;
+        }
 
         public static void SetNextKeyboardLayout()
         {
@@ -103,6 +110,15 @@ namespace dotSwitcher.WinApi
 
             SendInput(2, new INPUT[2] { altDown, shiftDown }, Marshal.SizeOf(typeof(INPUT)));
             SendInput(2, new INPUT[2] { altUp, shiftUp }, Marshal.SizeOf(typeof(INPUT)));
+        }
+
+        public static void SetKeyboadLayout(IntPtr layout)
+        {
+            //TODO: remake this ASAP!
+            while (GetCurrentLayout() != layout)
+            {
+                SetNextKeyboardLayout();
+            }
         }
 
         public static void SendCopy()
@@ -213,7 +229,7 @@ namespace dotSwitcher.WinApi
             return (System.Windows.Forms.Keys)(((keyNumber & 0xFF00) << 8) | (keyNumber & 0xFF));
         }
 
-        public static string KeyCodeToUnicode(Keys keyCode)
+        public static string KeyCodeToUnicode(Keys keyCode, IntPtr keyboardLayout)
         {
             byte[] keyboardState = new byte[255];
             bool keyboardStateStatus = GetKeyboardState(keyboardState);
@@ -225,10 +241,9 @@ namespace dotSwitcher.WinApi
 
             uint virtualKeyCode = (uint)keyCode;
             uint scanCode = MapVirtualKey(virtualKeyCode, 0);
-            IntPtr inputLocaleIdentifier = LowLevelAdapter.GetCurrentLayout();
-
+            
             StringBuilder result = new StringBuilder();
-            ToUnicodeEx(virtualKeyCode, scanCode, keyboardState, result, (int)5, (uint)0, inputLocaleIdentifier);
+            ToUnicodeEx(virtualKeyCode, scanCode, keyboardState, result, (int)5, (uint)0, keyboardLayout);
 
             return result.ToString();
         }

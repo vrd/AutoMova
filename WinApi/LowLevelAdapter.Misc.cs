@@ -63,6 +63,8 @@ namespace dotSwitcher.WinApi
         static extern uint MapVirtualKey(uint uCode, uint uMapType);
         [DllImport("user32.dll")]
         static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
+        [DllImport("user32.dll")]
+        static extern uint GetKeyboardLayoutList(int nBuff, [Out] IntPtr[] lpList);
         #endregion
 
         public static uint WM_SHOW_SETTINGS = RegisterWindowMessage("WM_SHOW_SETTINGS");
