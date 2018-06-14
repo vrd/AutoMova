@@ -14,12 +14,15 @@ namespace dotSwitcher.Switcher
     {
         public event EventHandler<SwitcherErrorArgs> Error;
         private List<KeyboardEventArgs> currentSelection = new List<KeyboardEventArgs>();
+        private Dictionary<IntPtr, string> lastWord = new Dictionary<IntPtr, string>();
         private KeyboardHook kbdHook;
         private MouseHook mouseHook;
         private ISettings settings;
         private bool readyToSwitch;
         private bool autoSwitchingIsGoing;
-        private LanguageDetector languageDetector;
+        private IntPtr[] layoutList;
+        private LayoutDetector layoutDetector;
+
         public SwitcherCore(ISettings settings)
         {
             this.settings = settings;
@@ -29,9 +32,13 @@ namespace dotSwitcher.Switcher
             mouseHook.MouseEvent += ProcessMousePress;
             readyToSwitch = false;
             autoSwitchingIsGoing = false;
-            languageDetector = new LanguageDetector();
+            layoutList = LowLevelAdapter.GetLayoutList();
+            foreach (var layout in layoutList)
+            {
+                lastWord.Add(layout, "");
+            }
+            layoutDetector = new LayoutDetector(layoutList);
         }
-
 
         public static bool IsPrintable(KeyboardEventArgs evtData)
         {
@@ -134,9 +141,9 @@ namespace dotSwitcher.Switcher
 
             readyToSwitch = false;
 
-            if (evtData.Equals(settings.SwitchHotkey))
+            if (evtData.Equals(settings.ConvertLastHotkey))
             {
-                ConvertLast();
+                ConvertLast(IntPtr.Zero);
                 evtData.Handled = true;
                 return;
             }
@@ -169,16 +176,16 @@ namespace dotSwitcher.Switcher
 
             if (IsPrintable(evtData))
             {
+                var currentLayout = LowLevelAdapter.GetCurrentLayout();
                 AddToCurrentSelection(evtData);
-                Debug.WriteLine(LowLevelAdapter.KeyCodeToUnicode(vkCode));
+                //Debug.WriteLine(LowLevelAdapter.KeyCodeToUnicode(vkCode, currentLayout));
 
-                var detectedLanguage = languageDetector.Decision("test", "en");
-                var currentLanguage = "en";
+                var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);                
 
-                if (settings.AutoSwitching == true && detectedLanguage != currentLanguage && !autoSwitchingIsGoing)
+                if (settings.AutoSwitching == true && detectedLayout != currentLayout && !autoSwitchingIsGoing)
                 {                    
                     autoSwitchingIsGoing = true;
-                    ConvertLast();
+                    ConvertLast(detectedLayout);
                     evtData.Handled = true;
                     autoSwitchingIsGoing = false;
                 }
@@ -203,12 +210,33 @@ namespace dotSwitcher.Switcher
             if (currentSelection.Count == 0) { return Keys.None; }
             return currentSelection[currentSelection.Count - 1].KeyCode;
         }
-        private void BeginNewSelection() { currentSelection.Clear(); }
-        private void AddToCurrentSelection(KeyboardEventArgs data) { currentSelection.Add(data); }
+
+        private void BeginNewSelection()
+        {
+            currentSelection.Clear();
+            foreach(var word in lastWord.ToArray())
+            {
+                lastWord[word.Key] = "";
+            }
+        }
+
+        private void AddToCurrentSelection(KeyboardEventArgs data)
+        {
+            currentSelection.Add(data);
+            foreach (var word in lastWord.ToArray())
+            {
+                lastWord[word.Key] = word.Value + LowLevelAdapter.KeyCodeToUnicode(data.KeyCode, word.Key);
+            }
+        }
+
         private void RemoveLast()
         {
             if (currentSelection.Count == 0) { return; }
             currentSelection.RemoveAt(currentSelection.Count - 1);
+            foreach (var word in lastWord.ToArray())
+            {
+                lastWord[word.Key] = word.Value.Substring(0, word.Value.Length - 1);
+            }
         }
         #endregion
 
@@ -222,7 +250,6 @@ namespace dotSwitcher.Switcher
             {
                 return;
             }
-
             
             LowLevelAdapter.ReleasePressedFnKeys();
 
@@ -231,6 +258,7 @@ namespace dotSwitcher.Switcher
             {
                 keys.Add(LowLevelAdapter.ToKey(selection[i]));
             }
+
             LowLevelAdapter.SetNextKeyboardLayout();
 
             foreach (var key in keys)
@@ -243,12 +271,14 @@ namespace dotSwitcher.Switcher
             }
 
         }
+
         private void SwitchLayout()
         {
             BeginNewSelection();
             LowLevelAdapter.SetNextKeyboardLayout();
         }
-        private void ConvertLast()
+
+        private void ConvertLast(IntPtr layout)
         {
             LowLevelAdapter.ReleasePressedFnKeys();
             var selection = currentSelection.ToList();
@@ -259,7 +289,15 @@ namespace dotSwitcher.Switcher
             foreach (var vkCode in backspaces) { LowLevelAdapter.SendKeyPress(vkCode, false); }
             // Fix for skype
             Thread.Sleep(settings.SwitchDelay);
-            LowLevelAdapter.SetNextKeyboardLayout();
+            if (autoSwitchingIsGoing)
+            {
+                LowLevelAdapter.SetKeyboadLayout(layout);
+            }
+            else
+            {
+                LowLevelAdapter.SetNextKeyboardLayout();
+            }
+           
             foreach (var data in selection)
             {
                 LowLevelAdapter.SendKeyPress(data.KeyCode, data.Shift);
