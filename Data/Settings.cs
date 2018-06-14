@@ -11,9 +11,9 @@ namespace dotSwitcher.Data
         {
             var settings = new Settings();
             settings.Reload();
-            if (settings.SwitchHotkey.KeyData == Keys.None)
+            if (settings.ConvertLastHotkey.KeyData == Keys.None)
             {
-                settings.SwitchHotkey = new KeyboardEventArgs(Keys.Pause, false);
+                settings.ConvertLastHotkey = new KeyboardEventArgs(Keys.Pause, false);
             }
             if (settings.ConvertSelectionHotkey.KeyData == Keys.None)
             {
@@ -34,15 +34,15 @@ namespace dotSwitcher.Data
         [UserScopedSetting]
         [SettingsSerializeAs(SettingsSerializeAs.Binary)]
         [DefaultSettingValue("")]
-        public KeyboardEventArgs SwitchHotkey
+        public KeyboardEventArgs ConvertLastHotkey
         {
             get
             {
-                return (KeyboardEventArgs)this["SwitchHotkey"];
+                return (KeyboardEventArgs)this["ConvertLastHotkey"];
             }
             set
             {
-                this["SwitchHotkey"] = (KeyboardEventArgs)value; 
+                this["ConvertLastHotkey"] = (KeyboardEventArgs)value; 
             }
         }
 

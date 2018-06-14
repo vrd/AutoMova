@@ -63,8 +63,8 @@ namespace dotSwitcher.UI
         // Update input values and icon state
         void UpdateUi()
         {
-            textBoxSwitchHotkey.Text = ReplaceCtrls(settings.SwitchHotkey.ToString());
-            textBoxConvertHotkey.Text = settings.ConvertSelectionHotkey.ToString();
+            textBoxConverLastHotkey.Text = ReplaceCtrls(settings.ConvertLastHotkey.ToString());
+            textBoxConvertSelectionHotkey.Text = settings.ConvertSelectionHotkey.ToString();
             textBoxSwitchLayoutHotkey.Text = ReplaceCtrls(settings.SwitchLayoutHotkey.ToString());
             checkBoxAutorun.Checked = settings.AutoStart == true;
             checkBoxTrayIcon.Checked = settings.ShowTrayIcon == true;
@@ -81,7 +81,7 @@ namespace dotSwitcher.UI
         }
         void buttonSaveSettings_Click(object sender, EventArgs e)
         {
-            if (settings.SwitchHotkey.Alt || settings.SwitchHotkey.Win)
+            if (settings.ConvertLastHotkey.Alt || settings.ConvertLastHotkey.Win)
             {
                 MessageBox.Show("Sorry, win+ and alt+ hotkeys are not supported yet");
                 return;
@@ -169,14 +169,14 @@ namespace dotSwitcher.UI
         enum HotKeyType { None, Switch, Convert, SwitchLayout }
         void InitializeHotkeyBoxes()
         {
-            textBoxSwitchHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.Switch;
-            textBoxSwitchHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.Switch;
-            textBoxSwitchHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
-            textBoxSwitchHotkey.Leave += (s, e) => ApplyCurrentHotkey();
-            textBoxConvertHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.Convert;
-            textBoxConvertHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.Convert;
-            textBoxConvertHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
-            textBoxConvertHotkey.Leave += (s, e) => ApplyCurrentHotkey();
+            textBoxConverLastHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.Switch;
+            textBoxConverLastHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.Switch;
+            textBoxConverLastHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
+            textBoxConverLastHotkey.Leave += (s, e) => ApplyCurrentHotkey();
+            textBoxConvertSelectionHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.Convert;
+            textBoxConvertSelectionHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.Convert;
+            textBoxConvertSelectionHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
+            textBoxConvertSelectionHotkey.Leave += (s, e) => ApplyCurrentHotkey();
             textBoxSwitchLayoutHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.SwitchLayout;
             textBoxSwitchLayoutHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.SwitchLayout;
             textBoxSwitchLayoutHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
@@ -214,10 +214,10 @@ namespace dotSwitcher.UI
             switch (currentHotkeyType)
             {
                 case HotKeyType.Switch:
-                    currentTextBox = textBoxSwitchHotkey;
+                    currentTextBox = textBoxConverLastHotkey;
                     break;
                 case HotKeyType.Convert:
-                    currentTextBox = textBoxConvertHotkey;
+                    currentTextBox = textBoxConvertSelectionHotkey;
                     break;
                 case HotKeyType.SwitchLayout:
                     currentTextBox = textBoxSwitchLayoutHotkey;
@@ -246,7 +246,7 @@ namespace dotSwitcher.UI
             switch (currentHotkeyType)
             {
                 case HotKeyType.Switch:
-                    currentHotkey = clear ? null : settings.SwitchHotkey;
+                    currentHotkey = clear ? null : settings.ConvertLastHotkey;
                     break;
                 case HotKeyType.Convert:
                     currentHotkey = clear ? null : settings.ConvertSelectionHotkey;
@@ -270,7 +270,7 @@ namespace dotSwitcher.UI
             switch (currentHotkeyType)
             {
                 case HotKeyType.Switch:
-                    settings.SwitchHotkey = currentHotkey;
+                    settings.ConvertLastHotkey = currentHotkey;
                     break;
                 case HotKeyType.Convert:
                     settings.ConvertSelectionHotkey = currentHotkey;

@@ -44,9 +44,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.textBoxConverLastHotkey = new System.Windows.Forms.TextBox();
+            this.textBoxConvertSelectionHotkey = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.textBoxConvertHotkey = new System.Windows.Forms.TextBox();
-            this.textBoxSwitchHotkey = new System.Windows.Forms.TextBox();
             this.checkBoxSmartSelection = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoSwitching = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
@@ -112,7 +112,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 13);
             this.label2.TabIndex = 23;
-            this.label2.Text = "Convert-selection:";
+            this.label2.Text = "Convert selection:";
             // 
             // label1
             // 
@@ -121,7 +121,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 13);
             this.label1.TabIndex = 22;
-            this.label1.Text = "Convert-last-word:";
+            this.label1.Text = "Convert last word:";
             // 
             // textBoxDelay
             // 
@@ -178,8 +178,8 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.textBoxSwitchLayoutHotkey);
-            this.groupBox1.Controls.Add(this.textBoxSwitchHotkey);
-            this.groupBox1.Controls.Add(this.textBoxConvertHotkey);
+            this.groupBox1.Controls.Add(this.textBoxConverLastHotkey);
+            this.groupBox1.Controls.Add(this.textBoxConvertSelectionHotkey);
             this.groupBox1.Location = new System.Drawing.Point(178, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(277, 148);
@@ -198,26 +198,26 @@
             this.label5.MouseLeave += new System.EventHandler(this.label5_MouseLeave);
             this.label5.MouseHover += new System.EventHandler(this.label5_MouseHover);
             // 
+            // textBoxConverLastHotkey
+            // 
+            this.textBoxConverLastHotkey.Location = new System.Drawing.Point(158, 15);
+            this.textBoxConverLastHotkey.Name = "textBoxConverLastHotkey";
+            this.textBoxConverLastHotkey.Size = new System.Drawing.Size(103, 20);
+            this.textBoxConverLastHotkey.TabIndex = 21;
+            // 
+            // textBoxConvertSelectionHotkey
+            // 
+            this.textBoxConvertSelectionHotkey.Location = new System.Drawing.Point(158, 52);
+            this.textBoxConvertSelectionHotkey.Name = "textBoxConvertSelectionHotkey";
+            this.textBoxConvertSelectionHotkey.Size = new System.Drawing.Size(103, 20);
+            this.textBoxConvertSelectionHotkey.TabIndex = 24;
+            // 
             // toolTip1
             // 
             this.toolTip1.AutoPopDelay = 5000;
             this.toolTip1.InitialDelay = 100;
             this.toolTip1.ReshowDelay = 100;
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // textBoxConvertHotkey
-            // 
-            this.textBoxConvertHotkey.Location = new System.Drawing.Point(158, 52);
-            this.textBoxConvertHotkey.Name = "textBoxConvertHotkey";
-            this.textBoxConvertHotkey.Size = new System.Drawing.Size(103, 20);
-            this.textBoxConvertHotkey.TabIndex = 24;
-            // 
-            // textBoxSwitchHotkey
-            // 
-            this.textBoxSwitchHotkey.Location = new System.Drawing.Point(158, 15);
-            this.textBoxSwitchHotkey.Name = "textBoxSwitchHotkey";
-            this.textBoxSwitchHotkey.Size = new System.Drawing.Size(103, 20);
-            this.textBoxSwitchHotkey.TabIndex = 21;
             // 
             // checkBoxSmartSelection
             // 
@@ -295,8 +295,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.TextBox textBoxSwitchHotkey;
-        private System.Windows.Forms.TextBox textBoxConvertHotkey;
+        private System.Windows.Forms.TextBox textBoxConverLastHotkey;
+        private System.Windows.Forms.TextBox textBoxConvertSelectionHotkey;
         private System.Windows.Forms.CheckBox checkBoxSmartSelection;
         private System.Windows.Forms.CheckBox checkBoxAutoSwitching;
     }
