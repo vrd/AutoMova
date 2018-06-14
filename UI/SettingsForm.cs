@@ -338,7 +338,7 @@ namespace dotSwitcher.UI
         }
         private void buttonGithub_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/kurumpa/dotSwitcher/issues");
+            Process.Start("https://github.com/vrd/dotSwitcher/issues");
         }
 
         private void label5_MouseHover(object sender, EventArgs e)
