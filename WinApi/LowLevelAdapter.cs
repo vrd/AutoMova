@@ -68,6 +68,7 @@ namespace dotSwitcher.WinApi
 
         public static void SetNextKeyboardLayout()
         {
+            Debug.WriteLine("SetNextKeyboardLayout()...");
             IntPtr hWnd = IntPtr.Zero;
             var threadId = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
             var info = new GUITHREADINFO();
@@ -115,6 +116,7 @@ namespace dotSwitcher.WinApi
         public static void SetKeyboadLayout(IntPtr layout)
         {
             //TODO: remake this ASAP!
+            Debug.WriteLine("SetKeyboardLayout("+layout.ToString()+")...");
             while (GetCurrentLayout() != layout)
             {
                 SetNextKeyboardLayout();

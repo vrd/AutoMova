@@ -213,32 +213,48 @@ namespace dotSwitcher.Switcher
 
         private void BeginNewSelection()
         {
+            Debug.WriteLine("BeginNewSelection()...");
             currentSelection.Clear();
             foreach(var word in lastWord.ToArray())
             {
                 lastWord[word.Key] = "";
             }
+            Debug.WriteLine(DictToString(lastWord));
         }
 
         private void AddToCurrentSelection(KeyboardEventArgs data)
         {
+            Debug.WriteLine("AddToCurrentSelection()...");
             currentSelection.Add(data);
             foreach (var word in lastWord.ToArray())
             {
                 lastWord[word.Key] = word.Value + LowLevelAdapter.KeyCodeToUnicode(data.KeyCode, word.Key);
             }
+            Debug.WriteLine(DictToString(lastWord));
         }
 
         private void RemoveLast()
         {
+            Debug.WriteLine("RemoveLast()...");
             if (currentSelection.Count == 0) { return; }
             currentSelection.RemoveAt(currentSelection.Count - 1);
             foreach (var word in lastWord.ToArray())
             {
                 lastWord[word.Key] = word.Value.Substring(0, word.Value.Length - 1);
             }
+            Debug.WriteLine(DictToString(lastWord));
         }
         #endregion
+
+        private string DictToString(Dictionary<IntPtr, string> dictionary)
+        {
+            var str = "";
+            foreach (var item in dictionary)
+            {
+                str += item.Key.ToString() + ": '" + item.Value + "'; ";
+            }
+            return str;
+        }
 
         private void ConvertSelection()
         {
@@ -280,6 +296,7 @@ namespace dotSwitcher.Switcher
 
         private void ConvertLast(IntPtr layout)
         {
+            Debug.WriteLine("ConvertLast()...");
             LowLevelAdapter.ReleasePressedFnKeys();
             var selection = currentSelection.ToList();
             BeginNewSelection();
