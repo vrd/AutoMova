@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace dotSwitcher.UI
+namespace AutoSwitcher.UI
 {
     public class TrayIcon
     {
@@ -29,7 +29,7 @@ namespace dotSwitcher.UI
             trayMenu.MenuItems.Add("Exit", OnExitClick);
 
             trayIcon = new NotifyIcon();
-            trayIcon.Text = "dotSwitcher";
+            trayIcon.Text = "AutoSwitcher alpha";
             trayIcon.Icon = Properties.Resources.icon;
             trayIcon.BalloonTipClosed += trayIcon_BalloonTipClosed;
 
@@ -55,7 +55,7 @@ namespace dotSwitcher.UI
         {
             wasShownBeforeTooltip = trayIcon.Visible;
             Show();
-            trayIcon.ShowBalloonTip(2000, "dotSwitcher error", p, icon);
+            trayIcon.ShowBalloonTip(2000, "AutoSwitcher error", p, icon);
         }
 
 

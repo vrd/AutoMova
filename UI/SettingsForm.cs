@@ -1,6 +1,6 @@
-﻿using dotSwitcher.Data;
-using dotSwitcher.Switcher;
-using dotSwitcher.WinApi;
+﻿using AutoSwitcher.Data;
+using AutoSwitcher.Switcher;
+using AutoSwitcher.WinApi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace dotSwitcher.UI
+namespace AutoSwitcher.UI
 {
     public partial class SettingsForm : Form
     {
@@ -364,6 +364,21 @@ namespace dotSwitcher.UI
         private void autoSwitching_CheckedChanged(object sender, EventArgs e)
         {
             settings.AutoSwitching = checkBoxAutoSwitching.Checked;
+        }
+
+        private void SettingsForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
         }
     }
 }

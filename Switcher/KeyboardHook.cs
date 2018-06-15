@@ -1,5 +1,5 @@
-﻿using dotSwitcher.Data;
-using dotSwitcher.WinApi;
+﻿using AutoSwitcher.Data;
+using AutoSwitcher.WinApi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace dotSwitcher.Switcher
+namespace AutoSwitcher.Switcher
 {
     public sealed class KeyboardHook : IDisposable
     {

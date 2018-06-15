@@ -1,4 +1,4 @@
-﻿namespace dotSwitcher.UI
+﻿namespace AutoSwitcher.UI
 {
     partial class HotKeyBox
     {

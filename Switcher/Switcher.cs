@@ -1,5 +1,5 @@
-﻿using dotSwitcher.Data;
-using dotSwitcher.WinApi;
+﻿using AutoSwitcher.Data;
+using AutoSwitcher.WinApi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace dotSwitcher.Switcher
+namespace AutoSwitcher.Switcher
 {
     public class SwitcherCore : IDisposable
     {
@@ -20,6 +20,7 @@ namespace dotSwitcher.Switcher
         private ISettings settings;
         private bool readyToSwitch;
         private bool autoSwitchingIsGoing;
+        private bool manualSwitchingIsGoing;
         private IntPtr[] layoutList;
         private LayoutDetector layoutDetector;
 
@@ -32,6 +33,7 @@ namespace dotSwitcher.Switcher
             mouseHook.MouseEvent += ProcessMousePress;
             readyToSwitch = false;
             autoSwitchingIsGoing = false;
+            manualSwitchingIsGoing = false;
             layoutList = LowLevelAdapter.GetLayoutList();
             foreach (var layout in layoutList)
             {
@@ -132,6 +134,7 @@ namespace dotSwitcher.Switcher
         private void OnKeyPress(KeyboardEventArgs evtData)
         {
             var vkCode = evtData.KeyCode;
+            Debug.WriteLine("OnKeyPress: KeyCode="+vkCode.ToString("x"));
 
             if (evtData.Equals(settings.SwitchLayoutHotkey))
             {
@@ -143,7 +146,9 @@ namespace dotSwitcher.Switcher
 
             if (evtData.Equals(settings.ConvertLastHotkey))
             {
-                ConvertLast(IntPtr.Zero);
+                manualSwitchingIsGoing = true;
+                ConvertLast(1);
+                manualSwitchingIsGoing = false;
                 evtData.Handled = true;
                 return;
             }
@@ -182,11 +187,12 @@ namespace dotSwitcher.Switcher
 
                 var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);                
 
-                if (settings.AutoSwitching == true && detectedLayout != currentLayout && !autoSwitchingIsGoing)
+                if (settings.AutoSwitching == true && detectedLayout != currentLayout && !autoSwitchingIsGoing && !manualSwitchingIsGoing)
                 {                    
                     autoSwitchingIsGoing = true;
-                    ConvertLast(detectedLayout);
                     evtData.Handled = true;
+                    evtData.SuppressKeyPress = true;
+                    ConvertLast(CalculateSwitchingNumber(currentLayout, detectedLayout));                    
                     autoSwitchingIsGoing = false;
                 }
                 return;                                
@@ -256,6 +262,23 @@ namespace dotSwitcher.Switcher
             return str;
         }
 
+        private int CalculateSwitchingNumber(IntPtr currentLayout, IntPtr detectedLayout)
+        {
+            //FIXME: remove this shitcode 
+             //     case 67699721: return "en";
+             //     case 68748313: return "ru";
+             //     case 69338146: return "uk";
+            var oldl = currentLayout.ToInt32();
+            var newl = detectedLayout.ToInt32();
+            if ((oldl == 67699721 && newl == 68748313) ||
+                (oldl == 68748313 && newl == 69338146) ||
+                (oldl == 69338146 && newl == 67699721))
+            {
+                return 1;
+            }
+            return 2;
+        }
+
         private void ConvertSelection()
         {
             LowLevelAdapter.BackupClipboard();
@@ -294,27 +317,27 @@ namespace dotSwitcher.Switcher
             LowLevelAdapter.SetNextKeyboardLayout();
         }
 
-        private void ConvertLast(IntPtr layout)
+        private void ConvertLast(int switchingNumber)
         {
             Debug.WriteLine("ConvertLast()...");
             LowLevelAdapter.ReleasePressedFnKeys();
             var selection = currentSelection.ToList();
             BeginNewSelection();
+            // Remove last word
             var backspaceCount = autoSwitchingIsGoing ? (selection.Count-1) : selection.Count;
             var backspaces = Enumerable.Repeat<Keys>(Keys.Back, backspaceCount);
-
-            foreach (var vkCode in backspaces) { LowLevelAdapter.SendKeyPress(vkCode, false); }
+            foreach (var vkCode in backspaces)
+            {
+                LowLevelAdapter.SendKeyPress(vkCode, false);
+            }
             // Fix for skype
             Thread.Sleep(settings.SwitchDelay);
-            if (autoSwitchingIsGoing)
-            {
-                LowLevelAdapter.SetKeyboadLayout(layout);
-            }
-            else
+            // Switch layout proper number of times
+            for (int i = 0; i < switchingNumber; i++)
             {
                 LowLevelAdapter.SetNextKeyboardLayout();
             }
-           
+            // Type last word in new layout
             foreach (var data in selection)
             {
                 LowLevelAdapter.SendKeyPress(data.KeyCode, data.Shift);

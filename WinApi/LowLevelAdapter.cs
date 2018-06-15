@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Windows.Automation;
 using System.Collections.Generic;
 
-namespace dotSwitcher.WinApi
+namespace AutoSwitcher.WinApi
 {
     public static partial class LowLevelAdapter
     {
@@ -115,12 +115,9 @@ namespace dotSwitcher.WinApi
 
         public static void SetKeyboadLayout(IntPtr layout)
         {
-            //TODO: remake this ASAP!
-            Debug.WriteLine("SetKeyboardLayout("+layout.ToString()+")...");
-            while (GetCurrentLayout() != layout)
-            {
-                SetNextKeyboardLayout();
-            }
+            Debug.WriteLine("SetKeyboardLayout("+layout.ToString("x8")+")...");
+            //PostMessage(GetForegroundWindow(), WM_INPUTLANGCHANGEREQUEST, 0, (uint)LoadKeyboardLayout(("0000" + ((UInt16)layout).ToString("x4")), KLF_ACTIVATE));
+            SetNextKeyboardLayout();
         }
 
         public static void SendCopy()

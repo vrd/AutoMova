@@ -1,13 +1,13 @@
-﻿using dotSwitcher.Data;
-using dotSwitcher.Switcher;
-using dotSwitcher.UI;
-using dotSwitcher.WinApi;
+﻿using AutoSwitcher.Data;
+using AutoSwitcher.Switcher;
+using AutoSwitcher.UI;
+using AutoSwitcher.WinApi;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace dotSwitcher
+namespace AutoSwitcher
 {
     static class Program
     {

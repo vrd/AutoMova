@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dotSwitcher.Switcher
+namespace AutoSwitcher.Switcher
 {
     public class Dictionary
     {
@@ -37,14 +37,22 @@ namespace dotSwitcher.Switcher
 
             if (word.Length >= 3)
             {
-                if (IllegalCombinationFound(word.Substring(word.Length - 2), wrongTwoSymbols))
+                for (int i = 0; i < word.Length - 1; i++)
                 {
-                    return false;
+                    if (IllegalCombinationFound(word.Substring(i, 2), wrongTwoSymbols))
+                        {
+                            return false;
+                        }
                 }
-                if (IllegalCombinationFound(word.Substring(word.Length - 3), wrongThreeSymbols))
+
+                for (int i = 0; i < word.Length - 2; i++)
                 {
-                    return false;
+                    if (IllegalCombinationFound(word.Substring(i,3), wrongThreeSymbols))
+                        {
+                            return false;
+                        }
                 }
+                
                 return true;
             }
 

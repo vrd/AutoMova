@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dotSwitcher.Switcher
+namespace AutoSwitcher.Switcher
 {
     class LayoutDetector
     {
@@ -14,7 +14,7 @@ namespace dotSwitcher.Switcher
         {
             foreach (var layout in layouts)
             {
-                dictionaries.Add(layout, new Dictionary(ToLang(layout)));
+                dictionaries.Add(layout, new Dictionary(ToLangCode(layout)));
             }
         }
 
@@ -30,7 +30,7 @@ namespace dotSwitcher.Switcher
             return currentLayout;
         }
 
-        private string ToLang(IntPtr layout)
+        private string ToLangCode(IntPtr layout)
         {
             switch (layout.ToInt32())
             {

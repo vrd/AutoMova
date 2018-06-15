@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace dotSwitcher.WinApi
+namespace AutoSwitcher.WinApi
 {
     public static partial class LowLevelAdapter
     {
@@ -87,6 +87,9 @@ namespace dotSwitcher.WinApi
         public const uint EM_GETSEL = 0xB0;
         public const uint EM_SETSEL = 0xB1;
         public const uint EM_REPLACESEL = 0xC2;
+        public const uint KLF_ACTIVATE = 0x01;
+        public const uint KLF_SUBSTITUTE_OK = 0x02;
+
 
         private static INPUT MakeKeyInput(Keys vkCode, bool down)
         {

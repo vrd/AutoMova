@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using dotSwitcher.Data;
-using dotSwitcher.Switcher;
+using AutoSwitcher.Data;
+using AutoSwitcher.Switcher;
 using System.Diagnostics;
 
-namespace dotSwitcher.UI
+namespace AutoSwitcher.UI
 {
     public partial class HotKeyBox : TextBox, IDisposable
     {
