@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace AutoSwitcher.Switcher
 {
-    public class Dictionary
+    public class ProtoDictionary
     {
         private string[] wrongTwoSymbols;
         private string[] wrongThreeSymbols;
         //private List<string> correctWords;
 
-        public Dictionary(string lang)
+        public ProtoDictionary(string lang)
         {
             wrongTwoSymbols = LoadDictionaryFromFile(lang, "proto");
             wrongThreeSymbols = LoadDictionaryFromFile(lang, "proto3");
@@ -61,7 +61,7 @@ namespace AutoSwitcher.Switcher
 
         private string[] LoadDictionaryFromFile(string lang, string dictType)
         {
-            string[] lines = System.IO.File.ReadAllLines("Langs\\"+lang+"\\"+dictType);
+            string[] lines = System.IO.File.ReadAllLines("proto\\"+lang+"\\"+dictType);
             return lines;
         }
 
