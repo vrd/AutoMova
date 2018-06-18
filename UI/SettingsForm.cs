@@ -317,9 +317,9 @@ namespace AutoSwitcher.UI
         private void textBoxDelay_TextChanged(object sender, EventArgs e)
         {
             short delay = 0;
-            if (!Int16.TryParse(Regex.Replace(textBoxDelay.Text, "[^0-9]", ""), out delay) || delay < 1)
+            if (!Int16.TryParse(Regex.Replace(textBoxDelay.Text, "[^0-9]", ""), out delay)/* || delay < 1*/)
             {
-                delay = 1;
+                delay = 0;
             }
             settings.SwitchDelay = delay;
             DisplaySwitchDelay(delay);
