@@ -48,7 +48,7 @@ namespace AutoSwitcher.Switcher
             var keyCode = evtData.KeyCode;
             if (keyCode >= Keys.D0 && keyCode <= Keys.Z) { return true; }
             if (keyCode >= Keys.Oem1 && keyCode <= Keys.OemBackslash) { return true; }
-            if (keyCode >= Keys.NumPad0 && keyCode <=Keys.NumPad9) { return true; }
+            if (keyCode >= Keys.NumPad0 && keyCode <= Keys.NumPad9) { return true; }
             if (keyCode == Keys.Decimal) { return true; }
             return false;
         }
