@@ -23,10 +23,14 @@ namespace AutoSwitcher.Data
             {
                 settings.ShowTrayIcon = true;
             }
-            /*if (settings.SwitchDelay < 1)
+            if (settings.AutoSwitching == null)
             {
-                settings.SwitchDelay = 20;
-            }*/
+                settings.AutoSwitching = true;
+            }
+            if (settings.SwitchDelay < 0)
+            {
+                settings.SwitchDelay = 0;
+            }
             settings.Save();
             return settings;
         }
