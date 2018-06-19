@@ -21,6 +21,7 @@ namespace AutoSwitcher.Switcher
         private bool readyToSwitch;
         private bool autoSwitchingIsGoing;
         private bool manualSwitchingIsGoing;
+        private bool ignoreKeyPress;
         private IntPtr[] layoutList;
         private LayoutDetector layoutDetector;
 
@@ -34,6 +35,7 @@ namespace AutoSwitcher.Switcher
             readyToSwitch = false;
             autoSwitchingIsGoing = false;
             manualSwitchingIsGoing = false;
+            ignoreKeyPress = false;
             layoutList = LowLevelAdapter.GetLayoutList();
             foreach (var layout in layoutList)
             {
@@ -71,6 +73,11 @@ namespace AutoSwitcher.Switcher
         // evtData.Handled must be set to true if the key is recognized as hotkey and doesn't need further processing
         private void ProcessKeyPress(object sender, KeyboardEventArgs evtData)
         {
+            if (ignoreKeyPress)
+            {
+                return;
+            }
+
             try
             {
                 if (evtData.Type == KeyboardEventType.KeyDown)
@@ -183,16 +190,14 @@ namespace AutoSwitcher.Switcher
             {
                 var currentLayout = LowLevelAdapter.GetCurrentLayout();
                 AddToCurrentSelection(evtData);
-                //Debug.WriteLine(LowLevelAdapter.KeyCodeToUnicode(vkCode, currentLayout));
-
-                var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);                
-
+                var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);
+                Debug.WriteLine($"Current layout: {currentLayout.ToString("x8")}, detected layout: {detectedLayout.ToString("x8")}");
                 if (settings.AutoSwitching == true && detectedLayout != currentLayout && !autoSwitchingIsGoing && !manualSwitchingIsGoing)
                 {                    
-                    autoSwitchingIsGoing = true;
-                    evtData.Handled = true;
-                    evtData.SuppressKeyPress = true;
-                    ConvertLast(CalculateSwitchingNumber(currentLayout, detectedLayout));                    
+                    autoSwitchingIsGoing = true;                    
+                     evtData.Handled = true;
+                    //evtData.SuppressKeyPress = true;
+                    ConvertLast(CalculateSwitchingNumber(currentLayout, detectedLayout));
                     autoSwitchingIsGoing = false;
                 }
                 return;                                
@@ -279,6 +284,15 @@ namespace AutoSwitcher.Switcher
             return 2;
         }
 
+        private void RemoveSelection()
+        {
+            ignoreKeyPress = true;
+            LowLevelAdapter.SendKeyPress(Keys.Space);
+            LowLevelAdapter.SendKeyPress(Keys.Back);
+            ignoreKeyPress = false;
+            return;
+        }
+
         private void ConvertSelection()
         {
             LowLevelAdapter.BackupClipboard();
@@ -323,23 +337,28 @@ namespace AutoSwitcher.Switcher
             LowLevelAdapter.ReleasePressedFnKeys();
             var selection = currentSelection.ToList();
             BeginNewSelection();
+            // Fix for apps with autocompletion (i.e. omnibox in Google Chrome browser)
+            RemoveSelection();
             // Remove last word
-            var backspaceCount = autoSwitchingIsGoing ? (selection.Count-1) : selection.Count;
+            var backspaceCount = autoSwitchingIsGoing ? (selection.Count - 1) : selection.Count;
             var backspaces = Enumerable.Repeat<Keys>(Keys.Back, backspaceCount);
             foreach (var vkCode in backspaces)
             {
+                Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SendKeyPress(vkCode, false);
-            }
+          }
             // Fix for skype
-            Thread.Sleep(settings.SwitchDelay);
+            //Thread.Sleep(settings.SwitchDelay);
             // Switch layout proper number of times
             for (int i = 0; i < switchingNumber; i++)
             {
+                Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SetNextKeyboardLayout();
             }
             // Type last word in new layout
             foreach (var data in selection)
             {
+                Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SendKeyPress(data.KeyCode, data.Shift);
             }
         }
