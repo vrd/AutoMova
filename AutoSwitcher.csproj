@@ -88,9 +88,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup />
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="NHunspell, Version=1.2.5554.16953, Culture=neutral, PublicKeyToken=1ac793ea843b4366, processorArchitecture=MSIL">
       <HintPath>packages\NHunspell.1.2.5554.16953\lib\net\NHunspell.dll</HintPath>
@@ -158,7 +156,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
   </ItemGroup>
