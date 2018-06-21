@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using NHunspell;
 
 namespace AutoSwitcher.Switcher
@@ -35,6 +36,7 @@ namespace AutoSwitcher.Switcher
             {
                 if (dict.Value.Spell(lastWord[dict.Key]))
                 {
+                    Debug.WriteLine($"Word found in Hunspell {ToLangCode(dict.Key).ToUpper()}");
                     return dict.Key;
                 }
             }
@@ -43,14 +45,16 @@ namespace AutoSwitcher.Switcher
             {
                 if (dict.Value.Contains(lastWord[dict.Key]))
                 {
+                    Debug.WriteLine($"Word found in proto {ToLangCode(dict.Key).ToUpper()}");
                     return dict.Key;
                 }
             }
 
+            Debug.WriteLine($"Word not found anywhere");
             return currentLayout;
         }
 
-        private string ToLangCode(IntPtr layout)
+        public string ToLangCode(IntPtr layout)
         {
             switch (((UInt16)layout).ToString("x4"))
             {
