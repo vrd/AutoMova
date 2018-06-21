@@ -55,6 +55,36 @@ namespace AutoSwitcher.Switcher
             return false;
         }
 
+        public static bool IsPunctuation(KeyboardEventArgs evtData, string langCode)
+        {
+            switch (langCode)
+            {
+                case "en":
+                    {
+                        return false;
+                    }
+                case "ru":
+                case "uk":
+                default:
+                    {   // , .
+                        if (evtData.KeyCode == Keys.OemQuestion ||
+                                (evtData.Shift && 
+                                    // !
+                                    (evtData.KeyCode == Keys.D1 ||
+                                     // ;
+                                     evtData.KeyCode == Keys.D4 ||
+                                     // :
+                                     evtData.KeyCode == Keys.D6 ||
+                                     // ?
+                                     evtData.KeyCode == Keys.D7)))
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+            }
+        }
+
         public bool IsStarted()
         {
             return kbdHook.IsStarted() || mouseHook.IsStarted();
@@ -190,6 +220,10 @@ namespace AutoSwitcher.Switcher
             {
                 var currentLayout = LowLevelAdapter.GetCurrentLayout();
                 AddToCurrentSelection(evtData);
+                if (IsPunctuation(evtData, layoutDetector.ToLangCode(currentLayout)))
+                {
+                    return;
+                }
                 var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);
                 Debug.WriteLine($"Current layout: {currentLayout.ToString("x8")}, detected layout: {detectedLayout.ToString("x8")}");
                 if (settings.AutoSwitching == true && detectedLayout != currentLayout && !autoSwitchingIsGoing && !manualSwitchingIsGoing)
@@ -224,7 +258,7 @@ namespace AutoSwitcher.Switcher
 
         private void BeginNewSelection()
         {
-            Debug.WriteLine("BeginNewSelection()...");
+            Debug.Write("BeginNewSelection()    ");
             currentSelection.Clear();
             foreach(var word in lastWord.ToArray())
             {
@@ -235,7 +269,7 @@ namespace AutoSwitcher.Switcher
 
         private void AddToCurrentSelection(KeyboardEventArgs data)
         {
-            Debug.WriteLine("AddToCurrentSelection()...");
+            Debug.Write("AddToCurrentSelection()    ");
             currentSelection.Add(data);
             foreach (var word in lastWord.ToArray())
             {
@@ -246,14 +280,14 @@ namespace AutoSwitcher.Switcher
 
         private void RemoveLast()
         {
-            Debug.WriteLine("RemoveLast()...");
+            Debug.WriteLine("RemoveLast()   ");
             if (currentSelection.Count == 0) { return; }
             currentSelection.RemoveAt(currentSelection.Count - 1);
             foreach (var word in lastWord.ToArray())
             {
                 lastWord[word.Key] = word.Value.Substring(0, word.Value.Length - 1);
             }
-            Debug.WriteLine(DictToString(lastWord));
+            //Debug.WriteLine(DictToString(lastWord));
         }
         #endregion
 
@@ -262,7 +296,7 @@ namespace AutoSwitcher.Switcher
             var str = "";
             foreach (var item in dictionary)
             {
-                str += item.Key.ToString() + ": '" + item.Value + "'; ";
+                str += layoutDetector.ToLangCode(item.Key) + ": '" + item.Value + "'; ";
             }
             return str;
         }
@@ -290,11 +324,12 @@ namespace AutoSwitcher.Switcher
             LowLevelAdapter.SendKeyPress(Keys.Space);
             LowLevelAdapter.SendKeyPress(Keys.Back);
             ignoreKeyPress = false;
-            return;
         }
 
         private void ConvertSelection()
         {
+            ignoreKeyPress = true;
+
             LowLevelAdapter.BackupClipboard();
             LowLevelAdapter.SendCopy();
             var selection = Clipboard.GetText();
@@ -323,6 +358,7 @@ namespace AutoSwitcher.Switcher
                 }
             }
 
+            ignoreKeyPress = false;
         }
 
         private void SwitchLayout()
@@ -333,8 +369,8 @@ namespace AutoSwitcher.Switcher
 
         private void ConvertLast(int switchingNumber)
         {
-            Debug.WriteLine("ConvertLast()...");
-            LowLevelAdapter.ReleasePressedFnKeys();
+            Debug.WriteLine($"ConvertLast({switchingNumber})...");
+            var fnKeys = LowLevelAdapter.ReleasePressedFnKeys();
             var selection = currentSelection.ToList();
             BeginNewSelection();
             // Fix for apps with autocompletion (i.e. omnibox in Google Chrome browser)
@@ -346,21 +382,28 @@ namespace AutoSwitcher.Switcher
             {
                 Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SendKeyPress(vkCode, false);
-          }
+            }
             // Fix for skype
             //Thread.Sleep(settings.SwitchDelay);
+
             // Switch layout proper number of times
+            ignoreKeyPress = true;
             for (int i = 0; i < switchingNumber; i++)
             {
                 Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SetNextKeyboardLayout();
+                Debug.WriteLine($"Now layout is {layoutDetector.ToLangCode(LowLevelAdapter.GetCurrentLayout())}");
             }
+            ignoreKeyPress = false;
+
             // Type last word in new layout
             foreach (var data in selection)
             {
                 Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SendKeyPress(data.KeyCode, data.Shift);
             }
+
+            LowLevelAdapter.PressPressedFnKeys(fnKeys);
         }
 
         public void Dispose()
