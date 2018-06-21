@@ -149,20 +149,34 @@ namespace AutoSwitcher.WinApi
 
         }
 
-        public static void ReleasePressedFnKeys()
+        public static Dictionary<Keys, bool> ReleasePressedFnKeys()
         {
             // temp solution
             //ReleasePressedKey(Keys.LMenu, true),
             //ReleasePressedKey(Keys.RMenu, true),
             //ReleasePressedKey(Keys.LWin, true),
             //ReleasePressedKey(Keys.RWin, true),
-            ReleasePressedKey(Keys.RControlKey, false);
-            ReleasePressedKey(Keys.LControlKey, false);
-            ReleasePressedKey(Keys.LShiftKey, false);
-            ReleasePressedKey(Keys.RShiftKey, false);
+            var fnKeys = new Dictionary<Keys, bool>();
+            fnKeys.Add(Keys.RControlKey, ReleasePressedKey(Keys.RControlKey, false));
+            fnKeys.Add(Keys.LControlKey, ReleasePressedKey(Keys.LControlKey, false));
+            fnKeys.Add(Keys.LShiftKey, ReleasePressedKey(Keys.LShiftKey, false));
+            fnKeys.Add(Keys.RShiftKey, ReleasePressedKey(Keys.RShiftKey, false));
+            return fnKeys;
         }
 
-        public static bool ReleasePressedKey(Keys keyCode, bool releaseTwice)
+        public static void PressPressedFnKeys(Dictionary<Keys, bool> fnKeys)
+        {
+            foreach (var key in fnKeys)
+            {
+                if (key.Value)
+                {
+                    PressPressedKey(key.Key);
+                }
+                
+            }
+        }
+
+        private static bool ReleasePressedKey(Keys keyCode, bool releaseTwice)
         {
             if (!KeyPressed(keyCode)) { return false; }
             //Debug.WriteLine("{0} was down", keyCode);
@@ -178,6 +192,12 @@ namespace AutoSwitcher.WinApi
                 SendInput(1, new INPUT[1] { keyUp }, Marshal.SizeOf(typeof(INPUT)));
             }
             return true;
+        }
+
+        private static void PressPressedKey(Keys keyCode)
+        {
+            var keyDown = MakeKeyInput(keyCode, true);
+            SendInput(1, new INPUT[1] { keyDown }, Marshal.SizeOf(typeof(INPUT)));
         }
 
         public static void SendShowSettingsMessage()
