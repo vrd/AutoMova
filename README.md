@@ -1,28 +1,28 @@
-dotSwitcher
+AutoSwitcher
 ===========
-*If you're paranoid enough not to use [Punto switcher](http://punto.yandex.ru "closed source software")*
+*If you're paranoid enough not to use [Punto switcher](http://punto.yandex.ru "closed source software from Russia :(")*
 
-Simple keyboard layout switcher. As lightweight as you can easily ensure it doesn't contain any spyware, even if you're not a programming guru.
+*Forked from [dotSwitcher](https://github.com/kurumpa/dotSwitcher "open source software from Ukraine :)")*
+
+Automatic keyboard layout switcher. Currently IN DEVELOPMENT. 
 
 Usage
 -----
 * Run
 * Type a word anywhere
-* Press Pause/Break until the word is typed in a right layout
+* ???????
 * Profit!
 
 Launching the program the second time shows the settings window, even if it is a hidden mode (no tray icon shown)
 
 Improvements to be implemented
 ------------------------------
-* Code refactoring and many comments
-* Restoring clipboard contents after transformation of selected text 
-* Build script
-* Donation form :)
+* so much to do
 
 Credits
 -------
 GitHub icon by [Picons.me](https://picons.me/)
+Inspiration and proto-dictionaries by [Andrew Kuznetsov](https://xneur.ru)
 
 Known bugs
 ----------
