@@ -21,7 +21,7 @@ namespace AutoMova.Switcher
             foreach (var layout in layouts)
             {   
                 //Load Hunspell dictionaries
-                var hunspellPath = AppDomain.CurrentDomain.BaseDirectory + "\\hunspell\\" + ToLangCode(layout) + "\\" + ToLangCountryCode(layout);
+                var hunspellPath = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\hunspell\\" + ToLangCode(layout) + "\\" + ToLangCountryCode(layout);
                 var affFile = hunspellPath + ".aff";
                 var dicFile = hunspellPath + ".dic";
                 hunspellDictionaries.Add(layout, new Hunspell(affFile, dicFile));

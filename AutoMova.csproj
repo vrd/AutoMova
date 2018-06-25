@@ -7,8 +7,8 @@
     <ProjectGuid>{80A37DF3-EB22-47A8-ADC2-B3ECD8F76ED6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutoSwitcher</RootNamespace>
-    <AssemblyName>AutoSwitcher</AssemblyName>
+    <RootNamespace>AutoMova</RootNamespace>
+    <AssemblyName>AutoMova</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -140,7 +140,16 @@
     <None Include="Properties\app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(SolutionDir)resources\**" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(SolutionDir)resources\hunspell\**" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(SolutionDir)resources\proto\**" CopyToOutputDirectory="PreserveNewest" />
+    <ContentWithTargetPath Include="resources\Hunspellx86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Hunspellx86.dll</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="resources\Hunspellx64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Hunspellx64.dll</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />

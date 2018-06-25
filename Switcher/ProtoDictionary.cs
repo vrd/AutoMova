@@ -61,7 +61,7 @@ namespace AutoMova.Switcher
 
         private string[] LoadDictionaryFromFile(string lang, string dictType)
         {
-            string[] lines = System.IO.File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory +"\\proto\\" +lang+"\\"+dictType);
+            string[] lines = System.IO.File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory +"\\resources\\proto\\" +lang+"\\"+dictType);
             return lines;
         }
 
