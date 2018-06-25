@@ -1,13 +1,13 @@
-﻿using AutoSwitcher.Data;
-using AutoSwitcher.Switcher;
-using AutoSwitcher.UI;
-using AutoSwitcher.WinApi;
+﻿using AutoMova.Data;
+using AutoMova.Switcher;
+using AutoMova.UI;
+using AutoMova.WinApi;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace AutoSwitcher
+namespace AutoMova
 {
     static class Program
     {

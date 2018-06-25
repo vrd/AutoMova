@@ -1,4 +1,4 @@
-﻿namespace AutoSwitcher.UI
+﻿namespace AutoMova.UI
 {
     partial class SettingsForm
     {
@@ -149,7 +149,7 @@
             // 
             this.buttonGithub.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonGithub.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonGithub.Image = global::AutoSwitcher.Properties.Resources.github;
+            this.buttonGithub.Image = global::AutoMova.Properties.Resources.github;
             this.buttonGithub.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonGithub.Location = new System.Drawing.Point(12, 302);
             this.buttonGithub.Name = "buttonGithub";
@@ -325,7 +325,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingsForm";
-            this.Text = "AutoSwitcher Settings";
+            this.Text = "AutoMova Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingsForm_FormClosing);
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.Shown += new System.EventHandler(this.SettingsForm_Shown);

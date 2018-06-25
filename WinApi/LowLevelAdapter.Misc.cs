@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace AutoSwitcher.WinApi
+namespace AutoMova.WinApi
 {
     public static partial class LowLevelAdapter
     {

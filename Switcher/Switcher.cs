@@ -1,5 +1,5 @@
-﻿using AutoSwitcher.Data;
-using AutoSwitcher.WinApi;
+﻿using AutoMova.Data;
+using AutoMova.WinApi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace AutoSwitcher.Switcher
+namespace AutoMova.Switcher
 {
     public class SwitcherCore : IDisposable
     {

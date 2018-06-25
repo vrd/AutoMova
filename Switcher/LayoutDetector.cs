@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using NHunspell;
 
-namespace AutoSwitcher.Switcher
+namespace AutoMova.Switcher
 {
     class LayoutDetector
     {   

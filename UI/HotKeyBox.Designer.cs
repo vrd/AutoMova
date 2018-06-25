@@ -1,4 +1,4 @@
-﻿namespace AutoSwitcher.UI
+﻿namespace AutoMova.UI
 {
     partial class HotKeyBox
     {

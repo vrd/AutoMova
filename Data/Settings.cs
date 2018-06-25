@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Windows.Forms;
 
-namespace AutoSwitcher.Data
+namespace AutoMova.Data
 {
     [Serializable]
     public sealed class Settings : ApplicationSettingsBase, ISettings

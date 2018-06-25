@@ -1,4 +1,4 @@
-﻿namespace AutoSwitcher.Data
+﻿namespace AutoMova.Data
 {
     public interface ISettings
     {

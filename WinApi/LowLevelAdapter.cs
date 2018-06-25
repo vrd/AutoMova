@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Windows.Automation;
 using System.Collections.Generic;
 
-namespace AutoSwitcher.WinApi
+namespace AutoMova.WinApi
 {
     public static partial class LowLevelAdapter
     {

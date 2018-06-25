@@ -1,9 +1,9 @@
-﻿using AutoSwitcher.WinApi;
+﻿using AutoMova.WinApi;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AutoSwitcher.Switcher
+namespace AutoMova.Switcher
 {
     public class MouseHook
     {

@@ -1,5 +1,5 @@
-﻿using AutoSwitcher.Data;
-using AutoSwitcher.WinApi;
+﻿using AutoMova.Data;
+using AutoMova.WinApi;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace AutoSwitcher.Switcher
+namespace AutoMova.Switcher
 {
     public sealed class KeyboardHook : IDisposable
     {

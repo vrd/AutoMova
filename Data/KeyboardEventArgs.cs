@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 
-namespace AutoSwitcher.Data
+namespace AutoMova.Data
 {
     public enum KeyboardEventType { Unknown, KeyDown, KeyUp }
     [Serializable]

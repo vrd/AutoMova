@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AutoSwitcher.UI
+namespace AutoMova.UI
 {
     public class TrayIcon
     {
@@ -29,7 +29,7 @@ namespace AutoSwitcher.UI
             trayMenu.MenuItems.Add("Exit", OnExitClick);
 
             trayIcon = new NotifyIcon();
-            trayIcon.Text = "AutoSwitcher alpha";
+            trayIcon.Text = "AutoMova alpha";
             trayIcon.Icon = Properties.Resources.icon;
             trayIcon.BalloonTipClosed += trayIcon_BalloonTipClosed;
 
@@ -55,7 +55,7 @@ namespace AutoSwitcher.UI
         {
             wasShownBeforeTooltip = trayIcon.Visible;
             Show();
-            trayIcon.ShowBalloonTip(2000, "AutoSwitcher error", p, icon);
+            trayIcon.ShowBalloonTip(2000, "AutoMova error", p, icon);
         }
 
 

@@ -1,6 +1,6 @@
-﻿using AutoSwitcher.Data;
-using AutoSwitcher.Switcher;
-using AutoSwitcher.WinApi;
+﻿using AutoMova.Data;
+using AutoMova.Switcher;
+using AutoMova.WinApi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AutoSwitcher.UI
+namespace AutoMova.UI
 {
     public partial class SettingsForm : Form
     {
