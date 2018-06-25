@@ -17,10 +17,11 @@ namespace AutoSwitcher.Switcher
         
         public LayoutDetector(IntPtr[] layouts)
         {
+            Debug.WriteLine($"Current path is {AppDomain.CurrentDomain.BaseDirectory}");
             foreach (var layout in layouts)
             {   
                 //Load Hunspell dictionaries
-                var hunspellPath = "hunspell\\" + ToLangCode(layout) + "\\" + ToLangCountryCode(layout);
+                var hunspellPath = AppDomain.CurrentDomain.BaseDirectory + "\\hunspell\\" + ToLangCode(layout) + "\\" + ToLangCountryCode(layout);
                 var affFile = hunspellPath + ".aff";
                 var dicFile = hunspellPath + ".dic";
                 hunspellDictionaries.Add(layout, new Hunspell(affFile, dicFile));
