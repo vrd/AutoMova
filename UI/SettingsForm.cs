@@ -187,7 +187,7 @@ namespace AutoMova.UI
         }
         void kbdHook_KeyboardEvent(object sender, KeyboardEventArgs e)
         {
-            if (currentHotkeyType != HotKeyType.None)
+            if (currentHotkeyType != HotKeyType.None && e.Type == KeyboardEventType.KeyDown)
             {
                 var vk = e.KeyCode;
                 if (vk == Keys.Escape || vk == Keys.Back)
