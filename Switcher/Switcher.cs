@@ -193,6 +193,8 @@ namespace AutoMova.Switcher
             if (evtData.Equals(settings.ConvertSelectionHotkey))
             {
                 ConvertSelection();
+                evtData.Handled = true;
+                return;
             }
 
             if (this.KeepTrackingKeys(evtData))
@@ -303,10 +305,8 @@ namespace AutoMova.Switcher
 
         private int CalculateSwitchingNumber(IntPtr currentLayout, IntPtr detectedLayout)
         {
-            //FIXME: remove this shitcode 
-             //     case 67699721: return "en";
-             //     case 68748313: return "ru";
-             //     case 69338146: return "uk";
+            //TODO: remove this shitcode 
+            
             var oldl = currentLayout.ToInt32();
             var newl = detectedLayout.ToInt32();
             if ((oldl == 67699721 && newl == 68748313) ||
@@ -364,7 +364,10 @@ namespace AutoMova.Switcher
         private void SwitchLayout()
         {
             BeginNewSelection();
+            ignoreKeyPress = true;
+            LowLevelAdapter.ReleasePressedFnKeys();
             LowLevelAdapter.SetNextKeyboardLayout();
+            ignoreKeyPress = false;
         }
 
         private void ConvertLast(int switchingNumber)
