@@ -40,8 +40,9 @@ namespace AutoMova.Data
             {
                 return false;
             }
-            var equals = p.KeyData == KeyData &&
-                p.KeyCode == KeyCode &&
+            var equals = p.KeyCode == KeyCode &&
+                (!p.Control || p.Control == Control) &&
+                (!p.Shift || p.Shift == Shift) &&
                 p.Win == Win;
 
             return equals;
