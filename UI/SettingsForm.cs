@@ -166,15 +166,15 @@ namespace AutoMova.UI
         KeyboardHook kbdHook;
         KeyboardEventArgs currentHotkey;
         HotKeyType currentHotkeyType;
-        enum HotKeyType { None, Switch, Convert, SwitchLayout }
+        enum HotKeyType { None, ConvertLast, ConvertSelection, SwitchLayout }
         void InitializeHotkeyBoxes()
         {
-            textBoxConverLastHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.Switch;
-            textBoxConverLastHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.Switch;
+            textBoxConverLastHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.ConvertLast;
+            textBoxConverLastHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.ConvertLast;
             textBoxConverLastHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
             textBoxConverLastHotkey.Leave += (s, e) => ApplyCurrentHotkey();
-            textBoxConvertSelectionHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.Convert;
-            textBoxConvertSelectionHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.Convert;
+            textBoxConvertSelectionHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.ConvertSelection;
+            textBoxConvertSelectionHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.ConvertSelection;
             textBoxConvertSelectionHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
             textBoxConvertSelectionHotkey.Leave += (s, e) => ApplyCurrentHotkey();
             textBoxSwitchLayoutHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.SwitchLayout;
@@ -213,10 +213,10 @@ namespace AutoMova.UI
             TextBox currentTextBox;
             switch (currentHotkeyType)
             {
-                case HotKeyType.Switch:
+                case HotKeyType.ConvertLast:
                     currentTextBox = textBoxConverLastHotkey;
                     break;
-                case HotKeyType.Convert:
+                case HotKeyType.ConvertSelection:
                     currentTextBox = textBoxConvertSelectionHotkey;
                     break;
                 case HotKeyType.SwitchLayout:
@@ -245,10 +245,10 @@ namespace AutoMova.UI
         {
             switch (currentHotkeyType)
             {
-                case HotKeyType.Switch:
+                case HotKeyType.ConvertLast:
                     currentHotkey = clear ? null : settings.ConvertLastHotkey;
                     break;
-                case HotKeyType.Convert:
+                case HotKeyType.ConvertSelection:
                     currentHotkey = clear ? null : settings.ConvertSelectionHotkey;
                     break;
                 case HotKeyType.SwitchLayout:
@@ -269,10 +269,10 @@ namespace AutoMova.UI
             }
             switch (currentHotkeyType)
             {
-                case HotKeyType.Switch:
+                case HotKeyType.ConvertLast:
                     settings.ConvertLastHotkey = currentHotkey;
                     break;
-                case HotKeyType.Convert:
+                case HotKeyType.ConvertSelection:
                     settings.ConvertSelectionHotkey = currentHotkey;
                     break;
                 case HotKeyType.SwitchLayout:
