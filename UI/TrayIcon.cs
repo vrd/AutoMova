@@ -29,7 +29,7 @@ namespace AutoMova.UI
             trayMenu.MenuItems.Add("Exit", OnExitClick);
 
             trayIcon = new NotifyIcon();
-            trayIcon.Text = "AutoMova alpha";
+            trayIcon.Text = "AutoMova";
             trayIcon.Icon = Properties.Resources.icon;
             trayIcon.BalloonTipClosed += trayIcon_BalloonTipClosed;
 

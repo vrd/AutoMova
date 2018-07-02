@@ -31,6 +31,9 @@ namespace AutoMova.UI
             InitializeTrayIcon();
             InitializeHotkeyBoxes();
 
+            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Text = "AutoMova" + " " + version.Major + "." + version.Minor + " alpha (build " + version.Build + ")"; //change form title
+
             UpdateUi();
         }
 
@@ -377,6 +380,21 @@ namespace AutoMova.UI
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }
