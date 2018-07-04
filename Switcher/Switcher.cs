@@ -305,17 +305,12 @@ namespace AutoMova.Switcher
 
         private int CalculateSwitchingNumber(IntPtr currentLayout, IntPtr detectedLayout)
         {
-            //TODO: remove this shitcode 
-            
-            var oldl = currentLayout.ToInt32();
-            var newl = detectedLayout.ToInt32();
-            if ((oldl == 67699721 && newl == 68748313) ||
-                (oldl == 68748313 && newl == 69338146) ||
-                (oldl == 69338146 && newl == 67699721))
+            var switchingNumber = Array.IndexOf(layoutList, detectedLayout) - Array.IndexOf(layoutList, currentLayout);
+            if (switchingNumber < 0)
             {
-                return 1;
+                switchingNumber = switchingNumber + layoutList.Length;
             }
-            return 2;
+            return switchingNumber;
         }
 
         private void RemoveSelection()
