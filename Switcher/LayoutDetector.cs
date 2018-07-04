@@ -11,7 +11,7 @@ namespace AutoMova.Switcher
     class LayoutDetector
     {   
         //TODO: user dictionaries
-        //private Dictionary<IntPtr, Dictionary> userDictionaries = new Dictionary<IntPtr, Dictionary>();
+        private Dictionary<IntPtr, UserDictionary> userDictionaries = new Dictionary<IntPtr, UserDictionary>();
         private Dictionary<IntPtr, Hunspell> hunspellDictionaries = new Dictionary<IntPtr, Hunspell>();
         private Dictionary<IntPtr, ProtoDictionary> protoDictionaries = new Dictionary<IntPtr, ProtoDictionary>();
         
@@ -19,7 +19,9 @@ namespace AutoMova.Switcher
         {
             Debug.WriteLine($"Current path is {AppDomain.CurrentDomain.BaseDirectory}");
             foreach (var layout in layouts)
-            {   
+            {   //Load user dictionaries
+                userDictionaries.Add(layout, new UserDictionary(ToLangCode(layout)));
+
                 //Load Hunspell dictionaries
                 var hunspellPath = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\hunspell\\" + ToLangCode(layout) + "\\" + ToLangCountryCode(layout);
                 var affFile = hunspellPath + ".aff";
@@ -33,6 +35,15 @@ namespace AutoMova.Switcher
 
         public IntPtr Decision(Dictionary<IntPtr, string> lastWord, IntPtr currentLayout)
         {
+            foreach (var dict in userDictionaries)
+            {
+                if (dict.Value.Contains(lastWord[dict.Key]))
+                {
+                    Debug.WriteLine($"Word found in user {ToLangCode(dict.Key).ToUpper()}");
+                    return dict.Key;
+                }
+            }
+
             foreach (var dict in hunspellDictionaries)
             {
                 if (dict.Value.Spell(lastWord[dict.Key]))
