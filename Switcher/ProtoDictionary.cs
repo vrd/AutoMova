@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,9 +15,8 @@ namespace AutoMova.Switcher
 
         public ProtoDictionary(string lang)
         {
-            wrongTwoSymbols = LoadDictionaryFromFile(lang, "proto");
-            wrongThreeSymbols = LoadDictionaryFromFile(lang, "proto3");
-            //correctWords = LoadDictionaryFromFile(lang, "dictionary");
+            wrongTwoSymbols = System.IO.File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\resources\\proto\\" + lang + "\\proto");
+            wrongThreeSymbols = System.IO.File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\resources\\proto\\" + lang + "\\proto3");
         }
 
         public bool Contains(string word)
@@ -57,12 +57,6 @@ namespace AutoMova.Switcher
             }
 
             return true;
-        }
-
-        private string[] LoadDictionaryFromFile(string lang, string dictType)
-        {
-            string[] lines = System.IO.File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory +"\\resources\\proto\\" +lang+"\\"+dictType);
-            return lines;
         }
 
         private bool IllegalCombinationFound(string testComb, string[] dict)
