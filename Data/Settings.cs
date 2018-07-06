@@ -23,6 +23,10 @@ namespace AutoMova.Data
             {
                 settings.ShowTrayIcon = true;
             }
+            if (settings.SmartSelection == null)
+            {
+                settings.SmartSelection = false;
+            }
             if (settings.AutoSwitching == null)
             {
                 settings.AutoSwitching = true;
