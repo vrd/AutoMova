@@ -216,9 +216,9 @@
             // 
             // checkBoxSmartSelection
             // 
+            this.checkBoxSmartSelection.AutoCheck = false;
             this.checkBoxSmartSelection.AutoSize = true;
-            this.checkBoxSmartSelection.Checked = true;
-            this.checkBoxSmartSelection.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSmartSelection.Enabled = false;
             this.checkBoxSmartSelection.Location = new System.Drawing.Point(5, 51);
             this.checkBoxSmartSelection.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxSmartSelection.Name = "checkBoxSmartSelection";
