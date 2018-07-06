@@ -202,24 +202,24 @@ namespace AutoMova.Switcher
             
             var notModified = !this.HaveModifiers(evtData);
 
-            if (vkCode == Keys.Back && notModified) { RemoveLast(); return; }
+            if (vkCode == Keys.Back && notModified)
+            {
+                RemoveLast();
+                return;
+            }
 
             if (vkCode == Keys.Space && notModified)
-            {
-                if (settings.SmartSelection == false)
-                {
-                    BeginNewSelection();
-                    return;
-                }
-                else
-                {
-                    AddToCurrentSelection(evtData);
-                    return;
-                }
+            {                
+                AddToCurrentSelection(evtData);
+                return;                
             }
 
             if (IsPrintable(evtData))
             {
+                if (settings.SmartSelection == false && GetPreviousVkCode() == Keys.Space)
+                {
+                    BeginNewSelection();
+                }
                 var currentLayout = LowLevelAdapter.GetCurrentLayout();
                 AddToCurrentSelection(evtData);
                 if (IsPunctuation(evtData, layoutDetector.ToLangCode(currentLayout)))

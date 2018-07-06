@@ -37,7 +37,7 @@ namespace AutoMova.Switcher
         {
             foreach (var dict in userDictionaries)
             {
-                if (dict.Value.Contains(lastWord[dict.Key]))
+                if (dict.Value.Contains(lastWord[dict.Key].Trim()))
                 {
                     Debug.WriteLine($"Word found in user {ToLangCode(dict.Key).ToUpper()}");
                     return dict.Key;
@@ -46,7 +46,7 @@ namespace AutoMova.Switcher
 
             foreach (var dict in hunspellDictionaries)
             {
-                if (dict.Value.Spell(lastWord[dict.Key]))
+                if (dict.Value.Spell(lastWord[dict.Key].Trim()))
                 {
                     Debug.WriteLine($"Word found in Hunspell {ToLangCode(dict.Key).ToUpper()}");
                     return dict.Key;
@@ -55,7 +55,7 @@ namespace AutoMova.Switcher
 
             foreach (var dict in protoDictionaries)
             {
-                if (dict.Value.Contains(lastWord[dict.Key]))
+                if (dict.Value.Contains(lastWord[dict.Key].Trim()))
                 {
                     Debug.WriteLine($"Word found in proto {ToLangCode(dict.Key).ToUpper()}");
                     return dict.Key;
