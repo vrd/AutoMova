@@ -66,10 +66,10 @@ namespace AutoMova.WinApi
             return ids;
         }
 
-        public static uint LayoutToUint(IntPtr layout)
-        {
-            return (uint)LoadKeyboardLayout(("0000" + ((UInt16)layout).ToString("x4")), KLF_ACTIVATE);
-        }
+        //public static uint LayoutToUint(IntPtr layout)
+        //{
+        //    return LoadKeyboardLayout((layout.ToString("x8")), KLF_ACTIVATE);
+        //}
         
         public static void SetNextKeyboardLayout()
         {
