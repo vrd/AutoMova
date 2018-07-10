@@ -13,8 +13,7 @@ namespace AutoMova.Switcher
     public class SwitcherCore : IDisposable
     {
         public event EventHandler<SwitcherErrorArgs> Error;
-        private List<KeyboardEventArgs> currentSelection = new List<KeyboardEventArgs>();
-        private Dictionary<IntPtr, string> lastWord = new Dictionary<IntPtr, string>();
+        
         private KeyboardHook kbdHook;
         private MouseHook mouseHook;
         private ISettings settings;
@@ -22,8 +21,12 @@ namespace AutoMova.Switcher
         private bool autoSwitchingIsGoing;
         private bool manualSwitchingIsGoing;
         private bool ignoreKeyPress;
-        private IntPtr[] layoutList;
+        private Dictionary<string, uint> langToLayout = new Dictionary<string, uint>();
+        private Dictionary<IntPtr, string> layoutToLang = new Dictionary<IntPtr, string>();
         private LayoutDetector layoutDetector;
+        private List<KeyboardEventArgs> currentSelection = new List<KeyboardEventArgs>();
+        private Dictionary<string, string> lastWord = new Dictionary<string, string>();
+        
 
         public SwitcherCore(ISettings settings)
         {
@@ -36,12 +39,27 @@ namespace AutoMova.Switcher
             autoSwitchingIsGoing = false;
             manualSwitchingIsGoing = false;
             ignoreKeyPress = false;
-            layoutList = LowLevelAdapter.GetLayoutList();
-            foreach (var layout in layoutList)
-            {
-                lastWord.Add(layout, "");
+
+            var layouts = LowLevelAdapter.GetLayoutList();
+            var inputLangCollection = InputLanguage.InstalledInputLanguages;
+            InputLanguage[] inputLangs = new InputLanguage[layouts.Length];
+            inputLangCollection.CopyTo(inputLangs, 0);
+            foreach (var lang in inputLangs)
+            {   
+                Debug.WriteLine(lang.Culture.Name);
+                Debug.WriteLine((layouts[Array.IndexOf(inputLangs, lang)]).ToString("x8"));                
+                if (!langToLayout.ContainsKey(lang.Culture.Name))
+                {
+                    langToLayout.Add(lang.Culture.Name, LowLevelAdapter.LayoutToUint(layouts[Array.IndexOf(inputLangs, lang)]));
+                }                
+                layoutToLang.Add(layouts[Array.IndexOf(inputLangs, lang)], lang.Culture.Name);
             }
-            layoutDetector = new LayoutDetector(layoutList);
+            var langs = langToLayout.Keys.ToArray();
+            foreach (var lang in langs)
+            {   
+                lastWord.Add(lang, "");
+            }
+            layoutDetector = new LayoutDetector(langs);
         }
 
         public static bool IsPrintable(KeyboardEventArgs evtData)
@@ -55,9 +73,9 @@ namespace AutoMova.Switcher
             return false;
         }
 
-        public static bool IsPunctuation(KeyboardEventArgs evtData, string langCode)
+        public static bool IsPunctuation(KeyboardEventArgs evtData, string lang)
         {
-            switch (langCode)
+            switch (lang)
             {
                 case "en":
                     {
@@ -184,7 +202,7 @@ namespace AutoMova.Switcher
             if (evtData.Equals(settings.ConvertLastHotkey))
             {
                 manualSwitchingIsGoing = true;
-                ConvertLast(1);
+                ConvertLast("next");
                 manualSwitchingIsGoing = false;
                 evtData.Handled = true;
                 return;
@@ -220,20 +238,21 @@ namespace AutoMova.Switcher
                 {
                     BeginNewSelection();
                 }
-                var currentLayout = LowLevelAdapter.GetCurrentLayout();
+                var currentLayout = layoutToLang[LowLevelAdapter.GetCurrentLayout()];
                 AddToCurrentSelection(evtData);
-                if (IsPunctuation(evtData, layoutDetector.ToLangCode(currentLayout)))
+                if (IsPunctuation(evtData, currentLayout))
                 {
                     return;
                 }
                 var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);
-                Debug.WriteLine($"Current layout: {currentLayout.ToString("x8")}, detected layout: {detectedLayout.ToString("x8")}");
+                Debug.WriteLine($"Current layout: {currentLayout}, detected layout: {detectedLayout}");
                 if (settings.AutoSwitching == true && detectedLayout != currentLayout && !autoSwitchingIsGoing && !manualSwitchingIsGoing)
                 {                    
                     autoSwitchingIsGoing = true;                    
                      evtData.Handled = true;
                     //evtData.SuppressKeyPress = true;
-                    ConvertLast(CalculateSwitchingNumber(currentLayout, detectedLayout));
+                    //ConvertLast(CalculateSwitchingNumber(currentLayout, detectedLayout));
+                    ConvertLast(detectedLayout);
                     autoSwitchingIsGoing = false;
                 }
                 return;                                
@@ -275,7 +294,7 @@ namespace AutoMova.Switcher
             currentSelection.Add(data);
             foreach (var word in lastWord.ToArray())
             {
-                lastWord[word.Key] = word.Value + LowLevelAdapter.KeyCodeToUnicode(data.KeyCode, word.Key);
+                lastWord[word.Key] = word.Value + LowLevelAdapter.KeyCodeToUnicode(data.KeyCode, (IntPtr)langToLayout[word.Key]);
             }
             Debug.WriteLine(DictToString(lastWord));
         }
@@ -293,25 +312,25 @@ namespace AutoMova.Switcher
         }
         #endregion
 
-        private string DictToString(Dictionary<IntPtr, string> dictionary)
+        private string DictToString(Dictionary<string, string> dictionary)
         {
             var str = "";
             foreach (var item in dictionary)
             {
-                str += layoutDetector.ToLangCode(item.Key) + ": '" + item.Value + "'; ";
+                str += item.Key + ": '" + item.Value + "'; ";
             }
             return str;
         }
 
-        private int CalculateSwitchingNumber(IntPtr currentLayout, IntPtr detectedLayout)
-        {
-            var switchingNumber = Array.IndexOf(layoutList, detectedLayout) - Array.IndexOf(layoutList, currentLayout);
-            if (switchingNumber < 0)
-            {
-                switchingNumber = switchingNumber + layoutList.Length;
-            }
-            return switchingNumber;
-        }
+        //private int CalculateSwitchingNumber(IntPtr currentLayout, IntPtr detectedLayout)
+        //{
+        //    var switchingNumber = Array.IndexOf(layouts, detectedLayout) - Array.IndexOf(layouts, currentLayout);
+        //    if (switchingNumber < 0)
+        //    {
+        //        switchingNumber = switchingNumber + layouts.Length;
+        //    }
+        //    return switchingNumber;
+        //}
 
         private void RemoveSelection()
         {
@@ -365,9 +384,9 @@ namespace AutoMova.Switcher
             ignoreKeyPress = false;
         }
 
-        private void ConvertLast(int switchingNumber)
+        private void ConvertLast(string lang)
         {
-            Debug.WriteLine($"ConvertLast({switchingNumber})...");
+            //Debug.WriteLine($"ConvertLast({switchingNumber})...");
             var fnKeys = LowLevelAdapter.ReleasePressedFnKeys();
             var selection = currentSelection.ToList();
             BeginNewSelection();
@@ -386,12 +405,21 @@ namespace AutoMova.Switcher
 
             // Switch layout proper number of times
             ignoreKeyPress = true;
-            for (int i = 0; i < switchingNumber; i++)
+            //for (int i = 0; i < switchingNumber; i++)
+            //{
+            //    Thread.Sleep(settings.SwitchDelay);
+            //    LowLevelAdapter.SetNextKeyboardLayout();
+            //    Debug.WriteLine($"Now layout is {layoutDetector.ToLangCode(LowLevelAdapter.GetCurrentLayout())}");
+            //}
+            if (lang == "next")
             {
-                Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SetNextKeyboardLayout();
-                Debug.WriteLine($"Now layout is {layoutDetector.ToLangCode(LowLevelAdapter.GetCurrentLayout())}");
             }
+            else
+            {
+                LowLevelAdapter.SetKeyboadLayout(langToLayout[lang]);
+            }
+            
             ignoreKeyPress = false;
 
             // Type last word in new layout

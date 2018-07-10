@@ -11,81 +11,81 @@ namespace AutoMova.Switcher
     class LayoutDetector
     {   
         //TODO: user dictionaries
-        private Dictionary<IntPtr, UserDictionary> userDictionaries = new Dictionary<IntPtr, UserDictionary>();
-        private Dictionary<IntPtr, Hunspell> hunspellDictionaries = new Dictionary<IntPtr, Hunspell>();
-        private Dictionary<IntPtr, ProtoDictionary> protoDictionaries = new Dictionary<IntPtr, ProtoDictionary>();
+        private Dictionary<string, UserDictionary> userDictionaries = new Dictionary<string, UserDictionary>();
+        private Dictionary<string, Hunspell> hunspellDictionaries = new Dictionary<string, Hunspell>();
+        private Dictionary<string, ProtoDictionary> protoDictionaries = new Dictionary<string, ProtoDictionary>();
+        private List<string> validLangs = new List<string>();
         
-        public LayoutDetector(IntPtr[] layouts)
+        public LayoutDetector(string[] langs)
         {
             Debug.WriteLine($"Current path is {AppDomain.CurrentDomain.BaseDirectory}");
-            foreach (var layout in layouts)
-            {   //Load user dictionaries
-                userDictionaries.Add(layout, new UserDictionary(ToLangCode(layout)));
+            foreach (var langCountry in langs)
+            {
+                var lang = langCountry.Substring(0, 2);
+                try
+                {
+                    //Load user dictionaries
+                    userDictionaries.Add(langCountry, new UserDictionary(lang));
 
-                //Load Hunspell dictionaries
-                var hunspellPath = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\hunspell\\" + ToLangCode(layout) + "\\" + ToLangCountryCode(layout);
-                var affFile = hunspellPath + ".aff";
-                var dicFile = hunspellPath + ".dic";
-                hunspellDictionaries.Add(layout, new Hunspell(affFile, dicFile));
+                    //Load Hunspell dictionaries
+                    var hunspellPath = AppDomain.CurrentDomain.BaseDirectory + "\\resources\\hunspell\\" + lang + "\\" + ToLangCountryCode(langCountry);
+                    var affFile = hunspellPath + ".aff";
+                    var dicFile = hunspellPath + ".dic";
+                    hunspellDictionaries.Add(langCountry, new Hunspell(affFile, dicFile));
 
-                //Load proto-dictionaries
-                protoDictionaries.Add(layout, new ProtoDictionary(ToLangCode(layout)));
+                    //Load proto-dictionaries
+                    protoDictionaries.Add(langCountry, new ProtoDictionary(lang));
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+
+                validLangs.Add(langCountry);                
             }
         }
 
-        public IntPtr Decision(Dictionary<IntPtr, string> lastWord, IntPtr currentLayout)
+        public string Decision(Dictionary<string, string> lastWord, string currentLang)
         {
+            if (!validLangs.Contains(currentLang))
+            {
+                return currentLang;
+            }
+
             foreach (var dict in userDictionaries)
             {
-                if (dict.Value.Contains(lastWord[dict.Key].Trim()))
+                if (validLangs.Contains(dict.Key) && dict.Value.Contains(lastWord[dict.Key].Trim()))
                 {
-                    Debug.WriteLine($"Word found in user {ToLangCode(dict.Key).ToUpper()}");
+                    Debug.WriteLine($"Word found in user {dict.Key.ToUpper()}");
                     return dict.Key;
                 }
             }
 
             foreach (var dict in hunspellDictionaries)
             {
-                if (dict.Value.Spell(lastWord[dict.Key].Trim()))
+                if (validLangs.Contains(dict.Key) && dict.Value.Spell(lastWord[dict.Key].Trim()))
                 {
-                    Debug.WriteLine($"Word found in Hunspell {ToLangCode(dict.Key).ToUpper()}");
+                    Debug.WriteLine($"Word found in Hunspell {dict.Key.ToUpper()}");
                     return dict.Key;
                 }
             }
 
             foreach (var dict in protoDictionaries)
             {
-                if (dict.Value.Contains(lastWord[dict.Key].Trim()))
+                if (validLangs.Contains(dict.Key) && dict.Value.Contains(lastWord[dict.Key].Trim()))
                 {
-                    Debug.WriteLine($"Word found in proto {ToLangCode(dict.Key).ToUpper()}");
+                    Debug.WriteLine($"Word found in proto {dict.Key.ToUpper()}");
                     return dict.Key;
                 }
             }
 
             Debug.WriteLine($"Word not found anywhere");
-            return currentLayout;
-        }
+            return currentLang;
+        }        
 
-        public string ToLangCode(IntPtr layout)
+        private string ToLangCountryCode(string lang)
         {
-            switch (((UInt16)layout).ToString("x4"))
-            {
-                case "0409": return "en";
-                case "0419": return "ru";
-                case "0422": return "uk";
-                default: return null;            
-            }
-        }
-
-        private string ToLangCountryCode(IntPtr layout)
-        {
-            switch (((UInt16)layout).ToString("x4"))
-            {
-                case "0409": return "en_US";
-                case "0419": return "ru_RU";
-                case "0422": return "uk_UA";
-                default: return null;
-            }
+            return lang.Replace("-", "_");
         }
     }
 }
