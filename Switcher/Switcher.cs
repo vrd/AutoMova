@@ -22,6 +22,7 @@ namespace AutoMova.Switcher
         private bool manualSwitchingIsGoing;
         private bool ignoreKeyPress;
         private Dictionary<string, uint> langToLayout = new Dictionary<string, uint>();
+        private Dictionary<string, IntPtr> langToIntPtr = new Dictionary<string, IntPtr>();
         private Dictionary<IntPtr, string> layoutToLang = new Dictionary<IntPtr, string>();
         private LayoutDetector layoutDetector;
         private List<KeyboardEventArgs> currentSelection = new List<KeyboardEventArgs>();
@@ -50,7 +51,8 @@ namespace AutoMova.Switcher
                 Debug.WriteLine((layouts[Array.IndexOf(inputLangs, lang)]).ToString("x8"));                
                 if (!langToLayout.ContainsKey(lang.Culture.Name))
                 {
-                    langToLayout.Add(lang.Culture.Name, LowLevelAdapter.LayoutToUint(layouts[Array.IndexOf(inputLangs, lang)]));
+                    langToLayout.Add(lang.Culture.Name, (uint)(layouts[Array.IndexOf(inputLangs, lang)]));
+                    langToIntPtr.Add(lang.Culture.Name, layouts[Array.IndexOf(inputLangs, lang)]);
                 }                
                 layoutToLang.Add(layouts[Array.IndexOf(inputLangs, lang)], lang.Culture.Name);
             }
@@ -294,7 +296,7 @@ namespace AutoMova.Switcher
             currentSelection.Add(data);
             foreach (var word in lastWord.ToArray())
             {
-                lastWord[word.Key] = word.Value + LowLevelAdapter.KeyCodeToUnicode(data.KeyCode, (IntPtr)langToLayout[word.Key]);
+                lastWord[word.Key] = word.Value + LowLevelAdapter.KeyCodeToUnicode(data.KeyCode, langToIntPtr[word.Key]);
             }
             Debug.WriteLine(DictToString(lastWord));
         }
@@ -386,7 +388,7 @@ namespace AutoMova.Switcher
 
         private void ConvertLast(string lang)
         {
-            //Debug.WriteLine($"ConvertLast({switchingNumber})...");
+            Debug.WriteLine($"ConvertLast to {lang}...");
             var fnKeys = LowLevelAdapter.ReleasePressedFnKeys();
             var selection = currentSelection.ToList();
             BeginNewSelection();
