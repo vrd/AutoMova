@@ -30,7 +30,14 @@ namespace AutoMova.UI
 
             trayIcon = new NotifyIcon();
             trayIcon.Text = "AutoMova";
-            trayIcon.Icon = Properties.Resources.icon;
+            if (Environment.OSVersion.Version < new Version(6,2))
+            {
+                trayIcon.Icon = Properties.Resources.icon;
+            }
+            else
+            {
+                trayIcon.Icon = Properties.Resources.icon10;
+            }            
             trayIcon.BalloonTipClosed += trayIcon_BalloonTipClosed;
 
             trayIcon.MouseDoubleClick += trayIcon_Click;
