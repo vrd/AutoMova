@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <None Include="icon10.ico" />
     <Content Include="UI\github.png" />
   </ItemGroup>
   <ItemGroup>
