@@ -26,14 +26,21 @@ namespace AutoMova.UI
             this.settings = settings;
             this.engine = engine;
             engine.Error += OnEngineError;
-            
+                        
             InitializeComponent();
             InitializeTrayIcon();
             InitializeHotkeyBoxes();
 
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             Text = "AutoMova" + " " + version.Major + "." + version.Minor + " alpha (build " + version.Build + ")"; //change form title
-
+            if (Environment.OSVersion.Version < new Version(6, 2))
+            {
+                Icon = Properties.Resources.icon;
+            }
+            else
+            {
+                Icon = Properties.Resources.icon10;
+            }
             UpdateUi();
         }
 
