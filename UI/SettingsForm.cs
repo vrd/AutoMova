@@ -41,10 +41,20 @@ namespace AutoMova.UI
             {
                 Icon = Properties.Resources.icon10;
             }
-            UpdateUi();
+            UpdateUi();            
         }
 
-        
+        protected override void OnHandleCreated(EventArgs e)
+        {            
+            var layouts = LowLevelAdapter.GetLayoutList();
+            var inputLangCollection = InputLanguage.InstalledInputLanguages;
+            InputLanguage[] inputLangs = new InputLanguage[layouts.Length];
+            inputLangCollection.CopyTo(inputLangs, 0);
+            foreach (var lang in inputLangs)
+            {
+                textBoxDebug.AppendText(lang.Culture.Name + ' ' + (layouts[Array.IndexOf(inputLangs, lang)]).ToString("x8") + "\n");
+            }
+        }
 
         /**
          * SETTINGS FORM
@@ -76,6 +86,7 @@ namespace AutoMova.UI
             textBoxConverLastHotkey.Text = ReplaceCtrls(settings.ConvertLastHotkey.ToString());
             textBoxConvertSelectionHotkey.Text = settings.ConvertSelectionHotkey.ToString();
             textBoxSwitchLayoutHotkey.Text = ReplaceCtrls(settings.SwitchLayoutHotkey.ToString());
+            textBoxAutoSwitchingHotkey.Text = ReplaceCtrls(settings.ToggleAutoSwitchingHotkey.ToString());
             checkBoxAutorun.Checked = settings.AutoStart == true;
             checkBoxTrayIcon.Checked = settings.ShowTrayIcon == true;
             checkBoxSmartSelection.Checked = settings.SmartSelection == true;
@@ -176,7 +187,7 @@ namespace AutoMova.UI
         KeyboardHook kbdHook;
         KeyboardEventArgs currentHotkey;
         HotKeyType currentHotkeyType;
-        enum HotKeyType { None, ConvertLast, ConvertSelection, SwitchLayout }
+        enum HotKeyType { None, ConvertLast, ConvertSelection, SwitchLayout, ToggleAutoSwitching }
         void InitializeHotkeyBoxes()
         {
             textBoxConverLastHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.ConvertLast;
@@ -191,6 +202,10 @@ namespace AutoMova.UI
             textBoxSwitchLayoutHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.SwitchLayout;
             textBoxSwitchLayoutHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
             textBoxSwitchLayoutHotkey.Leave += (s, e) => ApplyCurrentHotkey();
+            textBoxAutoSwitchingHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.ToggleAutoSwitching;
+            textBoxAutoSwitchingHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.ToggleAutoSwitching;
+            textBoxAutoSwitchingHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
+            textBoxAutoSwitchingHotkey.Leave += (s, e) => ApplyCurrentHotkey();
             currentHotkeyType = HotKeyType.None;
             kbdHook = new KeyboardHook();
             kbdHook.KeyboardEvent += kbdHook_KeyboardEvent;
@@ -232,6 +247,9 @@ namespace AutoMova.UI
                 case HotKeyType.SwitchLayout:
                     currentTextBox = textBoxSwitchLayoutHotkey;
                     break;
+                case HotKeyType.ToggleAutoSwitching:
+                    currentTextBox = textBoxAutoSwitchingHotkey;
+                    break;
                 default:
                     currentTextBox = null;
                     break;
@@ -264,6 +282,9 @@ namespace AutoMova.UI
                 case HotKeyType.SwitchLayout:
                     currentHotkey = clear ? null : settings.SwitchLayoutHotkey;
                     break;
+                case HotKeyType.ToggleAutoSwitching:
+                    currentHotkey = clear ? null : settings.ToggleAutoSwitchingHotkey;
+                    break;
                 default:
                     currentHotkey = null;
                     break;
@@ -287,6 +308,9 @@ namespace AutoMova.UI
                     break;
                 case HotKeyType.SwitchLayout:
                     settings.SwitchLayoutHotkey = currentHotkey;
+                    break;
+                case HotKeyType.ToggleAutoSwitching:
+                    settings.ToggleAutoSwitchingHotkey = currentHotkey;
                     break;
                 default:
                     break;
@@ -351,15 +375,15 @@ namespace AutoMova.UI
             Process.Start("https://github.com/vrd/dotSwitcher/issues");
         }
 
-        private void label5_MouseHover(object sender, EventArgs e)
-        {
-            toolTip1.Show("Hold Ctrl or Shift button to assign Ctrl or Shift itself", textBoxSwitchLayoutHotkey);
-        }
+        //private void label5_MouseHover(object sender, EventArgs e)
+        //{
+        //    toolTip1.Show("Hold Ctrl or Shift button to assign Ctrl or Shift itself", textBoxSwitchLayoutHotkey);
+        //}
 
-        private void label5_MouseLeave(object sender, EventArgs e)
-        {
-            toolTip1.Hide(label5);
-        }
+        //private void label5_MouseLeave(object sender, EventArgs e)
+        //{
+        //    toolTip1.Hide(label5);
+        //}
 
         private void toolTip1_Popup(object sender, PopupEventArgs e)
         {
@@ -374,6 +398,7 @@ namespace AutoMova.UI
         private void autoSwitching_CheckedChanged(object sender, EventArgs e)
         {
             settings.AutoSwitching = checkBoxAutoSwitching.Checked;
+            Debug.WriteLine("Automatic mode was toggled!");
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
@@ -405,5 +430,5 @@ namespace AutoMova.UI
         {
 
         }
-    }
+    }   
 }

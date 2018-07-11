@@ -40,14 +40,14 @@ namespace AutoMova.Switcher
             autoSwitchingIsGoing = false;
             manualSwitchingIsGoing = false;
             ignoreKeyPress = false;
-
+            
             var layouts = LowLevelAdapter.GetLayoutList();
             var inputLangCollection = InputLanguage.InstalledInputLanguages;
             InputLanguage[] inputLangs = new InputLanguage[layouts.Length];
             inputLangCollection.CopyTo(inputLangs, 0);
             foreach (var lang in inputLangs)
             {   
-                Debug.WriteLine(lang.Culture.Name);
+                Debug.WriteLine(lang.Culture.Name);                
                 Debug.WriteLine((layouts[Array.IndexOf(inputLangs, lang)]).ToString("x8"));                
                 if (!langToLayout.ContainsKey(lang.Culture.Name))
                 {
@@ -77,7 +77,7 @@ namespace AutoMova.Switcher
 
         public static bool IsPunctuation(KeyboardEventArgs evtData, string lang)
         {
-            switch (lang)
+            switch (lang.Substring(0,2))
             {
                 case "en":
                     {
@@ -217,6 +217,13 @@ namespace AutoMova.Switcher
                 return;
             }
 
+            if (evtData.Equals(settings.ToggleAutoSwitchingHotkey))
+            {
+                settings.AutoSwitching = !settings.AutoSwitching;
+                evtData.Handled = true;
+                return;
+            }
+
             if (this.KeepTrackingKeys(evtData))
                 return;
             
@@ -246,17 +253,21 @@ namespace AutoMova.Switcher
                 {
                     return;
                 }
-                var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);
-                Debug.WriteLine($"Current layout: {currentLayout}, detected layout: {detectedLayout}");
-                if (settings.AutoSwitching == true && detectedLayout != currentLayout && !autoSwitchingIsGoing && !manualSwitchingIsGoing)
-                {                    
-                    autoSwitchingIsGoing = true;                    
-                     evtData.Handled = true;
-                    //evtData.SuppressKeyPress = true;
-                    //ConvertLast(CalculateSwitchingNumber(currentLayout, detectedLayout));
-                    ConvertLast(detectedLayout);
-                    autoSwitchingIsGoing = false;
+                if (!autoSwitchingIsGoing && !manualSwitchingIsGoing)
+                {
+                    var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);
+                    Debug.WriteLine($"Current layout: {currentLayout}, detected layout: {detectedLayout}");
+                    if (settings.AutoSwitching == true && detectedLayout != currentLayout)
+                    {                    
+                        autoSwitchingIsGoing = true;                    
+                         evtData.Handled = true;
+                        //evtData.SuppressKeyPress = true;
+                        //ConvertLast(CalculateSwitchingNumber(currentLayout, detectedLayout));
+                        ConvertLast(detectedLayout);
+                        autoSwitchingIsGoing = false;
+                    }
                 }
+                
                 return;                                
             }
 
@@ -322,8 +333,8 @@ namespace AutoMova.Switcher
                 str += item.Key + ": '" + item.Value + "'; ";
             }
             return str;
-        }
-
+        }  
+        
         //private int CalculateSwitchingNumber(IntPtr currentLayout, IntPtr detectedLayout)
         //{
         //    var switchingNumber = Array.IndexOf(layouts, detectedLayout) - Array.IndexOf(layouts, currentLayout);
