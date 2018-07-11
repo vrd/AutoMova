@@ -274,22 +274,22 @@ namespace AutoMova.UI
             switch (currentHotkeyType)
             {
                 case HotKeyType.ConvertLast:
-                    currentHotkey = clear ? null : settings.ConvertLastHotkey;
+                    currentHotkey = clear ? new KeyboardEventArgs(Keys.None, false) : settings.ConvertLastHotkey;
                     break;
                 case HotKeyType.ConvertSelection:
-                    currentHotkey = clear ? null : settings.ConvertSelectionHotkey;
+                    currentHotkey = clear ? new KeyboardEventArgs(Keys.None, false) : settings.ConvertSelectionHotkey;
                     break;
                 case HotKeyType.SwitchLayout:
-                    currentHotkey = clear ? null : settings.SwitchLayoutHotkey;
+                    currentHotkey = clear ? new KeyboardEventArgs(Keys.None, false) : settings.SwitchLayoutHotkey;
                     break;
                 case HotKeyType.ToggleAutoSwitching:
-                    currentHotkey = clear ? null : settings.ToggleAutoSwitchingHotkey;
+                    currentHotkey = clear ? new KeyboardEventArgs(Keys.None, false) : settings.ToggleAutoSwitchingHotkey;
                     break;
                 default:
                     currentHotkey = null;
                     break;
             }
-            SetCurrentHotkeyInputText(currentHotkey == null ? "None" : ReplaceCtrls(currentHotkey.ToString()));
+            SetCurrentHotkeyInputText(currentHotkey == null ? "NULL" : ReplaceCtrls(currentHotkey.ToString()));
         }
 
         void ApplyCurrentHotkey()
@@ -398,7 +398,6 @@ namespace AutoMova.UI
         private void autoSwitching_CheckedChanged(object sender, EventArgs e)
         {
             settings.AutoSwitching = checkBoxAutoSwitching.Checked;
-            Debug.WriteLine("Automatic mode was toggled!");
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
