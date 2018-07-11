@@ -38,6 +38,8 @@ namespace AutoMova.Switcher
                 }
                 catch (Exception e)
                 {
+
+                    Debug.WriteLine("!!! Error opening dictionary !!!");
                     continue;
                 }
 
@@ -52,7 +54,26 @@ namespace AutoMova.Switcher
                 return currentLang;
             }
 
-            foreach (var dict in userDictionaries)
+            if (WordBelongsToLang(lastWord[currentLang].Trim(), currentLang))
+            {
+                Debug.WriteLine($"Word found in current lang ({currentLang.ToUpper()})");
+                return currentLang;
+            }
+
+            foreach (var lang in validLangs)
+            {
+                if (lang == currentLang)
+                {
+                    continue;
+                }
+                else if (WordBelongsToLang(lastWord[lang].Trim(), lang))
+                {
+                    Debug.WriteLine($"Word found in other lang ({lang.ToUpper()})");
+                    return lang;
+                }
+            }
+
+            /*foreach (var dict in userDictionaries)
             {
                 if (validLangs.Contains(dict.Key) && dict.Value.Contains(lastWord[dict.Key].Trim()))
                 {
@@ -77,11 +98,31 @@ namespace AutoMova.Switcher
                     Debug.WriteLine($"Word found in proto {dict.Key.ToUpper()}");
                     return dict.Key;
                 }
-            }
+            }*/
 
             Debug.WriteLine($"Word not found anywhere");
             return currentLang;
-        }        
+        }
+        
+        private bool WordBelongsToLang(string word, string lang)
+        {
+            if (userDictionaries[lang].Contains(word))
+            {
+                Debug.WriteLine($"Word found in user {lang.ToUpper()}");
+                return true;
+            }
+            if (hunspellDictionaries[lang].Spell(word))
+            {
+                Debug.WriteLine($"Word found in Hunspell {lang.ToUpper()}");
+                return true;
+            }
+            if (protoDictionaries[lang].Contains(word))
+            {
+                Debug.WriteLine($"Word found in proto {lang.ToUpper()}");
+                return true;
+            }
+            return false;
+        }
 
         private string ToLangCountryCode(string lang)
         {
