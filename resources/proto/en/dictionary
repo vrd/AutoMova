@@ -6,3 +6,14 @@
 (?i)^www
 (?i)xneur
 (?i)^\.$
+(?i)^a$
+(?i)^an$
+(?i)^as$
+(?i)^at$
+(?i)^et$
+(?i)^if$
+(?i)^in$
+(?i)^of$
+(?i)^on$
+(?i)^the$
+(?i)^to$
