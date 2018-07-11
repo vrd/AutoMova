@@ -87,6 +87,21 @@ namespace AutoMova.Data
         [UserScopedSetting]
         [SettingsSerializeAs(SettingsSerializeAs.Binary)]
         [DefaultSettingValue("")]
+        public KeyboardEventArgs ToggleAutoSwitchingHotkey
+        {
+            get
+            {
+                return (KeyboardEventArgs)this["ToggleAutoSwitchingHotkey"];
+            }
+            set
+            {
+                this["ToggleAutoSwitchingHotkey"] = (KeyboardEventArgs)value;
+            }
+        }
+
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.Binary)]
+        [DefaultSettingValue("")]
         public bool? AutoStart
         {
             get

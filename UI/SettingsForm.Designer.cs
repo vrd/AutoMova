@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.buttonCancelSettings = new System.Windows.Forms.Button();
             this.buttonSaveSettings = new System.Windows.Forms.Button();
@@ -42,14 +41,12 @@
             this.buttonGithub = new System.Windows.Forms.Button();
             this.textBoxSwitchLayoutHotkey = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.textBoxConverLastHotkey = new System.Windows.Forms.TextBox();
             this.textBoxConvertSelectionHotkey = new System.Windows.Forms.TextBox();
             this.checkBoxSmartSelection = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoSwitching = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.label7 = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.label8 = new System.Windows.Forms.Label();
@@ -61,12 +58,17 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.textBoxDebug = new System.Windows.Forms.TextBox();
+            this.textBoxAutoSwitchingHotkey = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonCancelSettings
@@ -125,7 +127,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 43);
+            this.label2.Location = new System.Drawing.Point(6, 39);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(92, 13);
             this.label2.TabIndex = 23;
@@ -134,7 +136,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 17);
+            this.label1.Location = new System.Drawing.Point(6, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 13);
             this.label1.TabIndex = 22;
@@ -183,22 +185,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 69);
+            this.label4.Location = new System.Drawing.Point(6, 65);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(120, 13);
             this.label4.TabIndex = 29;
             this.label4.Text = "Switch keyboard layout:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(132, 69);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(13, 13);
-            this.label5.TabIndex = 31;
-            this.label5.Text = "?";
-            this.label5.MouseLeave += new System.EventHandler(this.label5_MouseLeave);
-            this.label5.MouseHover += new System.EventHandler(this.label5_MouseHover);
             // 
             // textBoxConverLastHotkey
             // 
@@ -261,13 +252,6 @@
             this.linkLabel1.Text = "dotSwitcher";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
-            // toolTip1
-            // 
-            this.toolTip1.AutoPopDelay = 5000;
-            this.toolTip1.InitialDelay = 100;
-            this.toolTip1.ReshowDelay = 100;
-            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -303,6 +287,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -326,6 +311,7 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.label5);
+            this.tabPage2.Controls.Add(this.textBoxAutoSwitchingHotkey);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.textBoxConvertSelectionHotkey);
             this.tabPage2.Controls.Add(this.label4);
@@ -401,6 +387,44 @@
             this.label9.Text = "AutoMova";
             this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.textBoxDebug);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(378, 293);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "Debug";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // textBoxDebug
+            // 
+            this.textBoxDebug.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxDebug.Location = new System.Drawing.Point(6, 6);
+            this.textBoxDebug.Multiline = true;
+            this.textBoxDebug.Name = "textBoxDebug";
+            this.textBoxDebug.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxDebug.Size = new System.Drawing.Size(366, 281);
+            this.textBoxDebug.TabIndex = 0;
+            this.textBoxDebug.WordWrap = false;
+            // 
+            // textBoxAutoSwitchingHotkey
+            // 
+            this.textBoxAutoSwitchingHotkey.Location = new System.Drawing.Point(158, 88);
+            this.textBoxAutoSwitchingHotkey.Name = "textBoxAutoSwitchingHotkey";
+            this.textBoxAutoSwitchingHotkey.Size = new System.Drawing.Size(103, 20);
+            this.textBoxAutoSwitchingHotkey.TabIndex = 32;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 91);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(121, 13);
+            this.label5.TabIndex = 33;
+            this.label5.Text = "Toggle automatic mode:";
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.buttonSaveSettings;
@@ -432,6 +456,8 @@
             this.tabPage4.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -450,14 +476,12 @@
         private System.Windows.Forms.Button buttonGithub;
         private System.Windows.Forms.TextBox textBoxSwitchLayoutHotkey;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxConverLastHotkey;
         private System.Windows.Forms.TextBox textBoxConvertSelectionHotkey;
         private System.Windows.Forms.CheckBox checkBoxSmartSelection;
         private System.Windows.Forms.CheckBox checkBoxAutoSwitching;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.Label label8;
@@ -469,5 +493,9 @@
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.TextBox textBoxDebug;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBoxAutoSwitchingHotkey;
     }
 }
