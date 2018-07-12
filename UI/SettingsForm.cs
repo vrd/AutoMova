@@ -32,7 +32,7 @@ namespace AutoMova.UI
             InitializeHotkeyBoxes();
 
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            Text = "AutoMova" + " " + version.Major + "." + version.Minor + " alpha (build " + version.Build + ")"; //change form title
+            Text = "AutoMova" + " " + version.Major + "." + version.Minor + " alpha (build " + version.Build + "." + version.Revision + ")"; //change form title
             if (Environment.OSVersion.Version < new Version(6, 2))
             {
                 Icon = Properties.Resources.icon;
