@@ -281,6 +281,16 @@ namespace AutoMova.WinApi
             return (System.Windows.Forms.Keys)(((keyNumber & 0xFF00) << 8) | (keyNumber & 0xFF));
         }
 
+        public static Keys ToKey(char ch, IntPtr layout)
+        {
+            short keyNumber = VkKeyScanEx(ch, layout);
+            if (keyNumber == -1)
+            {
+                return System.Windows.Forms.Keys.None;
+            }
+            return (System.Windows.Forms.Keys)(((keyNumber & 0xFF00) << 8) | (keyNumber & 0xFF));
+        }
+
         public static string KeyCodeToUnicode(Keys keyCode, IntPtr keyboardLayout)
         {
             byte[] keyboardState = new byte[255];
