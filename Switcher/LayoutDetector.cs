@@ -8,7 +8,7 @@ using NHunspell;
 
 namespace AutoMova.Switcher
 {
-    class LayoutDetector
+    public class LayoutDetector
     {   
         //TODO: user dictionaries
         private Dictionary<string, UserDictionary> userDictionaries = new Dictionary<string, UserDictionary>();
