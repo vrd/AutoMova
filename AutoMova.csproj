@@ -70,6 +70,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="NHunspell, Version=1.2.5554.16953, Culture=neutral, PublicKeyToken=1ac793ea843b4366, processorArchitecture=MSIL">
       <HintPath>packages\NHunspell.1.2.5554.16953\lib\net\NHunspell.dll</HintPath>
     </Reference>
@@ -99,6 +100,7 @@
     <Compile Include="Switcher\ProtoDictionary.cs" />
     <Compile Include="Switcher\Switcher.cs" />
     <Compile Include="Switcher\UserDictionary.cs" />
+    <Compile Include="Test\Test.cs" />
     <Compile Include="UI\HotKeyBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -155,6 +157,9 @@
   <ItemGroup>
     <Content Include="icon.ico" />
     <None Include="icon10.ico" />
+    <Content Include="Test\data\en.txt" />
+    <Content Include="Test\data\ru.txt" />
+    <Content Include="Test\data\uk.txt" />
     <Content Include="UI\github.png" />
   </ItemGroup>
   <ItemGroup>
