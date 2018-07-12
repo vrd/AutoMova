@@ -60,6 +60,7 @@ namespace AutoMova.Switcher
                 Debug.WriteLine($"Word found in current user {currentLang.ToUpper()}");
                 return currentLang;
             }
+            Debug.WriteLine($"Word not found in current user {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
                 if (lang == currentLang)
@@ -71,6 +72,7 @@ namespace AutoMova.Switcher
                     Debug.WriteLine($"Word found in user ({lang.ToUpper()})");
                     return lang;
                 }
+                Debug.WriteLine($"Word not found in user ({lang.ToUpper()})");
             }
 
             //check Hunspell
@@ -79,6 +81,7 @@ namespace AutoMova.Switcher
                 Debug.WriteLine($"Word found in current Hunspell {currentLang.ToUpper()}");
                 return currentLang;
             }
+            Debug.WriteLine($"Word not found in current Hunspell {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
                 if (lang == currentLang)
@@ -90,6 +93,7 @@ namespace AutoMova.Switcher
                     Debug.WriteLine($"Word found in Hunspell ({lang.ToUpper()})");
                     return lang;
                 }
+                Debug.WriteLine($"Word not found in Hunspell ({lang.ToUpper()})");
             }
 
             //check proto dictionaries
@@ -98,6 +102,7 @@ namespace AutoMova.Switcher
                 Debug.WriteLine($"Word found in current proto {currentLang.ToUpper()}");
                 return currentLang;
             }
+            Debug.WriteLine($"Word not found in current proto {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
                 if (lang == currentLang)
@@ -109,31 +114,27 @@ namespace AutoMova.Switcher
                     Debug.WriteLine($"Word found in proto ({lang.ToUpper()})");
                     return lang;
                 }
+                Debug.WriteLine($"Word not found in proto ({lang.ToUpper()})");
             }          
 
             Debug.WriteLine($"Word not found anywhere");
             return currentLang;
         }
-        
-        private bool WordBelongsToLang(string word, string lang)
+
+        private bool WordBelongsToDict(string word, UserDictionary dict)
         {
-            if (userDictionaries[lang].Contains(word))
-            {
-                Debug.WriteLine($"Word found in user {lang.ToUpper()}");
-                return true;
-            }
-            if (hunspellDictionaries[lang].Spell(word))
-            {
-                Debug.WriteLine($"Word found in Hunspell {lang.ToUpper()}");
-                return true;
-            }
-            if (protoDictionaries[lang].Contains(word))
-            {
-                Debug.WriteLine($"Word found in proto {lang.ToUpper()}");
-                return true;
-            }
-            return false;
+            return dict.Contains(word);
         }
+
+        private bool WordBelongsToDict(string word, Hunspell dict)
+        {
+            return dict.Spell(word);
+        }
+
+        private bool WordBelongsToDict(string word, ProtoDictionary dict)
+        {
+            return dict.Contains(word);
+        }        
 
         private string ToLangCountryCode(string lang)
         {
