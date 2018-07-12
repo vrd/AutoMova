@@ -18,9 +18,9 @@ namespace AutoMovaTest
             var path = AppDomain.CurrentDomain.BaseDirectory;
             Debug.WriteLine($"Current path is {path}");
             Process.Start($"{path}\\..\\Release\\AutoMova.exe");
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
             Process.Start("notepad.exe");
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
 
             var layouts = LowLevelAdapter.GetLayoutList();
 
