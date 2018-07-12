@@ -54,51 +54,62 @@ namespace AutoMova.Switcher
                 return currentLang;
             }
 
-            if (WordBelongsToLang(lastWord[currentLang].Trim(), currentLang))
+            //check user dictionaries 
+            if (userDictionaries[currentLang].Contains(lastWord[currentLang]))
             {
-                Debug.WriteLine($"Word found in current lang ({currentLang.ToUpper()})");
+                Debug.WriteLine($"Word found in current user {currentLang.ToUpper()}");
                 return currentLang;
             }
-
             foreach (var lang in validLangs)
             {
                 if (lang == currentLang)
                 {
                     continue;
                 }
-                else if (WordBelongsToLang(lastWord[lang].Trim(), lang))
+                else if (userDictionaries[lang].Contains(lastWord[lang]))
                 {
-                    Debug.WriteLine($"Word found in other lang ({lang.ToUpper()})");
+                    Debug.WriteLine($"Word found in user ({lang.ToUpper()})");
                     return lang;
                 }
             }
 
-            /*foreach (var dict in userDictionaries)
+            //check Hunspell
+            if (hunspellDictionaries[currentLang].Spell(lastWord[currentLang]))
             {
-                if (validLangs.Contains(dict.Key) && dict.Value.Contains(lastWord[dict.Key].Trim()))
+                Debug.WriteLine($"Word found in current Hunspell {currentLang.ToUpper()}");
+                return currentLang;
+            }
+            foreach (var lang in validLangs)
+            {
+                if (lang == currentLang)
                 {
-                    Debug.WriteLine($"Word found in user {dict.Key.ToUpper()}");
-                    return dict.Key;
+                    continue;
+                }
+                else if (hunspellDictionaries[lang].Spell(lastWord[lang]))
+                {
+                    Debug.WriteLine($"Word found in Hunspell ({lang.ToUpper()})");
+                    return lang;
                 }
             }
 
-            foreach (var dict in hunspellDictionaries)
+            //check proto dictionaries
+            if (protoDictionaries[currentLang].Contains(lastWord[currentLang]))
             {
-                if (validLangs.Contains(dict.Key) && dict.Value.Spell(lastWord[dict.Key].Trim()))
-                {
-                    Debug.WriteLine($"Word found in Hunspell {dict.Key.ToUpper()}");
-                    return dict.Key;
-                }
+                Debug.WriteLine($"Word found in current proto {currentLang.ToUpper()}");
+                return currentLang;
             }
-
-            foreach (var dict in protoDictionaries)
+            foreach (var lang in validLangs)
             {
-                if (validLangs.Contains(dict.Key) && dict.Value.Contains(lastWord[dict.Key].Trim()))
+                if (lang == currentLang)
                 {
-                    Debug.WriteLine($"Word found in proto {dict.Key.ToUpper()}");
-                    return dict.Key;
+                    continue;
                 }
-            }*/
+                else if (protoDictionaries[lang].Contains(lastWord[lang]))
+                {
+                    Debug.WriteLine($"Word found in proto ({lang.ToUpper()})");
+                    return lang;
+                }
+            }          
 
             Debug.WriteLine($"Word not found anywhere");
             return currentLang;
