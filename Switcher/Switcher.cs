@@ -253,7 +253,7 @@ namespace AutoMova.Switcher
                 {
                     return;
                 }
-                if (!autoSwitchingIsGoing && !manualSwitchingIsGoing)
+                if (!autoSwitchingIsGoing && !manualSwitchingIsGoing && currentSelection.Count > 1)
                 {
                     var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);
                     Debug.WriteLine($"Current layout: {currentLayout}, detected layout: {detectedLayout}");
