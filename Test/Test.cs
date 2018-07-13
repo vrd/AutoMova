@@ -17,10 +17,10 @@ namespace AutoMovaTest
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
             Debug.WriteLine($"Current path is {path}");
-            Process.Start($"{path}\\..\\Release\\AutoMova.exe");
-            Thread.Sleep(1000);
-            Process.Start("notepad.exe");
-            Thread.Sleep(1000);
+            var app = Process.Start($"{path}\\..\\Release\\AutoMova.exe");
+            app.WaitForInputIdle();            
+            var notepad = Process.Start("notepad.exe");
+            notepad.WaitForInputIdle();
 
             var layouts = LowLevelAdapter.GetLayoutList();
 
@@ -33,14 +33,32 @@ namespace AutoMovaTest
                 testStrings.Add(layouts[Array.IndexOf(langs, lang)], System.IO.File.ReadAllLines($"{path}\\..\\..\\Test\\data\\{lang.Culture.Name.Substring(0,2)}.txt"));
             }
 
+            string expectedString = "";
             List<List<Keys>> testKeyCodes = new List<List<Keys>>();
             foreach (var layout in testStrings.Keys)
             {
                 foreach (var str in testStrings[layout])
                 {
-                    PressKeys(StringToKeys(str, layout));
+                    expectedString += (str + " ");
+                    PressKeys(StringToKeys(str, layout));                    
                 }                
             }
+
+            LowLevelAdapter.SendSelectAll();
+            LowLevelAdapter.SendCopy();
+            LowLevelAdapter.SendKeyPress(Keys.Delete);
+            notepad.CloseMainWindow();
+            notepad.Close();
+            //app.CloseMainWindow();
+            app.Kill();
+            var actualString = Clipboard.GetText();
+            var expectedWords = expectedString.Split(' ');
+            var actualWords = actualString.Split(' ');
+            for (int i = 0; i < expectedWords.Length; i++)
+            {
+                Assert.AreEqual(expectedWords[i], actualWords[i], false, "Auto switching error");
+            }
+            
         }
 
         private List<Keys> StringToKeys(string str, IntPtr layout)
