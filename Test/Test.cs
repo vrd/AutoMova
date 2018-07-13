@@ -18,7 +18,7 @@ namespace AutoMovaTest
             var path = AppDomain.CurrentDomain.BaseDirectory;
             Debug.WriteLine($"Current path is {path}");
             var app = Process.Start($"{path}\\..\\Release\\AutoMova.exe");
-            app.WaitForInputIdle();            
+            app.WaitForInputIdle();
             var notepad = Process.Start("notepad.exe");
             notepad.WaitForInputIdle();
 
@@ -49,16 +49,19 @@ namespace AutoMovaTest
             LowLevelAdapter.SendKeyPress(Keys.Delete);
             notepad.CloseMainWindow();
             notepad.Close();
-            //app.CloseMainWindow();
             app.Kill();
             var actualString = Clipboard.GetText();
             var expectedWords = expectedString.Split(' ');
             var actualWords = actualString.Split(' ');
             for (int i = 0; i < expectedWords.Length; i++)
             {
-                Assert.AreEqual(expectedWords[i], actualWords[i], false, "Auto switching error");
+                if (expectedWords[i] != actualWords[i])
+                {
+                    Debug.WriteLine($"{expectedWords[i]} -> {actualWords[i]}");
+                }
             }
-            
+            Assert.AreEqual(expectedWords, actualWords, "Auto switching error");            
+
         }
 
         private List<Keys> StringToKeys(string str, IntPtr layout)
