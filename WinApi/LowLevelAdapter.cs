@@ -164,6 +164,19 @@ namespace AutoMova.WinApi
             SendInput(2, new INPUT[2] { ctrlUp, cUp }, Marshal.SizeOf(typeof(INPUT)));
         }
 
+        public static void SendSelectAll()
+        {
+            var ctrlDown = MakeKeyInput(Keys.LControlKey, true);
+            var ctrlUp = MakeKeyInput(Keys.LControlKey, false);
+            var aDown = MakeKeyInput(Keys.A, true);
+            var aUp = MakeKeyInput(Keys.A, false);
+            SendInput(2, new INPUT[2] { ctrlDown, aDown }, Marshal.SizeOf(typeof(INPUT)));
+            Thread.Sleep(20);
+            SendInput(2, new INPUT[2] { ctrlUp, aUp }, Marshal.SizeOf(typeof(INPUT)));
+        }
+
+        
+
         public static void SendKeyPress(Keys vkCode, bool shift = false)
         {
             var down = MakeKeyInput(vkCode, true);
