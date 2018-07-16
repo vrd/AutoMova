@@ -32,7 +32,7 @@ namespace AutoMova.UI
             trayIcon.Text = "AutoMova";
             if (Environment.OSVersion.Version < new Version(6,2))
             {
-                trayIcon.Icon = Properties.Resources.icon;
+                trayIcon.Icon = Properties.Resources.icon7;
             }
             else
             {
