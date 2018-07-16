@@ -27,7 +27,8 @@ namespace AutoMova.Switcher
         private LayoutDetector layoutDetector;
         private List<KeyboardEventArgs> currentSelection = new List<KeyboardEventArgs>();
         private Dictionary<string, string> lastWord = new Dictionary<string, string>();
-        
+        private Dictionary<string, int> langStatistics = new Dictionary<string, int>();
+
 
         public SwitcherCore(ISettings settings)
         {
@@ -60,6 +61,7 @@ namespace AutoMova.Switcher
             foreach (var lang in langs)
             {   
                 lastWord.Add(lang, "");
+                langStatistics.Add(lang, 0);
             }
             layoutDetector = new LayoutDetector(langs);
         }
@@ -146,6 +148,7 @@ namespace AutoMova.Switcher
             try
             {
                 BeginNewSelection();
+                ClearLangStatistics();
             }
             catch (Exception ex)
             {
@@ -243,11 +246,15 @@ namespace AutoMova.Switcher
 
             if (IsPrintable(evtData))
             {
+                var currentLayout = layoutToLang[LowLevelAdapter.GetCurrentLayout()];
+                if (WordEnded())
+                {
+                    langStatistics[currentLayout] += 1;
+                }
                 if (settings.SmartSelection == false && GetPreviousVkCode() == Keys.Space)
                 {
                     BeginNewSelection();
-                }
-                var currentLayout = layoutToLang[LowLevelAdapter.GetCurrentLayout()];
+                }               
                 AddToCurrentSelection(evtData);
                 if (IsPunctuation(evtData, currentLayout))
                 {
@@ -255,7 +262,7 @@ namespace AutoMova.Switcher
                 }
                 if (!autoSwitchingIsGoing && !manualSwitchingIsGoing && currentSelection.Count > 1)
                 {
-                    var detectedLayout = layoutDetector.Decision(lastWord, currentLayout);
+                    var detectedLayout = layoutDetector.Decision(lastWord, SuggestedLang());
                     Debug.WriteLine($"Current layout: {currentLayout}, detected layout: {detectedLayout}");
                     if (settings.AutoSwitching == true && detectedLayout != currentLayout)
                     {                    
@@ -273,6 +280,7 @@ namespace AutoMova.Switcher
 
             // default: 
             BeginNewSelection();
+            ClearLangStatistics();
         }
 
         private void OnError(Exception ex)
@@ -283,11 +291,31 @@ namespace AutoMova.Switcher
             }
         }
 
-        #region selection manipulation
         private Keys GetPreviousVkCode()
         {
             if (currentSelection.Count == 0) { return Keys.None; }
             return currentSelection[currentSelection.Count - 1].KeyCode;
+        }
+
+        private void ClearLangStatistics()
+        {
+            foreach (var lang in langStatistics.ToArray())
+            {
+                langStatistics[lang.Key] = 0;
+            }
+        }
+
+        private string SuggestedLang()
+        {
+            return langStatistics.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+        }
+
+        private bool WordEnded()
+        {
+            return (currentSelection.Count >= 2) &&
+                (currentSelection[currentSelection.Count - 1].KeyCode == Keys.Space) &&
+                (currentSelection[currentSelection.Count - 2].KeyCode != Keys.Space) &&
+                (IsPrintable(currentSelection[currentSelection.Count - 2]));
         }
 
         private void BeginNewSelection()
@@ -322,8 +350,7 @@ namespace AutoMova.Switcher
                 lastWord[word.Key] = word.Value.Substring(0, word.Value.Length - 1);
             }
             //Debug.WriteLine(DictToString(lastWord));
-        }
-        #endregion
+        }        
 
         private string DictToString(Dictionary<string, string> dictionary)
         {
