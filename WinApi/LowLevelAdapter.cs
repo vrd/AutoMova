@@ -150,7 +150,7 @@ namespace AutoMova.WinApi
                 hWnd = focusedHandle;
             }
             if (hWnd == IntPtr.Zero) { hWnd = GetForegroundWindow(); }
-            PostMessage(GetForegroundWindow(), WM_INPUTLANGCHANGEREQUEST, 0, layout);          
+            PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, 0, layout);          
         }
 
         public static void SendCopy()
