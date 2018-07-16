@@ -52,74 +52,8 @@ namespace AutoMova.WinApi
             return focusedHandle;
         }
 
-        public static IntPtr GetCurrentLayout()
+        private static IntPtr GetWindowHandle()
         {
-            var wndThreadId = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
-            return GetKeyboardLayout(wndThreadId);
-        }
-
-        public static IntPtr[] GetLayoutList()
-        {
-            uint nElements = GetKeyboardLayoutList(0, null);
-            IntPtr[] ids = new IntPtr[nElements];
-            GetKeyboardLayoutList(ids.Length, ids);
-            return ids;
-        }
-
-        //public static uint LayoutToUint(IntPtr layout)
-        //{
-        //    return LoadKeyboardLayout((layout.ToString("x8")), KLF_ACTIVATE);
-        //}
-        
-        public static void SetNextKeyboardLayout()
-        {
-            Debug.WriteLine("SetNextKeyboardLayout()...");
-            IntPtr hWnd = IntPtr.Zero;
-            var threadId = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
-            var info = new GUITHREADINFO();
-            info.cbSize = Marshal.SizeOf(info);
-            var success = GetGUIThreadInfo(threadId, ref info);           
-            var focusedHandle = GetFocusedHandle();
-            if (success)
-            {
-                if (info.hwndCaret != IntPtr.Zero)
-                {
-                    hWnd = info.hwndCaret;
-                }
-                else if (info.hwndFocus != IntPtr.Zero)
-                {
-                    hWnd = info.hwndFocus;
-                }
-                else if (focusedHandle != IntPtr.Zero)
-                {
-                    hWnd = focusedHandle;
-                }
-                else if (info.hwndActive != IntPtr.Zero)
-                {
-                    hWnd = info.hwndActive;
-                }
-            }
-            else
-            {
-                hWnd = focusedHandle;
-            }
-            if(hWnd == IntPtr.Zero) { hWnd = GetForegroundWindow();  }
-
-            PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, INPUTLANGCHANGE_FORWARD, HKL_NEXT);
-
-            //var shiftDown = MakeKeyInput(Keys.LShiftKey, true);
-            //var shiftUp = MakeKeyInput(Keys.LShiftKey, false);
-            //var altDown = MakeKeyInput(Keys.LMenu, true);
-            //var altUp = MakeKeyInput(Keys.LMenu, false);
-
-            //SendInput(2, new INPUT[2] { altDown, shiftDown }, Marshal.SizeOf(typeof(INPUT)));
-            //SendInput(2, new INPUT[2] { altUp, shiftUp }, Marshal.SizeOf(typeof(INPUT)));
-        }
-
-        public static void SetKeyboadLayout(uint layout)
-        {
-            Debug.WriteLine("SetKeyboardLayout("+layout.ToString("x8")+")...");
-
             IntPtr hWnd = IntPtr.Zero;
             var threadId = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
             var info = new GUITHREADINFO();
@@ -149,8 +83,50 @@ namespace AutoMova.WinApi
             {
                 hWnd = focusedHandle;
             }
-            if (hWnd == IntPtr.Zero) { hWnd = GetForegroundWindow(); }
-            PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, 0, layout);          
+            if (hWnd == IntPtr.Zero)
+            {
+                hWnd = GetForegroundWindow();
+            }
+            return hWnd;
+        }
+
+        public static IntPtr GetCurrentLayout()
+        {
+            var wndThreadId = GetWindowThreadProcessId(GetWindowHandle(), IntPtr.Zero);
+            return GetKeyboardLayout(wndThreadId);
+        }
+
+        public static IntPtr[] GetLayoutList()
+        {
+            uint nElements = GetKeyboardLayoutList(0, null);
+            IntPtr[] ids = new IntPtr[nElements];
+            GetKeyboardLayoutList(ids.Length, ids);
+            return ids;
+        }
+
+        //public static uint LayoutToUint(IntPtr layout)
+        //{
+        //    return LoadKeyboardLayout((layout.ToString("x8")), KLF_ACTIVATE);
+        //}
+        
+        public static void SetNextKeyboardLayout()
+        {
+            Debug.WriteLine("SetNextKeyboardLayout()...");
+            PostMessage(GetWindowHandle(), WM_INPUTLANGCHANGEREQUEST, INPUTLANGCHANGE_FORWARD, HKL_NEXT);
+
+            //var shiftDown = MakeKeyInput(Keys.LShiftKey, true);
+            //var shiftUp = MakeKeyInput(Keys.LShiftKey, false);
+            //var altDown = MakeKeyInput(Keys.LMenu, true);
+            //var altUp = MakeKeyInput(Keys.LMenu, false);
+
+            //SendInput(2, new INPUT[2] { altDown, shiftDown }, Marshal.SizeOf(typeof(INPUT)));
+            //SendInput(2, new INPUT[2] { altUp, shiftUp }, Marshal.SizeOf(typeof(INPUT)));
+        }
+
+        public static void SetKeyboadLayout(uint layout)
+        {
+            Debug.WriteLine("SetKeyboardLayout("+layout.ToString("x8")+")...");          
+            PostMessage(GetWindowHandle(), WM_INPUTLANGCHANGEREQUEST, 0, layout);          
         }
 
         public static void SendCopy()
