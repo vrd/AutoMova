@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Windows.Forms;
+using AutoMova.WinApi;
 
 namespace AutoMova.Data
 {
@@ -11,13 +12,14 @@ namespace AutoMova.Data
         {
             var settings = new Settings();
             settings.Reload();
+            bool laptop = LowLevelAdapter.ThisIsLaptop();
             if (settings.ConvertLastHotkey.KeyData == Keys.None)
             {
-                settings.ConvertLastHotkey = new KeyboardEventArgs(Keys.Pause, false);
+                settings.ConvertLastHotkey = new KeyboardEventArgs(laptop ? Keys.End : Keys.Pause, false);
             }
             if (settings.ConvertSelectionHotkey.KeyData == Keys.None)
             {
-                settings.ConvertSelectionHotkey = new KeyboardEventArgs(Keys.Pause | Keys.Shift, false);
+                settings.ConvertSelectionHotkey = new KeyboardEventArgs(laptop ? (Keys.End | Keys.Shift) : (Keys.Pause | Keys.Shift), false);
             }
             if (settings.ShowTrayIcon == null)
             {
