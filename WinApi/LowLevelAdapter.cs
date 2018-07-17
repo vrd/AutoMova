@@ -331,5 +331,11 @@ namespace AutoMova.WinApi
             //Clipboard.SetDataObject(lDataObject);
         }
 
+        public static bool ThisIsLaptop()
+        {
+            LowLevelAdapter.SYSTEM_POWER_CAPABILITIES systemPowerCapabilites;
+            LowLevelAdapter.GetPwrCapabilities(out systemPowerCapabilites);
+            return systemPowerCapabilites.LidPresent;
+        }
     }
 }
