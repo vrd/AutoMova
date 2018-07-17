@@ -183,6 +183,7 @@ namespace AutoMova.Switcher
 
         private void OnKeyRelease(KeyboardEventArgs evtData)
         {
+            Debug.WriteLine("OnKeyRelease: KeyCode=" + evtData.KeyCode.ToString("x"));
             if (evtData.Equals(settings.SwitchLayoutHotkey) && readyToSwitch)
             {
                 SwitchLayout();
@@ -206,6 +207,7 @@ namespace AutoMova.Switcher
 
             if (evtData.Equals(settings.ConvertLastHotkey))
             {
+                Debug.WriteLine("ConvertLastHotkey detected!");
                 manualSwitchingIsGoing = true;
                 ConvertLast("next");
                 manualSwitchingIsGoing = false;
@@ -215,6 +217,7 @@ namespace AutoMova.Switcher
 
             if (evtData.Equals(settings.ConvertSelectionHotkey))
             {
+                Debug.WriteLine("ConvertSelectionHotkey detected!");
                 ConvertSelection();
                 evtData.Handled = true;
                 return;
@@ -222,6 +225,7 @@ namespace AutoMova.Switcher
 
             if (evtData.Equals(settings.ToggleAutoSwitchingHotkey))
             {
+                Debug.WriteLine("ToggleAutoSwitchingHotkey detected!");
                 settings.AutoSwitching = !settings.AutoSwitching;
                 evtData.Handled = true;
                 return;
