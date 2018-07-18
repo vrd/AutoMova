@@ -60,7 +60,7 @@ namespace AutoMova.Switcher
                 Debug.WriteLine($"Word found in current user {currentLang.ToUpper()}");
                 return currentLang;
             }
-            Debug.WriteLine($"Word not found in current user {currentLang.ToUpper()}");
+            //Debug.WriteLine($"Word not found in current user {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
                 if (lang == currentLang)
@@ -72,7 +72,7 @@ namespace AutoMova.Switcher
                     Debug.WriteLine($"Word found in user ({lang.ToUpper()})");
                     return lang;
                 }
-                Debug.WriteLine($"Word not found in user ({lang.ToUpper()})");
+                //Debug.WriteLine($"Word not found in user ({lang.ToUpper()})");
             }
 
             //check Hunspell
@@ -81,7 +81,7 @@ namespace AutoMova.Switcher
                 Debug.WriteLine($"Word found in current Hunspell {currentLang.ToUpper()}");
                 return currentLang;
             }
-            Debug.WriteLine($"Word not found in current Hunspell {currentLang.ToUpper()}");
+            //Debug.WriteLine($"Word not found in current Hunspell {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
                 if (lang == currentLang)
@@ -93,7 +93,7 @@ namespace AutoMova.Switcher
                     Debug.WriteLine($"Word found in Hunspell ({lang.ToUpper()})");
                     return lang;
                 }
-                Debug.WriteLine($"Word not found in Hunspell ({lang.ToUpper()})");
+                //Debug.WriteLine($"Word not found in Hunspell ({lang.ToUpper()})");
             }
 
             //check proto dictionaries
@@ -102,7 +102,7 @@ namespace AutoMova.Switcher
                 Debug.WriteLine($"Word found in current proto {currentLang.ToUpper()}");
                 return currentLang;
             }
-            Debug.WriteLine($"Word not found in current proto {currentLang.ToUpper()}");
+            //Debug.WriteLine($"Word not found in current proto {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
                 if (lang == currentLang)
@@ -114,7 +114,7 @@ namespace AutoMova.Switcher
                     Debug.WriteLine($"Word found in proto ({lang.ToUpper()})");
                     return lang;
                 }
-                Debug.WriteLine($"Word not found in proto ({lang.ToUpper()})");
+                //Debug.WriteLine($"Word not found in proto ({lang.ToUpper()})");
             }          
 
             Debug.WriteLine($"Word not found anywhere");
