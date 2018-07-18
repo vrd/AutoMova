@@ -444,17 +444,9 @@ namespace AutoMova.Switcher
                 Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SendKeyPress(vkCode, false);
             }
-            // Fix for skype
-            //Thread.Sleep(settings.SwitchDelay);
-
-            // Switch layout proper number of times
+            
             ignoreKeyPress = true;
-            //for (int i = 0; i < switchingNumber; i++)
-            //{
-            //    Thread.Sleep(settings.SwitchDelay);
-            //    LowLevelAdapter.SetNextKeyboardLayout();
-            //    Debug.WriteLine($"Now layout is {layoutDetector.ToLangCode(LowLevelAdapter.GetCurrentLayout())}");
-            //}
+            
             if (lang == "next")
             {
                 LowLevelAdapter.SetNextKeyboardLayout();
