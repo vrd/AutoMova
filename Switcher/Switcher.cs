@@ -183,7 +183,7 @@ namespace AutoMova.Switcher
 
         private void OnKeyRelease(KeyboardEventArgs evtData)
         {
-            Debug.WriteLine("OnKeyRelease: KeyCode=" + evtData.KeyCode.ToString("x"));
+            Debug.WriteLine($"OnKeyRelease: KeyCode={evtData.KeyCode.ToString("x")}, KeyData={evtData.KeyData.ToString("x")}, KeyData={evtData.KeyData.ToString()}");
             if (evtData.Equals(settings.SwitchLayoutHotkey) && readyToSwitch)
             {
                 SwitchLayout();
@@ -195,8 +195,8 @@ namespace AutoMova.Switcher
         private void OnKeyPress(KeyboardEventArgs evtData)
         {
             var vkCode = evtData.KeyCode;
-            Debug.WriteLine("OnKeyPress: KeyCode="+vkCode.ToString("x"));
-
+            Debug.WriteLine($"\nOnKeyPress: KeyCode={vkCode.ToString("x")}, KeyData={evtData.KeyData.ToString("x")}, KeyData={evtData.KeyData.ToString()}");
+            //return;
             if (evtData.Equals(settings.SwitchLayoutHotkey))
             {
                 readyToSwitch = true;
@@ -218,6 +218,7 @@ namespace AutoMova.Switcher
             if (evtData.Equals(settings.ConvertSelectionHotkey))
             {
                 Debug.WriteLine("ConvertSelectionHotkey detected!");
+                //return;
                 ConvertSelection();
                 evtData.Handled = true;
                 return;
@@ -386,8 +387,6 @@ namespace AutoMova.Switcher
 
         private void ConvertSelection()
         {
-            ignoreKeyPress = true;
-
             LowLevelAdapter.BackupClipboard();
             LowLevelAdapter.SendCopy();
             var selection = Clipboard.GetText();
@@ -407,15 +406,16 @@ namespace AutoMova.Switcher
 
             LowLevelAdapter.SetNextKeyboardLayout();
 
+            ignoreKeyPress = true;
             foreach (var key in keys)
             {
-                Debug.Write(key);
+                Debug.Write(key);                
                 if (key != Keys.None)
                 {
                     LowLevelAdapter.SendKeyPress(key, (key & Keys.Shift) != Keys.None);
                 }
             }
-
+            Debug.WriteLine("");
             ignoreKeyPress = false;
         }
 
@@ -465,7 +465,7 @@ namespace AutoMova.Switcher
                 LowLevelAdapter.SendKeyPress(data.KeyCode, data.Shift);
             }
 
-            LowLevelAdapter.PressPressedFnKeys(fnKeys);
+            //LowLevelAdapter.PressPressedFnKeys(fnKeys);
         }
 
         public void Dispose()
