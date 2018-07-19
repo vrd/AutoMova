@@ -243,13 +243,7 @@ namespace AutoMova.Switcher
                 return;
             }
 
-            if (vkCode == Keys.Space && notModified)
-            {                
-                AddToCurrentSelection(evtData);
-                return;                
-            }
-
-            if (IsPrintable(evtData))
+            if (IsPrintable(evtData) || (vkCode == Keys.Space && notModified))
             {
                 var currentLayout = layoutToLang[LowLevelAdapter.GetCurrentLayout()];
                 if (WordEnded())
@@ -267,14 +261,14 @@ namespace AutoMova.Switcher
                 }
                 if (!autoSwitchingIsGoing && !manualSwitchingIsGoing && currentSelection.Count > 1)
                 {
-                    var detectedLayout = layoutDetector.Decision(lastWord, SuggestedLang());
+                    var suggestedLayout = SuggestedLang();
+                    if (suggestedLayout == null) suggestedLayout = currentLayout;
+                    var detectedLayout = layoutDetector.Decision(lastWord, suggestedLayout);
                     Debug.WriteLine($"Current layout: {currentLayout}, detected layout: {detectedLayout}");
                     if (settings.AutoSwitching == true && detectedLayout != currentLayout)
                     {                    
                         autoSwitchingIsGoing = true;                    
-                         evtData.Handled = true;
-                        //evtData.SuppressKeyPress = true;
-                        //ConvertLast(CalculateSwitchingNumber(currentLayout, detectedLayout));
+                        evtData.Handled = true;
                         ConvertLast(detectedLayout);
                         autoSwitchingIsGoing = false;
                     }
@@ -311,7 +305,7 @@ namespace AutoMova.Switcher
         }
 
         private string SuggestedLang()
-        {
+        {   if (langStatistics.Sum(l => l.Value) == 0) return null;
             return langStatistics.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
         }
 
