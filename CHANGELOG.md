@@ -2,6 +2,11 @@
 
 All notable changes will be documented in this file.
 
+## [0.1.15] 2018-07-19
+- Icon idicates automatic mode state (enabled/disabled).
+- Valid default hotkeys on laptops.
+- Bugfixes.
+
 ## [0.1.14] 2018-07-17
 - Fix incorrect switching in Skype.
 - Improve language detection.
