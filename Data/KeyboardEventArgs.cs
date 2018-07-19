@@ -20,12 +20,14 @@ namespace AutoMova.Data
             Win = (bool)info.GetValue("winMod", typeof(bool));
             Type = KeyboardEventType.KeyDown;
         }
+
         public KeyboardEventArgs(Keys keyData, bool isWinDown, KeyboardEventType type = KeyboardEventType.KeyDown)
             : base(keyData)
         {
             Win = isWinDown;
             Type = type;
         }
+
         public new static readonly KeyboardEventArgs Empty = new KeyboardEventArgs(Keys.None, false, KeyboardEventType.Unknown);
 
         public override bool Equals(Object obj)
@@ -34,17 +36,15 @@ namespace AutoMova.Data
             {
                 return false;
             }
-
             var p = obj as KeyboardEventArgs;
             if (p == null)
             {
                 return false;
             }
             var equals = p.KeyCode == KeyCode &&
-                (p.Control == Control) &&
-                (p.Shift == Shift) &&
+                (p.KeyCode == Keys.LControlKey || p.KeyCode == Keys.RControlKey || p.Control == Control) &&
+                (p.KeyCode == Keys.LShiftKey || p.KeyCode == Keys.RShiftKey || p.Shift == Shift) &&
                 p.Win == Win;
-
             return equals;
         }
 
@@ -57,6 +57,7 @@ namespace AutoMova.Data
         {
             return Modifiers != Keys.None || Win;
         }
+
         public override string ToString()
         {
             var result =
