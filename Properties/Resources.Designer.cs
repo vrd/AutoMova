@@ -93,9 +93,29 @@ namespace AutoMova.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        internal static System.Drawing.Icon icon10_auto_off {
+            get {
+                object obj = ResourceManager.GetObject("icon10_auto_off", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         internal static System.Drawing.Icon icon7 {
             get {
                 object obj = ResourceManager.GetObject("icon7", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon icon7_auto_off {
+            get {
+                object obj = ResourceManager.GetObject("icon7_auto_off", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
