@@ -432,21 +432,22 @@ namespace AutoMova.Switcher
         {
             Debug.WriteLine($"ConvertLast to {lang}...");
             var fnKeys = LowLevelAdapter.ReleasePressedFnKeys();
-            var selection = currentSelection.ToList();
-            BeginNewSelection();
+                        
             // Fix for apps with autocompletion (i.e. omnibox in Google Chrome browser)
             RemoveSelection();
-            // Remove last word
-            var backspaceCount = autoSwitchingIsGoing ? (selection.Count - 1) : selection.Count;
-            var backspaces = Enumerable.Repeat<Keys>(Keys.Back, backspaceCount);
-            foreach (var vkCode in backspaces)
-            {
-                Thread.Sleep(settings.SwitchDelay);
-                LowLevelAdapter.SendKeyPress(vkCode, false);
-            }
             
             ignoreKeyPress = true;
+
+            // Remove last word
+            var backspaceCount = autoSwitchingIsGoing ? (currentSelection.Count - 1) : currentSelection.Count;
+            var backspaces = Enumerable.Repeat<Keys>(Keys.Back, backspaceCount);
+            foreach (var backspace in backspaces)
+            {
+                Thread.Sleep(settings.SwitchDelay);
+                LowLevelAdapter.SendKeyPress(backspace, false);
+            }           
             
+            //Change layout
             if (lang == "next")
             {
                 LowLevelAdapter.SetNextKeyboardLayout();
@@ -455,17 +456,17 @@ namespace AutoMova.Switcher
             {
                 LowLevelAdapter.SetKeyboadLayout(langToLayout[lang]);
             }
-            
-            ignoreKeyPress = false;
-
+                       
             // Type last word in new layout
-            foreach (var data in selection)
+            foreach (var data in currentSelection)
             {
                 Thread.Sleep(settings.SwitchDelay);
                 LowLevelAdapter.SendKeyPress(data.KeyCode, data.Shift);
             }
 
-            //LowLevelAdapter.PressPressedFnKeys(fnKeys);
+            LowLevelAdapter.PressPressedFnKeys(fnKeys);
+
+            ignoreKeyPress = false;
         }
 
         public void Dispose()
