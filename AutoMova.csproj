@@ -160,6 +160,8 @@
     <Content Include="icon.ico" />
     <None Include="icon10.ico" />
     <None Include="icon7.ico" />
+    <None Include="icon7_auto_off.ico" />
+    <None Include="icon10_auto_off.ico" />
     <Content Include="Test\data\en.txt" />
     <Content Include="Test\data\ru.txt" />
     <Content Include="Test\data\uk.txt" />

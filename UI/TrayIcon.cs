@@ -14,7 +14,7 @@ namespace AutoMova.UI
         public event EventHandler<EventArgs> SettingsClick;
         public event EventHandler<EventArgs> TogglePowerClick;
 
-        private NotifyIcon trayIcon;
+        public NotifyIcon trayIcon;
         private ContextMenu trayMenu;
         private MenuItem togglePowerItem;
         private bool wasShownBeforeTooltip;

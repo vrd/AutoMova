@@ -24,6 +24,8 @@ namespace AutoMova.UI
         public SettingsForm(Settings settings, SwitcherCore engine)
         {
             this.settings = settings;
+            settings.AutoSwitchingToggle += OnAutoSwitchingModeToggle;
+
             this.engine = engine;
             engine.Error += OnEngineError;
                         
@@ -180,7 +182,19 @@ namespace AutoMova.UI
         {
             icon.ShowTooltip(e.Error.Message, ToolTipIcon.Error);
         }
-        
+
+        void OnAutoSwitchingModeToggle(object sender, AutoToggleArgs e)
+        {
+            if (Environment.OSVersion.Version < new Version(6, 2))
+            {
+                icon.trayIcon.Icon = e.newValue ? Properties.Resources.icon7 : Properties.Resources.icon7_auto_off;
+            }
+            else
+            {
+                icon.trayIcon.Icon = e.newValue ? Properties.Resources.icon10 : Properties.Resources.icon10_auto_off;
+            }
+        }
+
         /**
          * HOTKEY INPUTS
          */

@@ -8,6 +8,8 @@ namespace AutoMova.Data
     [Serializable]
     public sealed class Settings : ApplicationSettingsBase, ISettings
     {
+        public event EventHandler<AutoToggleArgs> AutoSwitchingToggle;
+
         public static Settings Init()
         {
             var settings = new Settings();
@@ -40,6 +42,14 @@ namespace AutoMova.Data
             settings.Save();
             return settings;
         }
+
+        private void OnAutoSwitchingModeToggle(bool value)
+        {
+            if (AutoSwitchingToggle != null)
+            {
+                AutoSwitchingToggle(this, new AutoToggleArgs(value));
+            }
+        }       
 
         [UserScopedSetting]
         [SettingsSerializeAs(SettingsSerializeAs.Binary)]
@@ -173,8 +183,26 @@ namespace AutoMova.Data
             set
             {
                 this["AutoSwitching"] = (bool?)value;
+                if (value.HasValue)
+                {
+                    OnAutoSwitchingModeToggle((bool)value);
+                }
+                else
+                {
+                    OnAutoSwitchingModeToggle(false);
+                }
+                
             }
         }
     }
-    
+
+    public class AutoToggleArgs : EventArgs
+    {
+        public bool newValue;
+        public AutoToggleArgs(bool value)
+        {
+            newValue = value;
+        }
+    }
+
 }
