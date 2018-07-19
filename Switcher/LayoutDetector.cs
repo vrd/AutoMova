@@ -55,7 +55,7 @@ namespace AutoMova.Switcher
             }
 
             //check user dictionaries 
-            if (userDictionaries[currentLang].Contains(lastWord[currentLang]))
+            if (userDictionaries[currentLang].Contains(lastWord[currentLang].Trim()))
             {
                 Debug.WriteLine($"Word found in current user {currentLang.ToUpper()}");
                 return currentLang;
@@ -67,7 +67,7 @@ namespace AutoMova.Switcher
                 {
                     continue;
                 }
-                else if (userDictionaries[lang].Contains(lastWord[lang]))
+                else if (userDictionaries[lang].Contains(lastWord[lang].Trim()))
                 {
                     Debug.WriteLine($"Word found in user ({lang.ToUpper()})");
                     return lang;
@@ -76,7 +76,7 @@ namespace AutoMova.Switcher
             }
 
             //check Hunspell
-            if (hunspellDictionaries[currentLang].Spell(lastWord[currentLang]))
+            if (hunspellDictionaries[currentLang].Spell(lastWord[currentLang].Trim()))
             {
                 Debug.WriteLine($"Word found in current Hunspell {currentLang.ToUpper()}");
                 return currentLang;
@@ -88,7 +88,7 @@ namespace AutoMova.Switcher
                 {
                     continue;
                 }
-                else if (hunspellDictionaries[lang].Spell(lastWord[lang]))
+                else if (hunspellDictionaries[lang].Spell(lastWord[lang].Trim()))
                 {
                     Debug.WriteLine($"Word found in Hunspell ({lang.ToUpper()})");
                     return lang;
@@ -97,7 +97,7 @@ namespace AutoMova.Switcher
             }
 
             //check proto dictionaries
-            if (protoDictionaries[currentLang].Contains(lastWord[currentLang]))
+            if (protoDictionaries[currentLang].Contains(lastWord[currentLang].Trim()))
             {
                 Debug.WriteLine($"Word found in current proto {currentLang.ToUpper()}");
                 return currentLang;
@@ -109,7 +109,7 @@ namespace AutoMova.Switcher
                 {
                     continue;
                 }
-                else if (protoDictionaries[lang].Contains(lastWord[lang]))
+                else if (protoDictionaries[lang].Contains(lastWord[lang].Trim()))
                 {
                     Debug.WriteLine($"Word found in proto ({lang.ToUpper()})");
                     return lang;
