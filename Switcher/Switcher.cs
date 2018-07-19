@@ -381,17 +381,18 @@ namespace AutoMova.Switcher
 
         private void ConvertSelection()
         {
+            ignoreKeyPress = true;
             LowLevelAdapter.BackupClipboard();
+            var fnKeys = LowLevelAdapter.ReleasePressedFnKeys();
             LowLevelAdapter.SendCopy();
             var selection = Clipboard.GetText();
             LowLevelAdapter.RestoreClipboard();
             if (String.IsNullOrEmpty(selection))
             {
+                LowLevelAdapter.PressPressedFnKeys(fnKeys);
                 return;
             }
             
-            LowLevelAdapter.ReleasePressedFnKeys();
-
             var keys = new List<Keys>(selection.Length);
             for(var i = 0; i < selection.Length; i++)
             {
@@ -410,6 +411,9 @@ namespace AutoMova.Switcher
                 }
             }
             Debug.WriteLine("");
+
+            LowLevelAdapter.PressPressedFnKeys(fnKeys);
+
             ignoreKeyPress = false;
         }
 
