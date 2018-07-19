@@ -178,6 +178,7 @@ namespace AutoMova.WinApi
             //ReleasePressedKey(Keys.RMenu, true),
             //ReleasePressedKey(Keys.LWin, true),
             //ReleasePressedKey(Keys.RWin, true),
+            Debug.WriteLine("ReleasePressedFnKeys()...");
             var fnKeys = new Dictionary<Keys, bool>();
             fnKeys.Add(Keys.RControlKey, ReleasePressedKey(Keys.RControlKey, false));
             fnKeys.Add(Keys.LControlKey, ReleasePressedKey(Keys.LControlKey, false));
@@ -201,7 +202,7 @@ namespace AutoMova.WinApi
         private static bool ReleasePressedKey(Keys keyCode, bool releaseTwice)
         {
             if (!KeyPressed(keyCode)) { return false; }
-            //Debug.WriteLine("{0} was down", keyCode);
+            Debug.WriteLine("{0} was down", keyCode);
             var keyUp = MakeKeyInput(keyCode, false);
             if (releaseTwice)
             {
