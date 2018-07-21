@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>AutoMova | Automatic Keyboard Layout Switcher</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  body {
+      font: 20px 'Open Sans', sans-serif;
+      line-height: 1.8;
+      color: #f5f6f7;
+  }
+  p {font-size: 16px;}
+  h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 96px;
+    font-weight: 300;
+  }
+  .changelog {
+      font-size: 14px;
+      color: #f5f6f7;
+      height: 250px;
+  }
+  .margin {margin-bottom: 45px;}
+  .bg-1 { 
+      background-color: #1f1f1f; /* Green */
+      color: #ffffff;
+  }
+  .bg-2 { 
+      background-color: #ffffff; /* Dark Blue */
+      color: #555555;
+  }
+  .bg-3 { 
+      background-color: #474e5d; /* White */
+      color: #ffffff;
+  }
+  .bg-4 { 
+      background-color: #1f1f1f; /* Black Gray */
+      color: #fff;
+  }
+  .container-fluid {
+      padding-top: 50px;
+      padding-bottom: 50px;
+  }
+  .navbar {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      border: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+      font-size: 14px;
+      /*letter-spacing: 5px;*/
+  }
+  .navbar-nav  li a:hover {
+      color: #1abc9c !important;
+  }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<!-- <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">AutoMova</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Download</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Credits</a></li>
+      </ul>
+    </div>
+  </div>
+</nav> -->
+
+<!-- First Container -->
+<div class="container-fluid bg-1 text-center">
+  <h1><span><img src="am_logo_128.png" class="img-responsive" style="display:inline" alt="Logo" ></span> AutoMova</h1>  
+  <h3 class="margin">Automatic Keyboard Layout Switcher</h3>
+  <div>
+    <a href="#" class="btn btn-warning btn-lg">
+      <span class="glyphicon glyphicon-download-alt"></span> Download v.0.1.15<br><small>for Windows</small>
+    </a>
+  </div>
+</div>
+
+<!-- Second Container -->
+<div class="container-fluid bg-2 text-center">
+  <h3 class="margin">Changelog</h3>
+  <object data="CHANGELOG.md" type="text/plain" width="500" class="changelog">
+  <a href="CHANGELOG.md">No Support?</a>
+  </object>
+  
+</div>
+
+
+<!-- Third Container (Grid) -->
+<div class="container-fluid bg-3 text-center">    
+  <h3 class="margin">About</h3><br>
+  
+    
+</div>
+
+<!-- Footer -->
+<footer class="container-fluid bg-4 text-center">
+  
+</footer>
+
+</body>
+</html>
