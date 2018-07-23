@@ -4,13 +4,15 @@
   <title>AutoMova | Automatic Keyboard Layout Switcher</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='icon' href='favicon.ico' type='image/x-icon'/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
   body {
-      font: 20px 'Open Sans', sans-serif;
+      font: 20px 'Lato', sans-serif;
+      font-weight: 300;
       line-height: 1.8;
       color: #f5f6f7;
       background: #black;
@@ -24,31 +26,28 @@
 
   p {
     font-size: 16px;
-    width: 700px;
+    max-width: 700px;
     margin: auto;
-    margin-bottom: 20px;
-    margin-top: 20px;
     text-align: left;
   }
   ul {
     font-size: 16px;
-    width: 700px;
+    max-width:  700px;
     margin: auto;
-    margin-bottom: 20px;
-    margin-top: 20px;
     text-align: left;
   }
+  small {
+    font-size: 14px;
+  }
   h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 96px;
+    font-size: 80px;
     font-weight: 300;
+  }  
+  .img-responsive {
+    padding: 20px;
   }
-  .changelog {
-      font-size: 14px;
-      color: #000000;
-      height: 250px;
-  }
-  .margin {margin-bottom: 45px;}
+  .margin {margin-bottom: 30px;}
+  .padding-top {padding-top: 60px;}
   .bg-1 { 
       color: #ffffff;
       background: linear-gradient(#264d73, #3d3d5c);
@@ -60,11 +59,11 @@
 
   footer { 
       background-color: #1f1f2e;
-      color: #fff;
+      color: #fff;      
   }
   .container-fluid {
-      padding-top: 50px;
-      padding-bottom: 0px;
+      padding-top: 25px;
+      padding-bottom: 25px;
   }
   .navbar {
       padding-top: 15px;
@@ -105,13 +104,13 @@
 </nav> -->
 
 <!-- First Container -->
-<div class="container-fluid bg-1 text-center">
+<div class="container-fluid bg-1 text-center padding-top">
 
   <h1><span><img src="img/am_logo_128.png" class="img-responsive" style="display:inline" alt="" ></span> AutoMova</h1>  
   <h3 class="margin">Open Source Automatic Keyboard Layout Switcher</h3>
   <div>
     <a href="https://github.com/vrd/AutoMova/raw/development/release/AutoMovaSetup-0.1.15.msi" class="btn btn-warning btn-lg active">
-      <span class="glyphicon glyphicon-download-alt"></span>&nbsp;<b>Download v.0.1.15</b><br><small>for Windows</small>
+      <span class="glyphicon glyphicon-download-alt"></span>&nbsp;<b>Download v.0.1.15-alpha</b><br><small>for Windows</small>
     </a>
     <br>
     <a href="https://github.com/vrd/AutoMova">
@@ -123,15 +122,15 @@
 <!-- Second Container -->
 <div class="container-fluid bg-2 text-center">
   <h3 class="margin">Just type it</h3>
-  <p>AutoMova app switches keyboard layouts automatically as you type, so you can type in any* language and not be distracted by manual layout switching anymore.</p>
+  <p>AutoMova app analyzes keyboard input and switches keyboard layouts automatically as you type. So you can type in any* language and not be distracted by manual layout switching anymore.</p>
   <img src="img/20180723_123603.gif" class="img-responsive" style="display:inline" alt="" >
   <p>* Supported layouts:<br>
-    <img src="img/flags/us.png" alt="">&nbsp;English (United States)<br>
-    <img src="img/flags/gb.png" alt="">&nbsp;English (United Kingdom)<br>
-    <img src="img/flags/au.png" alt="">&nbsp;English (Australia)<br>
-    <img src="img/flags/ca.png" alt="">&nbsp;English (Canada)<br>
-    <img src="img/flags/ua.png" alt="">&nbsp;Ukrainian<br>
-    <img src="img/flags/ru.png" alt="">&nbsp;Russian<br>
+    <img src="img/flags/us.png" alt="">&nbsp;&nbsp;&nbsp;English (United States)<br>
+    <img src="img/flags/gb.png" alt="">&nbsp;&nbsp;&nbsp;English (United Kingdom)<br>
+    <img src="img/flags/au.png" alt="">&nbsp;&nbsp;&nbsp;English (Australia)<br>
+    <img src="img/flags/ca.png" alt="">&nbsp;&nbsp;&nbsp;English (Canada)<br>
+    <img src="img/flags/ua.png" alt="">&nbsp;&nbsp;&nbsp;Ukrainian<br>
+    <img src="img/flags/ru.png" alt="">&nbsp;&nbsp;&nbsp;Russian<br>
   </p>  
 </div>
 
@@ -150,13 +149,20 @@
 <!-- Third Container (Grid) -->
 <div class="container-fluid bg-2 text-center">    
   <h3 class="margin">Credits</h3>
-  
-    
+  <p>Forked from dotSwitcher</p>
+  <p>Inspiration and proto-dictionaries by Andrew Kuznetsov, author of great xneur app</p>
+  <p>English hunspell dictionaries by SCOWL</p>
+  <p>Ukrainian hunspell dictionary by Andriy Rysin et al.</p>
+  <p>Russian hunspell dictionary by Aleksandr Klyukvin</p>
+  <p></p>    
 </div>
 
 <!-- Footer -->
-<footer class="container-fluid bg-4 text-center">
-  
+<footer class="container-fluid bg-footer text-left">  
+    <small>
+      <p>Flag icons by FamFamFam (Mark James)</p>
+      <p>© O.G., 2018</p>
+    </small>  
 </footer>
 
 </body>
