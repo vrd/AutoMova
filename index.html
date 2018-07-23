@@ -13,8 +13,31 @@
       font: 20px 'Open Sans', sans-serif;
       line-height: 1.8;
       color: #f5f6f7;
+      background: #black;
+
   }
-  p {font-size: 16px;}
+
+  a:link {color: #f5f6f7;}
+  a:visited {color: #f5f6f7;}
+  a:hover {color: #f5f6f7;}
+  a:active {color: #f5f6f7;}
+
+  p {
+    font-size: 16px;
+    width: 700px;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-align: left;
+  }
+  ul {
+    font-size: 16px;
+    width: 700px;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-align: left;
+  }
   h1 {
     font-family: 'Open Sans', sans-serif;
     font-size: 96px;
@@ -27,25 +50,21 @@
   }
   .margin {margin-bottom: 45px;}
   .bg-1 { 
-      background-color: #1f1f1f; /* Green */
       color: #ffffff;
-      background: radial-gradient(circle, #1f1f2e, black);
+      background: linear-gradient(#264d73, #3d3d5c);
   }
   .bg-2 { 
-      background-color: #ffffff; /* Dark Blue */
-      color: #555555;
-  }
-  .bg-3 { 
-      background-color: #474e5d; /* White */
+      background-color: #3d3d5c;
       color: #ffffff;
-  }
-  .bg-4 { 
-      background-color: #1f1f1f; /* Black Gray */
+  }  
+
+  footer { 
+      background-color: #1f1f2e;
       color: #fff;
   }
   .container-fluid {
       padding-top: 50px;
-      padding-bottom: 50px;
+      padding-bottom: 0px;
   }
   .navbar {
       padding-top: 15px;
@@ -89,27 +108,48 @@
 <div class="container-fluid bg-1 text-center">
 
   <h1><span><img src="img/am_logo_128.png" class="img-responsive" style="display:inline" alt="" ></span> AutoMova</h1>  
-  <h3 class="margin">Automatic Keyboard Layout Switcher</h3>
+  <h3 class="margin">Open Source Automatic Keyboard Layout Switcher</h3>
   <div>
     <a href="https://github.com/vrd/AutoMova/raw/development/release/AutoMovaSetup-0.1.15.msi" class="btn btn-warning btn-lg active">
       <span class="glyphicon glyphicon-download-alt"></span>&nbsp;<b>Download v.0.1.15</b><br><small>for Windows</small>
+    </a>
+    <br>
+    <a href="https://github.com/vrd/AutoMova">
+      <small><span class="glyphicon glyphicon-search"></span>&nbsp;view code on Github</small>
     </a>
   </div>
 </div>
 
 <!-- Second Container -->
 <div class="container-fluid bg-2 text-center">
-  <h3 class="margin">Changelog</h3>
-  <object data="https://raw.githubusercontent.com/vrd/AutoMova/development/CHANGELOG.md" type="text/plain" width="500" class="changelog">
-  <a href="https://raw.githubusercontent.com/vrd/AutoMova/development/CHANGELOG.md">No Support?</a>
-  </object>
-  
+  <h3 class="margin">Just type it</h3>
+  <p>AutoMova app switches keyboard layouts automatically as you type, so you can type in any* language and not be distracted by manual layout switching anymore.</p>
+  <img src="img/20180723_123603.gif" class="img-responsive" style="display:inline" alt="" >
+  <p>* Supported layouts:<br>
+    <img src="img/flags/us.png" alt="">&nbsp;English (United States)<br>
+    <img src="img/flags/gb.png" alt="">&nbsp;English (United Kingdom)<br>
+    <img src="img/flags/au.png" alt="">&nbsp;English (Australia)<br>
+    <img src="img/flags/ca.png" alt="">&nbsp;English (Canada)<br>
+    <img src="img/flags/ua.png" alt="">&nbsp;Ukrainian<br>
+    <img src="img/flags/ru.png" alt="">&nbsp;Russian<br>
+  </p>  
 </div>
 
 
+
+<div class="container-fluid bg-2 text-center">    
+  <h3 class="margin">Main features</h3>
+  <ul>    
+    <li>Automatic word conversion</li>
+    <li>Manual conversion of last word</li>
+    <li>Manual conversion of selected text</li>
+    <li>Free and open source</li>
+  </ul>   
+</div>
+
 <!-- Third Container (Grid) -->
-<div class="container-fluid bg-3 text-center">    
-  <h3 class="margin">About</h3><br>
+<div class="container-fluid bg-2 text-center">    
+  <h3 class="margin">Credits</h3>
   
     
 </div>
