@@ -4,66 +4,102 @@
   <title>AutoMova | Automatic Keyboard Layout Switcher</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel='icon' href='favicon.ico' type='image/x-icon'/>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel='icon' href='favicon.ico' type='image/x-icon'/>  
+  <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">  
   <style>
   body {
       font: 20px 'Lato', sans-serif;
       font-weight: 300;
-      line-height: 1.8;
-      color: #f5f6f7;
-      background: #black;
-
+      background: #3d3d5c;
+      color: #ffffff;
+      margin: 0px;
+      display: flex;
+      flex-direction: column;    
+      align-items: stretch;    
+  }  
+  div {    
+    padding-left: 10px;
+    padding-right: 10px;
   }
-
+  .bg-gradient { 
+      color: #ffffff;
+      background: linear-gradient(#264d73, #3d3d5c);
+  }    
   a:link {color: #f5f6f7;}
   a:visited {color: #f5f6f7;}
   a:hover {color: #f5f6f7;}
   a:active {color: #f5f6f7;}
-
   p {
     font-size: 16px;
-    max-width: 700px;
+    max-width: 670px;
     margin: auto;
     text-align: left;
   }
   ul {
     font-size: 16px;
-    max-width:  700px;
+    max-width:  670px;
     margin: auto;
     text-align: left;
+    list-style-type: circle;
   }
   small {
     font-size: 14px;
   }
   h1 {
-    font-size: 80px;
-    font-weight: 300;
+    font-size: 72px;
+    font-weight: 300; 
+    margin: 0;   
   }  
-  .img-responsive {
-    padding: 20px;
+  h3 {    
+    font-weight: 300; 
+    text-align: center;   
+  } 
+  .img-logo {
+    padding: 15px 25px 15px 0px;
   }
-  .margin {margin-bottom: 30px;}
+  .img {
+    padding-top: 20px;
+    padding-bottom: 20px;    
+    max-width: 100%;
+    height: auto;
+  }
+  .padding-bottom {padding-bottom: 50px;}
   .padding-top {padding-top: 60px;}
-  .bg-1 { 
-      color: #ffffff;
-      background: linear-gradient(#264d73, #3d3d5c);
-  }
-  .bg-2 { 
-      background-color: #3d3d5c;
-      color: #ffffff;
+  .text-center {
+    text-align: center;
   }  
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .column {
+    flex-direction: column;
+  }
+  .center {
+    justify-content: center;
+    align-items: center;
+  }
 
+  .button {
+    background-color: #4CAF50; 
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+  .button:hover {
+    background-color: #5CBF60; 
+    
+  }
   footer { 
       background-color: #1f1f2e;
-      color: #fff;      
-  }
-  .container-fluid {
-      padding-top: 25px;
-      padding-bottom: 25px;
+      color: #fff; 
+      padding-left: 10px;
+      padding-right: 10px;     
   }
   .navbar {
       padding-top: 15px;
@@ -79,8 +115,8 @@
   }
   </style>
 </head>
-<body>
 
+<body>
 <!-- Navbar -->
 <!-- <nav class="navbar navbar-default">
   <div class="container">
@@ -103,27 +139,23 @@
   </div>
 </nav> -->
 
-<!-- First Container -->
-<div class="container-fluid bg-1 text-center padding-top">
-
-  <h1><span><img src="img/am_logo_128.png" class="img-responsive" style="display:inline" alt="" ></span> AutoMova</h1>  
-  <h3 class="margin">Open Source Automatic Keyboard Layout Switcher</h3>
-  <div>
-    <a href="https://github.com/vrd/AutoMova/raw/development/release/AutoMovaSetup-0.1.15.msi" class="btn btn-warning btn-lg active">
-      <span class="glyphicon glyphicon-download-alt"></span>&nbsp;<b>Download v.0.1.15-alpha</b><br><small>for Windows</small>
-    </a>
+ <div class="bg-gradient padding-top padding-bottom flex column center">
+  <h1 class="flex center" style="align-items: flex-start"><img src="img/am_logo_128.png" class="img-logo" alt="" >AutoMova</h1>  
+  <h3>Automatic Keyboard Layout Switcher</h3>
+  <a href="https://github.com/vrd/AutoMova/raw/development/release/AutoMovaSetup-0.1.15.msi" class="button">
+    <b>Download v.0.1.15-alpha</b>
     <br>
-    <a href="https://github.com/vrd/AutoMova">
-      <small><span class="glyphicon glyphicon-search"></span>&nbsp;view code on Github</small>
-    </a>
-  </div>
+    <small>for Windows</small>
+  </a>
+  <a href="https://github.com/vrd/AutoMova">
+    <small>view code on Github</small>
+  </a>  
 </div>
 
-<!-- Second Container -->
-<div class="container-fluid bg-2 text-center">
-  <h3 class="margin">Just type it</h3>
-  <p>AutoMova app analyzes keyboard input and switches keyboard layouts automatically as you type. So you can type in any* language and not be distracted by manual layout switching anymore.</p>
-  <img src="img/20180723_123603.gif" class="img-responsive" style="display:inline" alt="" >
+<div class="bg-solid padding-bottom text-center">
+ <h3 class="margin">Just type it</h3>
+    <p>AutoMova app analyzes keyboard input and switches keyboard layouts automatically as you type. So you can type in any* language and not be distracted by manual layout switching anymore.</p>
+  <img src="img/20180723_123603.gif" class="img" style="display:inline" alt="" >
   <p>* Supported layouts:<br>
     <img src="img/flags/us.png" alt="">&nbsp;&nbsp;&nbsp;English (United States)<br>
     <img src="img/flags/gb.png" alt="">&nbsp;&nbsp;&nbsp;English (United Kingdom)<br>
@@ -131,13 +163,12 @@
     <img src="img/flags/ca.png" alt="">&nbsp;&nbsp;&nbsp;English (Canada)<br>
     <img src="img/flags/ua.png" alt="">&nbsp;&nbsp;&nbsp;Ukrainian<br>
     <img src="img/flags/ru.png" alt="">&nbsp;&nbsp;&nbsp;Russian<br>
+    ...and more will be added soon!
   </p>  
 </div>
 
-
-
-<div class="container-fluid bg-2 text-center">    
-  <h3 class="margin">Main features</h3>
+<div class="bg-solid padding-bottom text-center">    
+  <h3 class="margin">Key features</h3>
   <ul>    
     <li>Automatic word conversion</li>
     <li>Manual conversion of last word</li>
@@ -146,8 +177,8 @@
   </ul>   
 </div>
 
-<!-- Third Container (Grid) -->
-<div class="container-fluid bg-2 text-center">    
+
+<div class="bg-solid padding-bottom text-center">    
   <h3 class="margin">Credits</h3>
   <p>Forked from dotSwitcher</p>
   <p>Inspiration and proto-dictionaries by Andrew Kuznetsov, author of great xneur app</p>
@@ -157,13 +188,12 @@
   <p></p>    
 </div>
 
-<!-- Footer -->
-<footer class="container-fluid bg-footer text-left">  
+<footer class="bg-footer padding-top padding-bottom container-fluid  text-left">  
     <small>
       <p>Flag icons by FamFamFam (Mark James)</p>
-      <p>© O.G., 2018</p>
+      <p>© Oleksandr Goncharov, 2018</p>
     </small>  
-</footer>
+</footer> 
 
 </body>
 </html>
