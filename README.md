@@ -22,9 +22,5 @@ Improvements to be implemented
 Credits
 -------
 GitHub icon by [Picons.me](https://picons.me/)
-Inspiration and proto-dictionaries by [Andrew Kuznetsov](https://xneur.ru)
 
-Known bugs
-----------
-If you experience erasing the word and retyping it again in the same layout (as did I, in skype), try to increase the switch delay in settings window (200 ms works for me).
-If you know any workaround for [this](http://stackoverflow.com/questions/27720728/cant-send-wm-inputlangchangerequest-to-some-controls), your help would be much appreciated.
+Inspiration and proto-dictionaries by [Andrew Kuznetsov](https://xneur.ru)
