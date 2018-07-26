@@ -2,6 +2,11 @@
 
 All notable changes will be documented in this file.
 
+## [0.1.16] 2018-07-26
+- Improve language detection
+- Update user dictionaries
+- Update app icon 
+
 ## [0.1.15] 2018-07-19
 - Icon idicates automatic mode state (enabled/disabled).
 - Valid default hotkeys on laptops.
