@@ -82,28 +82,56 @@ namespace AutoMova.Switcher
             switch (lang.Substring(0,2))
             {
                 case "en":
-                    {
+                    {       // ; :
+                        if (evtData.KeyCode == Keys.Oem1 ||
+                           (!evtData.Shift &&
+                            // .
+                                (evtData.KeyCode == Keys.OemPeriod ||
+                            // ,
+                                evtData.KeyCode == Keys.Oemcomma)) ||                                   
+                           (evtData.Shift &&
+                            // ?
+                                (evtData.KeyCode == Keys.OemQuestion ||
+                            // "
+                                evtData.KeyCode == Keys.Oem7 ||
+                            // !
+                                evtData.KeyCode == Keys.D1 ||
+                            // (
+                                evtData.KeyCode == Keys.D9 ||
+                            // )
+                                evtData.KeyCode == Keys.D0
+                            )))                                 
+                        {
+                            return true;                            
+                        }
                         return false;
                     }
                 case "ru":
-                case "uk":
-                default:
+                case "uk":                
                     {   // , .
                         if (evtData.KeyCode == Keys.OemQuestion ||
-                                (evtData.Shift && 
-                                    // !
-                                    (evtData.KeyCode == Keys.D1 ||
-                                     // ;
-                                     evtData.KeyCode == Keys.D4 ||
-                                     // :
-                                     evtData.KeyCode == Keys.D6 ||
-                                     // ?
-                                     evtData.KeyCode == Keys.D7)))
+                           (evtData.Shift && 
+                                // !
+                                (evtData.KeyCode == Keys.D1 ||
+                                // "
+                                evtData.KeyCode == Keys.D2 ||
+                                // ;
+                                evtData.KeyCode == Keys.D4 ||
+                                // :
+                                evtData.KeyCode == Keys.D6 ||
+                                // ?
+                                evtData.KeyCode == Keys.D7 ||
+                                // (
+                                evtData.KeyCode == Keys.D9 ||
+                                // )
+                                evtData.KeyCode == Keys.D0
+                                )))
                         {
                             return true;
                         }
                         return false;
                     }
+                default: return false;
             }
         }
 
@@ -262,8 +290,13 @@ namespace AutoMova.Switcher
                 if (!autoSwitchingIsGoing && !manualSwitchingIsGoing && currentSelection.Count > 1)
                 {
                     var suggestedLayout = SuggestedLang();
-                    if (suggestedLayout == null) suggestedLayout = currentLayout;
-                    var detectedLayout = layoutDetector.Decision(lastWord, suggestedLayout);
+                    bool firstWord = false;
+                    if (suggestedLayout == null)
+                    {
+                        suggestedLayout = currentLayout;
+                        firstWord = true;
+                    }
+                    var detectedLayout = layoutDetector.DetectLayout(lastWord, suggestedLayout, firstWord);
                     Debug.WriteLine($"Current layout: {currentLayout}, detected layout: {detectedLayout}");
                     if (settings.AutoSwitching == true && detectedLayout != currentLayout)
                     {                    
@@ -305,7 +338,9 @@ namespace AutoMova.Switcher
         }
 
         private string SuggestedLang()
-        {   if (langStatistics.Sum(l => l.Value) == 0) return null;
+        {
+            Debug.WriteLine($"Lang stat: {DictToString(langStatistics)}");
+            if (langStatistics.Sum(l => l.Value) == 0) return null;
             return langStatistics.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
         }
 
@@ -359,8 +394,18 @@ namespace AutoMova.Switcher
                 str += item.Key + ": '" + item.Value + "'; ";
             }
             return str;
-        }  
-        
+        }
+
+        private string DictToString(Dictionary<string, int> dictionary)
+        {
+            var str = "";
+            foreach (var item in dictionary)
+            {
+                str += item.Key + ": '" + item.Value + "'; ";
+            }
+            return str;
+        }
+
         //private int CalculateSwitchingNumber(IntPtr currentLayout, IntPtr detectedLayout)
         //{
         //    var switchingNumber = Array.IndexOf(layouts, detectedLayout) - Array.IndexOf(layouts, currentLayout);

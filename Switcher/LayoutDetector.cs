@@ -38,7 +38,6 @@ namespace AutoMova.Switcher
                 }
                 catch (Exception e)
                 {
-
                     Debug.WriteLine("!!! Error opening dictionary !!!");
                     continue;
                 }
@@ -47,78 +46,116 @@ namespace AutoMova.Switcher
             }
         }
 
-        public string Decision(Dictionary<string, string> lastWord, string currentLang)
+        public string DetectLayout(Dictionary<string, string> lastWord, string currentLang, bool firstWord)
         {
             if (!validLangs.Contains(currentLang))
             {
+                Debug.WriteLine($"Unsupported lang: {currentLang.ToUpper()}");
                 return currentLang;
             }
 
-            //check user dictionaries 
-            if (userDictionaries[currentLang].Contains(lastWord[currentLang].Trim()))
+            string detectedLang;
+
+            if (firstWord)
+            {
+                detectedLang = CheckAllUser(lastWord, currentLang);
+                if (detectedLang != "none") return detectedLang;
+                detectedLang = CheckAllHunspell(lastWord, currentLang);
+                if (detectedLang != "none") return detectedLang; 
+            }
+            else
+            {                            
+                if (WordBelongsToLang(lastWord[currentLang].Trim(), currentLang)) return currentLang;
+                foreach (var lang in validLangs)
+                {
+                    if (lang == currentLang) continue;
+                    if (WordBelongsToLang(lastWord[lang].Trim(), lang)) return lang;                    
+                }                
+            }
+
+            detectedLang = CheckAllProto(lastWord, currentLang);
+            if (detectedLang != "none") return detectedLang;
+            return currentLang;
+        }
+
+        private string CheckAllUser(Dictionary<string, string> word, string currentLang)
+        {
+            if (WordBelongsToDict(word[currentLang].Trim(), userDictionaries[currentLang]))
             {
                 Debug.WriteLine($"Word found in current user {currentLang.ToUpper()}");
                 return currentLang;
             }
-            //Debug.WriteLine($"Word not found in current user {currentLang.ToUpper()}");
+            Debug.WriteLine($"Word not found in current user {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
-                if (lang == currentLang)
-                {
-                    continue;
-                }
-                else if (userDictionaries[lang].Contains(lastWord[lang].Trim()))
+                if (lang == currentLang) continue;
+                if (WordBelongsToDict(word[lang].Trim(), userDictionaries[lang]))
                 {
                     Debug.WriteLine($"Word found in user ({lang.ToUpper()})");
                     return lang;
                 }
-                //Debug.WriteLine($"Word not found in user ({lang.ToUpper()})");
+                Debug.WriteLine($"Word not found in user ({lang.ToUpper()})");
             }
+            return "none";
+        }
 
-            //check Hunspell
-            if (hunspellDictionaries[currentLang].Spell(lastWord[currentLang].Trim()))
+        private string CheckAllHunspell(Dictionary<string, string> word, string currentLang)
+        {
+            if (WordBelongsToDict(word[currentLang].Trim(), hunspellDictionaries[currentLang]))
             {
                 Debug.WriteLine($"Word found in current Hunspell {currentLang.ToUpper()}");
                 return currentLang;
             }
-            //Debug.WriteLine($"Word not found in current Hunspell {currentLang.ToUpper()}");
+            Debug.WriteLine($"Word not found in current Hunspell {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
-                if (lang == currentLang)
-                {
-                    continue;
-                }
-                else if (hunspellDictionaries[lang].Spell(lastWord[lang].Trim()))
+                if (lang == currentLang) continue;                
+                if (WordBelongsToDict(word[lang].Trim(), hunspellDictionaries[lang]))
                 {
                     Debug.WriteLine($"Word found in Hunspell ({lang.ToUpper()})");
                     return lang;
                 }
-                //Debug.WriteLine($"Word not found in Hunspell ({lang.ToUpper()})");
+                Debug.WriteLine($"Word not found in Hunspell ({lang.ToUpper()})");
             }
+            return "none";
+        }
 
-            //check proto dictionaries
-            if (protoDictionaries[currentLang].Contains(lastWord[currentLang].Trim()))
+        private string CheckAllProto(Dictionary<string, string> word, string currentLang)
+        {
+            if (WordBelongsToDict(word[currentLang].Trim(), protoDictionaries[currentLang]))
             {
                 Debug.WriteLine($"Word found in current proto {currentLang.ToUpper()}");
                 return currentLang;
             }
-            //Debug.WriteLine($"Word not found in current proto {currentLang.ToUpper()}");
+            Debug.WriteLine($"Word not found in current proto {currentLang.ToUpper()}");
             foreach (var lang in validLangs)
             {
-                if (lang == currentLang)
-                {
-                    continue;
-                }
-                else if (protoDictionaries[lang].Contains(lastWord[lang].Trim()))
+                if (lang == currentLang) continue;
+                if (WordBelongsToDict(word[lang].Trim(), protoDictionaries[lang]))
                 {
                     Debug.WriteLine($"Word found in proto ({lang.ToUpper()})");
                     return lang;
                 }
-                //Debug.WriteLine($"Word not found in proto ({lang.ToUpper()})");
-            }          
+                Debug.WriteLine($"Word not found in proto ({lang.ToUpper()})");
+            }
+            return "none";
+        }
 
-            Debug.WriteLine($"Word not found anywhere");
-            return currentLang;
+        private bool WordBelongsToLang(string word, string lang)
+        {
+            if (WordBelongsToDict(word, userDictionaries[lang]))
+            {
+                Debug.WriteLine($"Word found in user ({lang.ToUpper()})");
+                return true;
+            }
+            Debug.WriteLine($"Word not found in user ({lang.ToUpper()})");
+            if (WordBelongsToDict(word, hunspellDictionaries[lang]))
+            {
+                Debug.WriteLine($"Word found in hunspell ({lang.ToUpper()})");
+                return true;
+            }
+            Debug.WriteLine($"Word not found in hunspell ({lang.ToUpper()})");
+            return false;
         }
 
         private bool WordBelongsToDict(string word, UserDictionary dict)
