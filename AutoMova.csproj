@@ -102,7 +102,6 @@
     <Compile Include="Switcher\ProtoDictionary.cs" />
     <Compile Include="Switcher\Switcher.cs" />
     <Compile Include="Switcher\UserDictionary.cs" />
-    <None Include="Test\Test.cs" />
     <Compile Include="UI\HotKeyBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -162,9 +161,6 @@
     <None Include="icon7.ico" />
     <None Include="icon7_auto_off.ico" />
     <None Include="icon10_auto_off.ico" />
-    <Content Include="Test\data\en.txt" />
-    <Content Include="Test\data\ru.txt" />
-    <Content Include="Test\data\uk.txt" />
     <Content Include="UI\github.png" />
   </ItemGroup>
   <ItemGroup>

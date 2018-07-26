@@ -1,5 +1,8 @@
 /bin/*
 /obj/*
+/Test/bin/*
+/Test/obj/*
+/TestResults/*
 /packages/*
 /*.suo
 .idea/
