@@ -80,20 +80,28 @@
     align-items: center;
   }
 
-  .button {
-    background-color: #4CAF50; 
+  .btn {     
     border: none;
     border-radius: 5px;
     color: white;
     padding: 15px 32px;
+    margin: 0px 10px 0px 10px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
   }
-  .button:hover {
-    background-color: #5CBF60; 
-    
+  .btn-stable {
+    background-color: #4CAF50;
+  }
+  .btn-stable:hover {
+    background-color: #5CBF60;    
+  }
+  .btn-testing {
+    background-color: #e17d19;
+  }
+  .btn-testing:hover {
+    background-color: #f47d06;
   }
   footer { 
       background-color: #1f1f2e;
@@ -142,14 +150,27 @@
  <div class="bg-gradient padding-top padding-bottom flex column center">
   <h1 class="flex center" style="align-items: flex-start"><img src="img/am_logo_128.png" class="img-logo" alt="" >AutoMova</h1>  
   <h3>Automatic Keyboard Layout Switcher</h3>
-  <a href="https://github.com/vrd/AutoMova/raw/development/release/AutoMovaSetup-0.1.15.msi" class="button">
-    <b>Download v.0.1.15-alpha</b>
-    <br>
-    <small>for Windows</small>
-  </a>
-  <a href="https://github.com/vrd/AutoMova">
-    <small>view code on Github</small>
-  </a>  
+  <div class="flex center">
+    <a href="https://github.com/vrd/AutoMova/raw/development/release/AutoMovaSetup-0.1.16.msi" class="btn btn-stable">
+      <b>Download v.0.1.16-alpha</b>
+      <br>
+      <small>for Windows</small>
+    </a>
+    <!-- <a href="https://github.com/vrd/AutoMova/raw/development/release/AutoMovaSetup-0.1.16.msi" class="btn btn-testing">
+      <b>Download v.0.1.16-alpha</b>
+      <br>
+      <small>for Windows</small>
+    </a> -->
+  </div>  
+  <div class="flex center">
+    <a href="https://github.com/vrd/AutoMova">
+      <small>view code on Github</small>
+    </a>
+    &nbsp;&nbsp;&nbsp;
+    <a href="https://github.com/vrd/AutoMova/blob/development/CHANGELOG.md">
+      <small>CHANGELOG</small>
+    </a>  
+  </div>
 </div>
 
 <div class="bg-solid padding-bottom text-center">
