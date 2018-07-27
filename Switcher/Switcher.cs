@@ -13,7 +13,8 @@ namespace AutoMova.Switcher
     public class SwitcherCore : IDisposable
     {
         public event EventHandler<SwitcherErrorArgs> Error;
-        
+        public event EventHandler<SwitcherInfoArgs> Info;
+
         private KeyboardHook kbdHook;
         private MouseHook mouseHook;
         private ISettings settings;
@@ -246,7 +247,6 @@ namespace AutoMova.Switcher
             if (evtData.Equals(settings.ConvertSelectionHotkey))
             {
                 Debug.WriteLine("ConvertSelectionHotkey detected!");
-                //return;
                 ConvertSelection();
                 evtData.Handled = true;
                 return;
@@ -256,6 +256,14 @@ namespace AutoMova.Switcher
             {
                 Debug.WriteLine("ToggleAutoSwitchingHotkey detected!");
                 settings.AutoSwitching = !settings.AutoSwitching;
+                evtData.Handled = true;
+                return;
+            }
+
+            if (evtData.Equals(settings.AddRemoveHotkey))
+            {
+                Debug.WriteLine("AddRemoveHotkey detected!");
+                ChangeUserDict();
                 evtData.Handled = true;
                 return;
             }
@@ -316,11 +324,13 @@ namespace AutoMova.Switcher
         }
 
         private void OnError(Exception ex)
-        {
-            if (Error != null)
-            {
-                Error(this, new SwitcherErrorArgs(ex));
-            }
+        {            
+            Error(this, new SwitcherErrorArgs(ex));
+        }
+
+        private void OnInfo(string word, string lang, bool success, bool add)
+        {            
+            Info(this, new SwitcherInfoArgs(word, lang, success, add));
         }
 
         private Keys GetPreviousVkCode()
@@ -512,11 +522,17 @@ namespace AutoMova.Switcher
             ignoreKeyPress = false;
         }
 
+        private void ChangeUserDict()
+        {
+            OnInfo("test", "ab-CD", false, true);
+        }
+
         public void Dispose()
         {
             Stop();
         }
     }
+
 
     public class SwitcherErrorArgs : EventArgs
     {
@@ -527,4 +543,16 @@ namespace AutoMova.Switcher
         }
     }
 
+    public class SwitcherInfoArgs : EventArgs
+    {
+        public string Info { get; private set; }
+        public bool Success { get; private set; }
+        public SwitcherInfoArgs(string word, string lang, bool success, bool add)
+        {
+            var not = success ? "" : "not";
+            var added = add ? "added to " : "removed from";
+            Info = string.Format($"Word \"{word}\" {not} {added} dictionary {lang.Substring(0,2).ToUpper()}");
+            Success = success;
+        }
+    }
 }

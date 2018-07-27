@@ -44,6 +44,7 @@ namespace AutoMova.Data
             var equals = p.KeyCode == KeyCode &&
                 (p.KeyCode == Keys.LControlKey || p.KeyCode == Keys.RControlKey || p.Control == Control) &&
                 (p.KeyCode == Keys.LShiftKey || p.KeyCode == Keys.RShiftKey || p.Shift == Shift) &&
+                (p.Alt == Alt) &&
                 p.Win == Win;
             return equals;
         }

@@ -6,6 +6,7 @@
         KeyboardEventArgs SwitchLayoutHotkey { get; set; }
         KeyboardEventArgs ConvertSelectionHotkey { get; set; }
         KeyboardEventArgs ToggleAutoSwitchingHotkey { get; set; }
+        KeyboardEventArgs AddRemoveHotkey { get; set; }
         int SwitchDelay { get; set; }
         bool? SmartSelection { get; set; }
         bool? AutoSwitching { get; set; }

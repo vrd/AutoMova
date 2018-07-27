@@ -77,6 +77,17 @@ namespace AutoMova.Switcher
             if (detectedLang != "none") return detectedLang;
             return currentLang;
         }
+    
+        public bool AddOrRemove(string word, string lang)
+        {
+            if (!validLangs.Contains(lang))
+            {
+                return false;
+            }
+            return (userDictionaries[lang].AddOrRemove(word));
+        }
+
+        
 
         private string CheckAllUser(Dictionary<string, string> word, string currentLang)
         {
@@ -170,7 +181,7 @@ namespace AutoMova.Switcher
 
         private bool WordBelongsToDict(string word, ProtoDictionary dict)
         {
-            return dict.Contains(word);
+            return dict.Contains(word.ToLower());
         }        
 
         private string ToLangCountryCode(string lang)

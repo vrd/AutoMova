@@ -28,7 +28,8 @@ namespace AutoMova.UI
 
             this.engine = engine;
             engine.Error += OnEngineError;
-                        
+            engine.Info += OnEngineInfo;
+
             InitializeComponent();
             InitializeTrayIcon();
             InitializeHotkeyBoxes();
@@ -89,6 +90,7 @@ namespace AutoMova.UI
             textBoxConvertSelectionHotkey.Text = settings.ConvertSelectionHotkey.ToString();
             textBoxSwitchLayoutHotkey.Text = ReplaceCtrls(settings.SwitchLayoutHotkey.ToString());
             textBoxAutoSwitchingHotkey.Text = ReplaceCtrls(settings.ToggleAutoSwitchingHotkey.ToString());
+            textBoxAddRemoveHotkey.Text = ReplaceCtrls(settings.AddRemoveHotkey.ToString());
             checkBoxAutorun.Checked = settings.AutoStart == true;
             checkBoxTrayIcon.Checked = settings.ShowTrayIcon == true;
             checkBoxSmartSelection.Checked = settings.SmartSelection == true;
@@ -180,7 +182,11 @@ namespace AutoMova.UI
         }
         void OnEngineError(object sender, SwitcherErrorArgs e)
         {
-            icon.ShowTooltip(e.Error.Message, ToolTipIcon.Error);
+            icon.ShowErrorTooltip(e.Error.Message, ToolTipIcon.Error);
+        }
+        void OnEngineInfo(object sender, SwitcherInfoArgs e)
+        {
+            icon.ShowInfoTooltip(e.Info, (e.Success ? ToolTipIcon.Info : ToolTipIcon.Warning));
         }
 
         void OnAutoSwitchingModeToggle(object sender, AutoToggleArgs e)
@@ -201,7 +207,7 @@ namespace AutoMova.UI
         KeyboardHook kbdHook;
         KeyboardEventArgs currentHotkey;
         HotKeyType currentHotkeyType;
-        enum HotKeyType { None, ConvertLast, ConvertSelection, SwitchLayout, ToggleAutoSwitching }
+        enum HotKeyType { None, ConvertLast, ConvertSelection, SwitchLayout, ToggleAutoSwitching, AddRemove }
         void InitializeHotkeyBoxes()
         {
             textBoxConverLastHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.ConvertLast;
@@ -220,6 +226,10 @@ namespace AutoMova.UI
             textBoxAutoSwitchingHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.ToggleAutoSwitching;
             textBoxAutoSwitchingHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
             textBoxAutoSwitchingHotkey.Leave += (s, e) => ApplyCurrentHotkey();
+            textBoxAddRemoveHotkey.GotFocus += (s, e) => currentHotkeyType = HotKeyType.AddRemove;
+            textBoxAddRemoveHotkey.Enter += (s, e) => currentHotkeyType = HotKeyType.AddRemove;
+            textBoxAddRemoveHotkey.LostFocus += (s, e) => ApplyCurrentHotkey();
+            textBoxAddRemoveHotkey.Leave += (s, e) => ApplyCurrentHotkey();
             currentHotkeyType = HotKeyType.None;
             kbdHook = new KeyboardHook();
             kbdHook.KeyboardEvent += kbdHook_KeyboardEvent;
@@ -264,6 +274,9 @@ namespace AutoMova.UI
                 case HotKeyType.ToggleAutoSwitching:
                     currentTextBox = textBoxAutoSwitchingHotkey;
                     break;
+                case HotKeyType.AddRemove:
+                    currentTextBox = textBoxAddRemoveHotkey;
+                    break;
                 default:
                     currentTextBox = null;
                     break;
@@ -299,6 +312,9 @@ namespace AutoMova.UI
                 case HotKeyType.ToggleAutoSwitching:
                     currentHotkey = clear ? new KeyboardEventArgs(Keys.None, false) : settings.ToggleAutoSwitchingHotkey;
                     break;
+                case HotKeyType.AddRemove:
+                    currentHotkey = clear ? new KeyboardEventArgs(Keys.None, false) : settings.AddRemoveHotkey;
+                    break;
                 default:
                     currentHotkey = null;
                     break;
@@ -325,6 +341,9 @@ namespace AutoMova.UI
                     break;
                 case HotKeyType.ToggleAutoSwitching:
                     settings.ToggleAutoSwitchingHotkey = currentHotkey;
+                    break;
+                case HotKeyType.AddRemove:
+                    settings.AddRemoveHotkey = currentHotkey;
                     break;
                 default:
                     break;

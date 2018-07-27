@@ -58,12 +58,21 @@ namespace AutoMova.UI
         {
             trayIcon.Visible = false;
         }
-        public void ShowTooltip(string p, ToolTipIcon icon)
+
+        public void ShowErrorTooltip(string p, ToolTipIcon icon)
         {
             wasShownBeforeTooltip = trayIcon.Visible;
             Show();
             trayIcon.ShowBalloonTip(2000, "AutoMova error", p, icon);
         }
+
+        public void ShowInfoTooltip(string p, ToolTipIcon icon)
+        {
+            wasShownBeforeTooltip = trayIcon.Visible;
+            Show();
+            trayIcon.ShowBalloonTip(2000, "AutoMova", p, icon);
+        }
+
 
 
         private void OnExitClick(object sender, EventArgs e)

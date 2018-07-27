@@ -23,6 +23,14 @@ namespace AutoMova.Data
             {
                 settings.ConvertSelectionHotkey = new KeyboardEventArgs(laptop ? (Keys.End | Keys.Shift) : (Keys.Pause | Keys.Shift), false);
             }
+            if (settings.ToggleAutoSwitchingHotkey.KeyData == Keys.None)
+            {
+                settings.ToggleAutoSwitchingHotkey = new KeyboardEventArgs(laptop ? (Keys.End | Keys.Control) : (Keys.Pause | Keys.Control), false);
+            }
+            if (settings.AddRemoveHotkey.KeyData == Keys.None)
+            {
+                settings.AddRemoveHotkey = new KeyboardEventArgs(laptop ? (Keys.End | Keys.Alt) : (Keys.Pause | Keys.Alt), false);
+            }
             if (settings.ShowTrayIcon == null)
             {
                 settings.ShowTrayIcon = true;
@@ -108,6 +116,21 @@ namespace AutoMova.Data
             set
             {
                 this["ToggleAutoSwitchingHotkey"] = (KeyboardEventArgs)value;
+            }
+        }
+
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.Binary)]
+        [DefaultSettingValue("")]
+        public KeyboardEventArgs AddRemoveHotkey
+        {
+            get
+            {
+                return (KeyboardEventArgs)this["AddRemoveHotkey"];
+            }
+            set
+            {
+                this["AddRemoveHotkey"] = (KeyboardEventArgs)value;
             }
         }
 

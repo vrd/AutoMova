@@ -91,6 +91,7 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Common.cs" />
     <Compile Include="Data\ISettings.cs" />
     <Compile Include="Data\KeyboardEventArgs.cs" />
     <Compile Include="Data\Settings.cs" />

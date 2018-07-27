@@ -68,6 +68,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.textBoxDebug = new System.Windows.Forms.TextBox();
+            this.textBoxAddRemoveHotkey = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -183,7 +185,7 @@
             // 
             // textBoxSwitchLayoutHotkey
             // 
-            this.textBoxSwitchLayoutHotkey.Location = new System.Drawing.Point(158, 62);
+            this.textBoxSwitchLayoutHotkey.Location = new System.Drawing.Point(197, 62);
             this.textBoxSwitchLayoutHotkey.Name = "textBoxSwitchLayoutHotkey";
             this.textBoxSwitchLayoutHotkey.Size = new System.Drawing.Size(103, 20);
             this.textBoxSwitchLayoutHotkey.TabIndex = 30;
@@ -199,14 +201,14 @@
             // 
             // textBoxConverLastHotkey
             // 
-            this.textBoxConverLastHotkey.Location = new System.Drawing.Point(158, 10);
+            this.textBoxConverLastHotkey.Location = new System.Drawing.Point(198, 10);
             this.textBoxConverLastHotkey.Name = "textBoxConverLastHotkey";
             this.textBoxConverLastHotkey.Size = new System.Drawing.Size(103, 20);
             this.textBoxConverLastHotkey.TabIndex = 21;
             // 
             // textBoxConvertSelectionHotkey
             // 
-            this.textBoxConvertSelectionHotkey.Location = new System.Drawing.Point(158, 36);
+            this.textBoxConvertSelectionHotkey.Location = new System.Drawing.Point(197, 36);
             this.textBoxConvertSelectionHotkey.Name = "textBoxConvertSelectionHotkey";
             this.textBoxConvertSelectionHotkey.Size = new System.Drawing.Size(103, 20);
             this.textBoxConvertSelectionHotkey.TabIndex = 24;
@@ -317,6 +319,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label14);
+            this.tabPage2.Controls.Add(this.textBoxAddRemoveHotkey);
             this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.textBoxAutoSwitchingHotkey);
             this.tabPage2.Controls.Add(this.label1);
@@ -344,7 +348,7 @@
             // 
             // textBoxAutoSwitchingHotkey
             // 
-            this.textBoxAutoSwitchingHotkey.Location = new System.Drawing.Point(158, 88);
+            this.textBoxAutoSwitchingHotkey.Location = new System.Drawing.Point(198, 88);
             this.textBoxAutoSwitchingHotkey.Name = "textBoxAutoSwitchingHotkey";
             this.textBoxAutoSwitchingHotkey.Size = new System.Drawing.Size(103, 20);
             this.textBoxAutoSwitchingHotkey.TabIndex = 32;
@@ -500,6 +504,22 @@
             this.textBoxDebug.TabIndex = 0;
             this.textBoxDebug.WordWrap = false;
             // 
+            // textBoxAddRemoveHotkey
+            // 
+            this.textBoxAddRemoveHotkey.Location = new System.Drawing.Point(198, 114);
+            this.textBoxAddRemoveHotkey.Name = "textBoxAddRemoveHotkey";
+            this.textBoxAddRemoveHotkey.Size = new System.Drawing.Size(103, 20);
+            this.textBoxAddRemoveHotkey.TabIndex = 34;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 117);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(186, 13);
+            this.label14.TabIndex = 35;
+            this.label14.Text = "Add to / Remove from user dictionary:";
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.buttonSaveSettings;
@@ -578,5 +598,7 @@
         private System.Windows.Forms.LinkLabel linkLabel4;
         private System.Windows.Forms.LinkLabel linkLabel5;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBoxAddRemoveHotkey;
     }
 }
