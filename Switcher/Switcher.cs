@@ -524,7 +524,39 @@ namespace AutoMova.Switcher
 
         private void ChangeUserDict()
         {
-            OnInfo("test", "ab-CD", false, true);
+            string lang = layoutToLang[LowLevelAdapter.GetCurrentLayout()];
+            string word;
+            // get word from last typed symbols
+            if (currentSelection.Count > 0)
+            {                
+                word = lastWord[lang].Trim();                
+            }
+            //get word from selection
+            else
+            {
+                //ignoreKeyPress = true;                
+                //var fnKeys = LowLevelAdapter.ReleasePressedFnKeys();                
+                word = LowLevelAdapter.GetSelectedText();               
+                //LowLevelAdapter.PressPressedFnKeys(fnKeys);
+                //ignoreKeyPress = false;
+            }
+            if (IsWord(word))
+            {
+                Debug.WriteLine($"Word is {word}");
+                var add = layoutDetector.AddOrRemove(word, lang);
+                Debug.WriteLine("Word was " + (add ? "added" : "removed"));
+                EmitInfo(word, lang, true, add);
+            }
+            else
+            {
+                Debug.WriteLine($"Word {word} is invalid");
+                EmitInfo("", lang, false, true);
+            }           
+        }
+
+        private bool IsWord(string symbols)
+        {
+            return !String.IsNullOrEmpty(symbols) && Regex.IsMatch(symbols, @"^\S+$");
         }
 
         public void Dispose()
@@ -549,9 +581,9 @@ namespace AutoMova.Switcher
         public bool Success { get; private set; }
         public SwitcherInfoArgs(string word, string lang, bool success, bool add)
         {
-            var not = success ? "" : "not";
+            var not = success ? "" : "not ";
             var added = add ? "added to " : "removed from";
-            Info = string.Format($"Word \"{word}\" {not} {added} dictionary {lang.Substring(0,2).ToUpper()}");
+            Info = string.Format($"Word \"{word}\" {not}{added} dictionary {lang.Substring(0,2).ToUpper()}");
             Success = success;
         }
     }
