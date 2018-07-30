@@ -206,6 +206,8 @@ namespace AutoMova.Switcher
               vkCode == Keys.ShiftKey ||
               vkCode == Keys.RShiftKey ||
               vkCode == Keys.LShiftKey ||
+              vkCode == Keys.RMenu ||
+              vkCode == Keys.LMenu ||
               vkCode == Keys.NumLock ||
               vkCode == Keys.Scroll;
         }
