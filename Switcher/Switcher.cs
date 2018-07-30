@@ -437,14 +437,13 @@ namespace AutoMova.Switcher
         private void ConvertSelection()
         {
             ignoreKeyPress = true;
-            LowLevelAdapter.BackupClipboard();
+
             var fnKeys = LowLevelAdapter.ReleasePressedFnKeys();
-            LowLevelAdapter.SendCopy();
-            var selection = Clipboard.GetText();
-            LowLevelAdapter.RestoreClipboard();
+            var selection = LowLevelAdapter.GetSelectedText();
             if (String.IsNullOrEmpty(selection))
             {
                 LowLevelAdapter.PressPressedFnKeys(fnKeys);
+                ignoreKeyPress = false;
                 return;
             }
             
@@ -455,8 +454,7 @@ namespace AutoMova.Switcher
             }
 
             LowLevelAdapter.SetNextKeyboardLayout();
-
-            ignoreKeyPress = true;
+            
             foreach (var key in keys)
             {
                 Debug.Write(key);                
