@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -328,7 +328,7 @@ namespace AutoMova.Switcher
             Error(this, new SwitcherErrorArgs(ex));
         }
 
-        private void OnInfo(string word, string lang, bool success, bool add)
+        private void EmitInfo(string word, string lang, bool success, bool add)
         {            
             Info(this, new SwitcherInfoArgs(word, lang, success, add));
         }
