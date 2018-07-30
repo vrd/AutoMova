@@ -192,8 +192,7 @@ namespace AutoMova.WinApi
                 if (key.Value)
                 {
                     PressPressedKey(key.Key);
-                }
-                
+                }                
             }
         }
 
