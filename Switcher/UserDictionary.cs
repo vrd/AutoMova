@@ -20,9 +20,11 @@ namespace AutoMova.Switcher
 
         public UserDictionary(string lang)
         {
-            defaultDictionary = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\resources\\proto\\" + lang + "\\dictionary");
+            var lines = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\resources\\proto\\" + lang + "\\dictionary");
+            defaultDictionary = lines.Where(line => line != "").ToArray();
             userDictPath = string.Format(@"{0}\{1}.txt", Common.UserDictsFolder, lang);
-            userDictionary = ReadUserDictionary();            
+            var userLines = ReadUserDictionary();
+            userDictionary = userLines.Where(line => line != "").ToArray();            
         }
 
         public bool Contains(string word)
