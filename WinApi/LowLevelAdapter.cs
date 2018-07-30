@@ -300,6 +300,55 @@ namespace AutoMova.WinApi
             return result.ToString();
         }
 
+        public static string GetSelectedText()
+        {
+            var backupText = ClipboardGetTextSTA();
+            ClipboardClearSTA();            
+            PostMessage(GetWindowHandle(), WM_COPY, 0, 0);
+            var word = ClipboardGetTextSTA();
+            Debug.WriteLine($"Clipboard: {word}");
+            if (!String.IsNullOrEmpty(backupText)) ClipboardSetTextSTA(backupText);            
+            return word;
+        }
+
+        private static void ClipboardClearSTA()
+        {            
+            Thread th = new Thread(
+                delegate()
+                {
+                    Clipboard.Clear();
+                });
+            th.SetApartmentState(ApartmentState.STA);
+            th.Start();
+            th.Join();            
+        }
+
+        private static string ClipboardGetTextSTA()
+        {
+            string text = null;
+            Thread th = new Thread(
+                delegate()
+                {
+                    text = Clipboard.GetText();
+                });
+            th.SetApartmentState(ApartmentState.STA);
+            th.Start();
+            th.Join();
+            return text;
+        }
+
+        private static void ClipboardSetTextSTA(string text)
+        {            
+            Thread th = new Thread(
+                delegate ()
+                {
+                    Clipboard.SetText(text);
+                });
+            th.SetApartmentState(ApartmentState.STA);
+            th.Start();
+            th.Join();
+        }
+
         public static void BackupClipboard()
         {
             //lDataObject = Clipboard.GetDataObject();

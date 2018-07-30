@@ -92,6 +92,7 @@ namespace AutoMova.WinApi
         public const uint EM_REPLACESEL = 0xC2;
         public const uint KLF_ACTIVATE = 0x01;
         public const uint KLF_SUBSTITUTE_OK = 0x02;
+        public const uint WM_COPY = 0x0301;
 
         struct SYSTEM_POWER_CAPABILITIES
         {
