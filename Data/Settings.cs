@@ -25,7 +25,7 @@ namespace AutoMova.Data
             }
             if (settings.ToggleAutoSwitchingHotkey.KeyData == Keys.None)
             {
-                settings.ToggleAutoSwitchingHotkey = new KeyboardEventArgs(laptop ? (Keys.End | Keys.Control) : (Keys.Pause | Keys.Control), false);
+                settings.ToggleAutoSwitchingHotkey = new KeyboardEventArgs(laptop ? (Keys.End | Keys.Control) : (Keys.Cancel | Keys.Control), false);
             }
             if (settings.AddRemoveHotkey.KeyData == Keys.None)
             {
