@@ -172,23 +172,21 @@ namespace AutoMova.WinApi
         }
 
         public static Dictionary<Keys, bool> ReleasePressedFnKeys()
-        {
-            // temp solution
-            //ReleasePressedKey(Keys.LMenu, true),
-            //ReleasePressedKey(Keys.RMenu, true),
-            //ReleasePressedKey(Keys.LWin, true),
-            //ReleasePressedKey(Keys.RWin, true),
+        {           
             Debug.WriteLine("ReleasePressedFnKeys()...");
             var fnKeys = new Dictionary<Keys, bool>();
-            fnKeys.Add(Keys.RControlKey, ReleasePressedKey(Keys.RControlKey, false));
-            fnKeys.Add(Keys.LControlKey, ReleasePressedKey(Keys.LControlKey, false));
-            fnKeys.Add(Keys.LShiftKey, ReleasePressedKey(Keys.LShiftKey, false));
-            fnKeys.Add(Keys.RShiftKey, ReleasePressedKey(Keys.RShiftKey, false));
+            fnKeys.Add(Keys.LControlKey, ReleasePressedKey(Keys.LControlKey));
+            fnKeys.Add(Keys.RControlKey, ReleasePressedKey(Keys.RControlKey));
+            fnKeys.Add(Keys.LShiftKey, ReleasePressedKey(Keys.LShiftKey));
+            fnKeys.Add(Keys.RShiftKey, ReleasePressedKey(Keys.RShiftKey));
+            fnKeys.Add(Keys.LMenu, ReleasePressedKey(Keys.LMenu));
+            fnKeys.Add(Keys.RMenu, ReleasePressedKey(Keys.RMenu));
             return fnKeys;
         }
 
         public static void PressPressedFnKeys(Dictionary<Keys, bool> fnKeys)
         {
+            Debug.WriteLine("PressPressedFnKeys()...");
             foreach (var key in fnKeys)
             {
                 if (key.Value)
@@ -199,21 +197,12 @@ namespace AutoMova.WinApi
             }
         }
 
-        private static bool ReleasePressedKey(Keys keyCode, bool releaseTwice)
+        private static bool ReleasePressedKey(Keys keyCode)
         {
-            if (!KeyPressed(keyCode)) { return false; }
+            if (!KeyPressed(keyCode)) return false;
             Debug.WriteLine("{0} was down", keyCode);
-            var keyUp = MakeKeyInput(keyCode, false);
-            if (releaseTwice)
-            {
-                var secondDown = MakeKeyInput(keyCode, true);
-                var secondUp = MakeKeyInput(keyCode, false);
-                SendInput(3, new INPUT[3] { keyUp, secondDown, secondUp }, Marshal.SizeOf(typeof(INPUT)));
-            }
-            else
-            {
-                SendInput(1, new INPUT[1] { keyUp }, Marshal.SizeOf(typeof(INPUT)));
-            }
+            var keyUp = MakeKeyInput(keyCode, false);            
+            SendInput(1, new INPUT[1] { keyUp }, Marshal.SizeOf(typeof(INPUT)));            
             return true;
         }
 
