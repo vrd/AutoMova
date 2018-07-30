@@ -465,6 +465,12 @@ namespace AutoMova.Switcher
                     LowLevelAdapter.SendKeyPress(key, (key & Keys.Shift) != Keys.None);
                 }
             }
+            
+            foreach (var key in keys)
+            {             
+                LowLevelAdapter.SendKeyPress(Keys.Left, true);                
+            }
+
             Debug.WriteLine("");
 
             LowLevelAdapter.PressPressedFnKeys(fnKeys);
