@@ -2,6 +2,10 @@
 
 All notable changes will be documented in this file.
 
+## [0.1.18] 2018-07-31
+- Implement user dictionary
+- Bugfixes
+
 ## [0.1.16] 2018-07-26
 - Improve language detection
 - Update user dictionaries
