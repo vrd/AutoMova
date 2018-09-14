@@ -221,7 +221,7 @@ namespace AutoMova.WinApi
         {
             return System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.Startup),
-                "dotSwitcher.lnk");
+                "AutoMova.lnk");
         }
         public static void CreateAutorunShortcut()
         {
