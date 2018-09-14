@@ -227,7 +227,7 @@ namespace AutoMova.WinApi
         {
             var currentPath = Assembly.GetExecutingAssembly().Location;
             var shortcutLocation = GetAutorunPath();
-            var description = "Simple keyboard layout switcher";
+            var description = "Automatic keyboard layout switcher";
             if (System.IO.File.Exists(shortcutLocation))
             {
                 return;
