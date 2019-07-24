@@ -109,24 +109,33 @@ namespace AutoMova.WinApi
         //    return LoadKeyboardLayout((layout.ToString("x8")), KLF_ACTIVATE);
         //}
         
+        public static void SetNextKeyboardLayoutByKeypress()
+        {
+            Debug.WriteLine("SetNextKeyboardLayoutByKeyPress()...");            
+
+            var shiftDown = MakeKeyInput(Keys.LShiftKey, true);
+            var shiftUp = MakeKeyInput(Keys.LShiftKey, false);
+            var altDown = MakeKeyInput(Keys.LMenu, true);
+            var altUp = MakeKeyInput(Keys.LMenu, false);
+
+            SendInput(2, new INPUT[2] { altDown, shiftDown }, Marshal.SizeOf(typeof(INPUT)));
+            //Thread.Sleep(1);
+            SendInput(2, new INPUT[2] { altUp, shiftUp }, Marshal.SizeOf(typeof(INPUT)));
+            //Thread.Sleep(1);
+        }
+
         public static void SetNextKeyboardLayout()
         {
             Debug.WriteLine("SetNextKeyboardLayout()...");
-            PostMessage(GetWindowHandle(), WM_INPUTLANGCHANGEREQUEST, INPUTLANGCHANGE_FORWARD, HKL_NEXT);
 
-            //var shiftDown = MakeKeyInput(Keys.LShiftKey, true);
-            //var shiftUp = MakeKeyInput(Keys.LShiftKey, false);
-            //var altDown = MakeKeyInput(Keys.LMenu, true);
-            //var altUp = MakeKeyInput(Keys.LMenu, false);
-
-            //SendInput(2, new INPUT[2] { altDown, shiftDown }, Marshal.SizeOf(typeof(INPUT)));
-            //SendInput(2, new INPUT[2] { altUp, shiftUp }, Marshal.SizeOf(typeof(INPUT)));
+            PostMessage(GetWindowHandle(), WM_INPUTLANGCHANGEREQUEST, INPUTLANGCHANGE_FORWARD, HKL_NEXT);            
         }
 
         public static void SetKeyboadLayout(uint layout)
         {
-            Debug.WriteLine("SetKeyboardLayout("+layout.ToString("x8")+")...");          
-            PostMessage(GetWindowHandle(), WM_INPUTLANGCHANGEREQUEST, 0, layout);          
+            Debug.WriteLine("SetKeyboardLayout("+layout.ToString("x8")+")...");
+            PostMessage(GetWindowHandle(), WM_INPUTLANGCHANGEREQUEST, INPUTLANGCHANGE_SYSCHARSET, layout);
+            //SendMessage(GetWindowHandle(), WM_INPUTLANGCHANGEREQUEST, INPUTLANGCHANGE_SYSCHARSET, (int)layout);
         }
 
         public static void SendCopy()

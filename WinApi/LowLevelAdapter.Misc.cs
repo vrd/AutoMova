@@ -82,8 +82,10 @@ namespace AutoMova.WinApi
         public const int WM_RBUTTONDOWN = 0x0204;
         public const int INPUT_KEYBOARD = 1;
         public const uint KEYEVENTF_KEYUP = 0x0002;
-        public const uint WM_INPUTLANGCHANGEREQUEST = 0x50;
-        public const uint INPUTLANGCHANGE_FORWARD = 0x02;
+        public const uint WM_INPUTLANGCHANGEREQUEST = 0x0050;
+        public const int INPUTLANGCHANGE_BACKWARD = 0x0004;
+        public const int INPUTLANGCHANGE_FORWARD = 0x0002;
+        public const int INPUTLANGCHANGE_SYSCHARSET = 0x0001;
         public const uint HKL_NEXT = 1;
         public const uint WM_GETTEXT = 0x0D;
         public const uint WM_GETTEXTLENGTH = 0x0E;

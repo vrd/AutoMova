@@ -10,5 +10,6 @@
         int SwitchDelay { get; set; }
         bool? SmartSelection { get; set; }
         bool? AutoSwitching { get; set; }
+        bool? LegacySwitch { get; set; }
     }
 }

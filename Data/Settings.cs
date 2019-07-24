@@ -43,6 +43,10 @@ namespace AutoMova.Data
             {
                 settings.AutoSwitching = true;
             }
+            if (settings.LegacySwitch == null)
+            {
+                settings.LegacySwitch = true;
+            }
             if (settings.SwitchDelay < 0)
             {
                 settings.SwitchDelay = 0;
@@ -215,6 +219,21 @@ namespace AutoMova.Data
                     OnAutoSwitchingModeToggle(false);
                 }
                 
+            }
+        }
+
+        [UserScopedSetting]
+        [SettingsSerializeAs(SettingsSerializeAs.Binary)]
+        [DefaultSettingValue("")]
+        public bool? LegacySwitch
+        {
+            get
+            {
+                return (bool?)this["LegacySwitch"];
+            }
+            set
+            {
+                this["LegacySwitch"] = (bool?)value; 
             }
         }
     }

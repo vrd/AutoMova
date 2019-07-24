@@ -95,6 +95,7 @@ namespace AutoMova.UI
             checkBoxTrayIcon.Checked = settings.ShowTrayIcon == true;
             checkBoxSmartSelection.Checked = settings.SmartSelection == true;
             checkBoxAutoSwitching.Checked = settings.AutoSwitching == true;
+            checkBoxLegacySwitch.Checked = settings.LegacySwitch == true;
             DisplaySwitchDelay(settings.SwitchDelay);
             icon.SetRunning(engine.IsStarted());
         }
@@ -432,17 +433,7 @@ namespace AutoMova.UI
         {
             settings.AutoSwitching = checkBoxAutoSwitching.Checked;
         }
-
-        private void SettingsForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
+      
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://github.com/kurumpa/dotSwitcher");
@@ -456,46 +447,21 @@ namespace AutoMova.UI
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://code.google.com/archive/p/hunspell-ru/");
-        }
-
-         private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
+        }        
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://wordlist.aspell.net/");
-        }
-
-        private void label13_Click(object sender, EventArgs e)
-        {
-
-        }
+        }        
 
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://github.com/arysin");
-        }        
+        }
+
+        private void CheckBoxLegacySwitch_CheckedChanged(object sender, EventArgs e)
+        {
+            settings.LegacySwitch = checkBoxLegacySwitch.Checked;
+        }
     }   
 }

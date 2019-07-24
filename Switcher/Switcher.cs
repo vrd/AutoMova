@@ -22,6 +22,9 @@ namespace AutoMova.Switcher
         private bool autoSwitchingIsGoing;
         private bool manualSwitchingIsGoing;
         private bool ignoreKeyPress;
+        private bool disableAutoSwitchingCurrentWord;
+        private List<string> langsList = new List<string>();
+        private int langsNumber = 0;
         private Dictionary<string, uint> langToLayout = new Dictionary<string, uint>();
         private Dictionary<string, IntPtr> langToIntPtr = new Dictionary<string, IntPtr>();
         private Dictionary<IntPtr, string> layoutToLang = new Dictionary<IntPtr, string>();
@@ -42,6 +45,7 @@ namespace AutoMova.Switcher
             autoSwitchingIsGoing = false;
             manualSwitchingIsGoing = false;
             ignoreKeyPress = false;
+            disableAutoSwitchingCurrentWord = false;
             
             var layouts = LowLevelAdapter.GetLayoutList();
             var inputLangCollection = InputLanguage.InstalledInputLanguages;
@@ -55,6 +59,8 @@ namespace AutoMova.Switcher
                 {
                     langToLayout.Add(lang.Culture.Name, (uint)(layouts[Array.IndexOf(inputLangs, lang)]));
                     langToIntPtr.Add(lang.Culture.Name, layouts[Array.IndexOf(inputLangs, lang)]);
+                    langsList.Add(lang.Culture.Name);
+                    langsNumber++;
                 }                
                 layoutToLang.Add(layouts[Array.IndexOf(inputLangs, lang)], lang.Culture.Name);
             }
@@ -239,8 +245,9 @@ namespace AutoMova.Switcher
             if (evtData.Equals(settings.ConvertLastHotkey))
             {
                 Debug.WriteLine("ConvertLastHotkey detected!");
+                disableAutoSwitchingCurrentWord = true;
                 manualSwitchingIsGoing = true;
-                ConvertLast("next");
+                ConvertLast(null, "next");
                 manualSwitchingIsGoing = false;
                 evtData.Handled = true;
                 return;
@@ -249,7 +256,7 @@ namespace AutoMova.Switcher
             if (evtData.Equals(settings.ConvertSelectionHotkey))
             {
                 Debug.WriteLine("ConvertSelectionHotkey detected!");
-                ConvertSelection();
+                ConvertSelectionToNextLayout();
                 evtData.Handled = true;
                 return;
             }
@@ -297,7 +304,7 @@ namespace AutoMova.Switcher
                 {
                     return;
                 }
-                if (!autoSwitchingIsGoing && !manualSwitchingIsGoing && currentSelection.Count > 1)
+                if (!autoSwitchingIsGoing && !manualSwitchingIsGoing && !disableAutoSwitchingCurrentWord && currentSelection.Count > 1)
                 {
                     var suggestedLayout = SuggestedLang();
                     bool firstWord = false;
@@ -312,7 +319,7 @@ namespace AutoMova.Switcher
                     {                    
                         autoSwitchingIsGoing = true;                    
                         evtData.Handled = true;
-                        ConvertLast(detectedLayout);
+                        ConvertLast(currentLayout, detectedLayout);
                         autoSwitchingIsGoing = false;
                     }
                 }
@@ -373,6 +380,7 @@ namespace AutoMova.Switcher
                 lastWord[word.Key] = "";
             }
             Debug.WriteLine(DictToString(lastWord));
+            disableAutoSwitchingCurrentWord = false;
         }
 
         private void AddToCurrentSelection(KeyboardEventArgs data)
@@ -436,7 +444,7 @@ namespace AutoMova.Switcher
             ignoreKeyPress = false;
         }
 
-        private void ConvertSelection()
+        private void ConvertSelectionToNextLayout()
         {
             ignoreKeyPress = true;
 
@@ -446,6 +454,7 @@ namespace AutoMova.Switcher
             {
                 LowLevelAdapter.PressPressedFnKeys(fnKeys);
                 ignoreKeyPress = false;
+                Thread.Sleep(settings.SwitchDelay);
                 return;
             }
             
@@ -463,17 +472,20 @@ namespace AutoMova.Switcher
                 if (key != Keys.None)
                 {
                     LowLevelAdapter.SendKeyPress(key, (key & Keys.Shift) != Keys.None);
+                    Thread.Sleep(settings.SwitchDelay);
                 }
             }
             
             foreach (var key in keys)
             {             
-                LowLevelAdapter.SendKeyPress(Keys.Left, true);                
+                LowLevelAdapter.SendKeyPress(Keys.Left, true);
+                Thread.Sleep(settings.SwitchDelay);
             }
 
             Debug.WriteLine("");
 
             LowLevelAdapter.PressPressedFnKeys(fnKeys);
+            Thread.Sleep(settings.SwitchDelay);
 
             ignoreKeyPress = false;
         }
@@ -487,9 +499,9 @@ namespace AutoMova.Switcher
             ignoreKeyPress = false;
         }
 
-        private void ConvertLast(string lang)
+        private void ConvertLast(string fromLang, string toLang)
         {
-            Debug.WriteLine($"ConvertLast to {lang}...");
+            Debug.WriteLine($"ConvertLast to {toLang}...");
             var fnKeys = LowLevelAdapter.ReleasePressedFnKeys();
                         
             // Fix for apps with autocompletion (i.e. omnibox in Google Chrome browser)
@@ -501,26 +513,51 @@ namespace AutoMova.Switcher
             var backspaceCount = autoSwitchingIsGoing ? (currentSelection.Count - 1) : currentSelection.Count;
             var backspaces = Enumerable.Repeat<Keys>(Keys.Back, backspaceCount);
             foreach (var backspace in backspaces)
-            {
-                Thread.Sleep(settings.SwitchDelay);
+            {                
                 LowLevelAdapter.SendKeyPress(backspace, false);
+                Thread.Sleep(settings.SwitchDelay);
             }           
             
             //Change layout
-            if (lang == "next")
+            if (toLang == "next")
             {
-                LowLevelAdapter.SetNextKeyboardLayout();
+                if (settings.LegacySwitch == true)
+                {
+                    LowLevelAdapter.SetNextKeyboardLayoutByKeypress();
+                }
+                else
+                {
+                    LowLevelAdapter.SetNextKeyboardLayout();
+                }
             }
             else
             {
-                LowLevelAdapter.SetKeyboadLayout(langToLayout[lang]);
+                if (settings.LegacySwitch == true)
+                {
+                    var fromIndex = langsList.IndexOf(fromLang);
+                    var toIndex = langsList.IndexOf(toLang);
+                    var switchNum = toIndex - fromIndex;
+                    if (switchNum < 0)
+                    {
+                        switchNum += langsNumber;                        
+                    }
+                    for (var i = 0; i < switchNum; i++) 
+                    {
+                        LowLevelAdapter.SetNextKeyboardLayoutByKeypress();
+                    }                    
+                }
+                else
+                {
+                    LowLevelAdapter.SetKeyboadLayout(langToLayout[toLang]);
+                }
+                
             }
                        
             // Type last word in new layout
             foreach (var data in currentSelection)
-            {
-                Thread.Sleep(settings.SwitchDelay);
+            {               
                 LowLevelAdapter.SendKeyPress(data.KeyCode, data.Shift);
+                Thread.Sleep(settings.SwitchDelay);
             }
 
             LowLevelAdapter.PressPressedFnKeys(fnKeys);
