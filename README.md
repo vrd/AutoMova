@@ -1,4 +1,4 @@
-AutoSwitcher
+AutoMova
 ===========
 *If you're paranoid enough not to use [Punto switcher](http://punto.yandex.ru "closed source software from Russia :(")*
 
